@@ -15,7 +15,7 @@ function print_facet_field(&$doc, $field, $label) {
         <?php
         if (is_array($doc->$field)) {
           foreach ($doc->$field as $value) {
-            print '<li>' . htmlspecialchars($value) . '</li>';
+            print '<li>' . htmlspecialchars($value) . ' </li>';
           }
 
         }

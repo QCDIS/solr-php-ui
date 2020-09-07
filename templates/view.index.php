@@ -113,9 +113,9 @@ else {
     <?php
     include 'templates/select_view.php';
 
-    if ($cfg['etl_status_warning']) {
-      include 'templates/view.etl_status.php';
-    }
+//    if ($cfg['etl_status_warning']) {
+//      include 'templates/view.etl_status.php';
+//    }
 
     // if no results, show message
     if ($total == 0) {

@@ -1,17 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="ad9a1188-3888-4a81-a72d-4860f7a2e609" name="Default Changelist" comment="" />
+    <list default="true" id="ad9a1188-3888-4a81-a72d-4860f7a2e609" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/AdobePDF.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/MSWord.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/MSWord.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/WWW.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/solr-php-ui.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/solr-php-ui.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/foundation.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/foundation.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/view.index.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view.index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/view.list.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view.list.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/view.preview.sidebar.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view.preview.sidebar.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1gdOnJn4XxekZcAtBa41p84Bi4X" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$USER_HOME$/PycharmProjects/graph-composer" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="ad9a1188-3888-4a81-a72d-4860f7a2e609" name="Default Changelist" comment="" />
@@ -22,14 +72,66 @@
     </task>
     <servers />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
   <component name="WindowStateProjectService">
-    <state x="2570" y="151" width="703" height="804" key="find.popup" timestamp="1598222807234">
+    <state x="2574" y="373" width="602" height="367" key="#Notifications" timestamp="1598223161324">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="2570" y="151" width="703" height="804" key="find.popup/1920.0.1920.1080/0.27.1920.1053@1920.0.1920.1080" timestamp="1598222807234" />
-    <state x="2605" y="466" width="540" height="181" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1598222307684">
+    <state x="2574" y="373" width="602" height="367" key="#Notifications/1920.0.1920.1080/0.27.1920.1053@1920.0.1920.1080" timestamp="1598223161324" />
+    <state x="2522" y="354" width="706" height="406" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1599402619350">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="2605" y="466" width="540" height="181" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/1920.0.1920.1080/0.27.1920.1053@1920.0.1920.1080" timestamp="1598222307684" />
+    <state x="2522" y="354" width="706" height="406" key="#com.intellij.fileTypes.FileTypeChooser/1920.0.1920.1080/0.27.1920.1053@1920.0.1920.1080" timestamp="1599402619350" />
+    <state x="2663" y="311" width="424" height="491" key="FileChooserDialogImpl" timestamp="1599399224642">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2663" y="311" width="424" height="491" key="FileChooserDialogImpl/1920.0.1920.1080/0.27.1920.1053@1920.0.1920.1080" timestamp="1599399224642" />
+    <state x="2731" y="453" width="297" height="207" key="Github.ShareDialog" timestamp="1598223189854">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2731" y="453" width="297" height="207" key="Github.ShareDialog/1920.0.1920.1080/0.27.1920.1053@1920.0.1920.1080" timestamp="1598223189854" />
+    <state x="2603" y="230" width="543" height="654" key="Github.UntrackedFilesDialog" timestamp="1598223100887">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2603" y="230" width="543" height="654" key="Github.UntrackedFilesDialog/1920.0.1920.1080/0.27.1920.1053@1920.0.1920.1080" timestamp="1598223100887" />
+    <state x="449" y="175" width="1022" height="737" key="SettingsEditor" timestamp="1598442655237">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="449" y="175" width="1022" height="737" key="SettingsEditor/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1598442655237" />
+    <state x="2665" y="467" width="430" height="179" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1598223222919">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2665" y="467" width="430" height="179" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/1920.0.1920.1080/0.27.1920.1053@1920.0.1920.1080" timestamp="1598223222919" />
+    <state x="2385" y="246" width="1127" height="834" key="find.popup" timestamp="1599436519820">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="651" y="174" width="703" height="784" key="find.popup/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1598442842326" />
+    <state x="2385" y="246" width="1127" height="834" key="find.popup/1920.0.1920.1080/0.27.1920.1053@1920.0.1920.1080" timestamp="1599436519820" />
+    <state x="623" y="239" width="672" height="678" key="search.everywhere.popup" timestamp="1598442652117">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="623" y="239" width="672" height="678" key="search.everywhere.popup/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1598442652117" />
+    <state x="2637" y="235" width="616" height="644" key="svn.repositoryBrowser" timestamp="1598223004002">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2637" y="235" width="616" height="644" key="svn.repositoryBrowser/1920.0.1920.1080/0.27.1920.1053@1920.0.1920.1080" timestamp="1598223004002" />
+    <state x="2605" y="466" width="540" height="181" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1599402725839">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2605" y="466" width="540" height="181" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/1920.0.1920.1080/0.27.1920.1053@1920.0.1920.1080" timestamp="1599402725839" />
   </component>
 </project>

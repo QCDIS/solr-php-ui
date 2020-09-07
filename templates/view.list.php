@@ -5,16 +5,46 @@
 // Number of snippets initially displayed.
 require_once(__DIR__ . '/helpers.php');
 
+
+function get_icon($ResultFileType) {
+    $icon="";
+      if(is_array($ResultFileType))
+      {
+        $RType=$ResultFileType[0];
+        if($RType=='application/msword')
+            $icon='images/MSWord.png';
+        elseif($RType=='application/pdf')
+            $icon='images/AdobePDF.png';
+
+      }
+      elseif ($ResultFileType=='text/html; charset=UTF-8')
+            $icon='images/WWW.png';
+	return $icon;
+}
+
+
+
 ?>
 
 <div id="results" class="row">
   <ul class="no-bullet">
     <?php
     $result_nr = 0;
+
+
     foreach ($results->response->docs as $doc):
+
+
+      //*------------Modify----Begin
+
+      print_r("<br />");
+      //print_r($doc->content_type_ss);
+
+      //*------------Modify----End
+
+
       $result_nr++;
       $id = $doc->id;
-
 		$container = isset($doc->container_s) ? $doc->container_s : NULL;
 		list ($url_display, $url_display_basename, $url_preview, $url_openfile, $url_annotation, $url_container_display, $url_container_display_basename) = get_urls($doc->id, $container);
 
@@ -57,9 +87,13 @@ require_once(__DIR__ . '/helpers.php');
  
       ?>
       <li id="<?= $result_nr ?>">
-        <div class="title"><a class="title" href="<?= $url_openfile ?>"><?= $title ?></a>
+        <div class="title">
+        <a class="title" href="<?= $url_openfile ?>" target="_blank">
+            <img src='<?= get_icon($doc->content_type_ss) ?>' width='20' height='20'>
+            <?= $title ?>
+        </a>
         </div>
-        <div class="date"><?= $datetime ?></div>
+        <div class="date"><?= $datetime ?> </div>
         <div>
           <?php
             include 'templates/view.url.php';
@@ -84,8 +118,8 @@ require_once(__DIR__ . '/helpers.php');
 
         <span class="facets">
         <?php
-          $facets = get_facets($result_nr, $doc, $cfg['facets']);
-          include 'templates/view.snippets.entities.php';
+         // $facets = get_facets($result_nr, $doc, $cfg['facets']);
+         // include 'templates/view.snippets.entities.php';
         ?>
 
         </span>
