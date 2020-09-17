@@ -5,24 +5,34 @@
 // Number of snippets initially displayed.
 require_once(__DIR__ . '/helpers.php');
 
-
-function get_icon($ResultFileType) {
-    $icon="";
-      if(is_array($ResultFileType))
-      {
-        $RType=$ResultFileType[0];
-        if($RType=='application/msword')
-            $icon='images/MSWord.png';
-        elseif($RType=='application/pdf')
-            $icon='images/AdobePDF.png';
-
-      }
-      elseif ($ResultFileType=='text/html; charset=UTF-8')
-            $icon='images/WWW.png';
-	return $icon;
+function is_valid_result($Result) {
+    $result=true;
+    if(!is_array($Result) && $Result=='text/plain; charset=ISO-8859-1')
+        $result=false;
+    return $result;
 }
 
 
+function get_icon($ResultFileType) {
+    $icon="";
+
+    if(is_array($ResultFileType))
+        $RType=$ResultFileType[0];
+    else
+        $RType=$ResultFileType;
+
+    if($RType=='application/msword')
+        $icon='images/MSWord.png';
+    elseif($RType=='application/pdf')
+        $icon='images/AdobePDF.png';
+    elseif($RType=='application/vnd.openxmlformats-officedocument.presentationml.presentation')
+        $icon='images/MSPowerPoint.png';
+    elseif ($RType=='text/html; charset=UTF-8')
+        $icon='images/WWW.png';
+
+
+	return $icon;
+}
 
 ?>
 
@@ -36,10 +46,10 @@ function get_icon($ResultFileType) {
 
 
       //*------------Modify----Begin
-
+        //print_r($doc->content_type_ss);
+        if(!is_valid_result($doc->content_type_ss))
+            continue;
       print_r("<br />");
-      //print_r($doc->content_type_ss);
-
       //*------------Modify----End
 
 
@@ -86,50 +96,52 @@ function get_icon($ResultFileType) {
 
  
       ?>
-      <li id="<?= $result_nr ?>">
-        <div class="title">
-        <a class="title" href="<?= $url_openfile ?>" target="_blank">
-            <img src='<?= get_icon($doc->content_type_ss) ?>' width='20' height='20'>
-            <?= $title ?>
-        </a>
+
+
+    <div class="col-lg-12 mb-12" id="<?= $result_nr ?>">
+      <!-- Illustrations -->
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">
+              <a class="title" href="<?= $url_openfile ?>" target="_blank">
+                <img src='<?= get_icon($doc->content_type_ss) ?>' style="margin-right:5px;margin-top:-4px;" width='20' height='20'><?= $title ?>
+              </a>
+          </h6>
         </div>
-        <div class="date"><?= $datetime ?> </div>
-        <div>
-          <?php
-            include 'templates/view.url.php';
-          ?>
+        <div class="card-body">
+         <div class="date"><?= $datetime ?> </div>
+            <div>
+              <?php
+                //include 'templates/view.url.php';
+              ?>
 
-          <?php if ($file_size_formated): ?>
-            <span class="size">(<?= $file_size_formated ?>)</span>
-          <?php endif; ?>
+              <?php if ($file_size_formated): ?>
+                <span class="size">(<?= $file_size_formated ?>)</span>
+              <?php endif; ?>
+            </div>
+            <div class="snippets">
+              <?php if ($authors): ?>
+                <div class="author"><?= htmlspecialchars(implode(", ", $authors)) ?></div>
+              <?php endif; ?>
+              <?php
+                include 'templates/view.snippets.text.php';
+              ?>
+            </div>
+            <span class="facets">
+            <?php
+    /////////////////////////////////////////////////////////////////////////// Facets for each search query
+              $facets = get_facets($result_nr, $doc, $cfg['facets']);
+              include 'templates/view.snippets.entities.php';
+    ///////////////////////////////////////////////////////////////////////////
+            ?>
+            </span>
+
+            <?php
+              include 'templates/view.commands.php';
+            ?>
         </div>
-
-
-        <div class="snippets">
-
-          <?php if ($authors): ?>
-            <div class="author"><?= htmlspecialchars(implode(", ", $authors)) ?></div>
-          <?php endif; ?>
-
-          <?php
-            include 'templates/view.snippets.text.php';
-          ?>
-        </div>
-
-        <span class="facets">
-        <?php
-         // $facets = get_facets($result_nr, $doc, $cfg['facets']);
-         // include 'templates/view.snippets.entities.php';
-        ?>
-
-        </span>
-
-        <?php
-          include 'templates/view.commands.php';
-        ?>
-
-      </li>
-    <?php endforeach; ?>
-  </ul>
+      </div>
+    </div>
+  <?php endforeach; ?>
 </div>
 

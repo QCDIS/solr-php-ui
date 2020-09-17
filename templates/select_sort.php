@@ -6,7 +6,6 @@
       <?php $sort_relevance = (is_null($sort)) ? 'selected' : ''; ?>
       <option <?= $sort_relevance ?>
         value="<?= buildurl($params, "sort", NULL, 's', 1) ?>"><?= t('Relevance') ?></option>
-      '
 
       <?php $sort_newest = (isset($sort) && $sort == 'newest') ? 'selected' : ''; ?>
       <option <?= $sort_newest ?>

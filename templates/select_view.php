@@ -11,12 +11,12 @@ $view_selectors = array(
 );
 
 $analyse_dropdowns = array(
-  'morphology' => t('Fuzzy search for name variants'),
+  'morphology' => t('Fuzzy search (variants)'),
   'entities' => t('Named entities'),
   'graph' => t('view_graph'),
   'trend' => t('view_trend'),
   'table' => t('Table'),
-  'words' => t('view_words'),
+  'words' => t('Words'),
 );
 
 $tabs = [];
@@ -91,35 +91,43 @@ foreach ($analyse_dropdowns as $anl_item => $title) {
 }
 ?>
 
-<div id="select_view" class="row">
 
-  <div class="button-group">
+<!-- Per View (List, Image, ...) Selector -->
 
-    <!-- Per View (List, Image, ...) Selector -->
-    <?php foreach ($tabs as $selector => $detail): ?>
-      <a class="<?= implode(' ', $detail['class']) ?>"
-         href="<?= $detail['url'] ?>"><?= $detail['title'] ?></a>
-    <?php endforeach; ?>
-
-    <button class="button secondary dropdown" type="button"
-            data-toggle="analyze-dropdown"><?= t('view_analytics'); ?></button>
-
-    <!-- Analyse dropdown -->
-    <div class="dropdown-pane" id="analyze-dropdown" data-dropdown
-         data-auto-focus="true">
-
-      <?php foreach ($analyse_items as $item => $detail): ?>
-        <a class="<?= implode(' ', $detail['class']) ?>"
-           href="<?= $detail['url'] ?>"><?= $detail['title'] ?></a>
-      <?php endforeach; ?>
-
+    <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+      <i class="fas fa-poll-h"></i>
+      <span>Results</span>
+    </a>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">Specific results</h6>
+        <?php foreach ($tabs as $selector => $detail): ?>
+          <a class="collapse-item"
+             href="<?= $detail['url'] ?>"><?= $detail['title'] ?></a>
+        <?php endforeach; ?>
+        <a class="collapse-item" title="Subscribe this search by RSS-Newsfeed" href="<?= $link_rss ?>"><?php echo t("Alert"); ?></a>
+      </div>
     </div>
+  </li>
 
-    <?php
-       if ($view == 'list' || $view == 'images' || $view == 'videos' || $view == 'audios') {
-         include 'templates/select_sort.php';
-       }
-    ?>
-  </div>
 
-</div>
+
+<!-- Analyse dropdown -->
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+      <i class="fas fa-chart-area"></i>
+      <span>Analysis</span>
+    </a>
+    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">Analysis of results:</h6>
+          <?php foreach ($analyse_items as $item => $detail): ?>
+            <a class="collapse-item"
+               href="<?= $detail['url'] ?>"><?= $detail['title'] ?></a>
+          <?php endforeach; ?>
+      </div>
+    </div>
+  </li>
+
+

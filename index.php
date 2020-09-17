@@ -404,13 +404,39 @@ function get_fields(&$doc, $exclude=array(), $exclude_prefixes=array(), $exclude
 	return $fields;
 }
 
+function substrwords($text, $maxchar, $end='...') {
+    if (strlen($text) > $maxchar || $text == '') {
+        $words = preg_split('/\s/', $text);
+        $output = '';
+        $i      = 0;
+        while (1) {
+            $length = strlen($output)+strlen($words[$i]);
+            if ($length > $maxchar) {
+                break;
+            }
+            else {
+                $output .= " " . $words[$i];
+                ++$i;
+            }
+        }
+        if(strlen($output)==0)
+            $output=substr($text,0,$maxchar);
+        $output .= $end;
+    }
+    else {
+        $output = $text;
+    }
 
+    return $output;
+}
+
+////////-----------------------------------------------------------------------------------------------------
 // print a facet and its values as links
 function print_facet(&$results, $facet_field, $facet_label, $facets_limit, $view='list', $pathfacet=FALSE, $path=FALSE) {
 	global $cfg, $params, $selected_facets;
 
-	$facetlimit = 50;
-	$facetlimit_step = 50;
+	$facetlimit = 5000;
+	$facetlimit_step = 5000;
 
 	if ($pathfacet == 'path') {
 		$pathfacet_valueseparator = '/';
@@ -436,16 +462,19 @@ function print_facet(&$results, $facet_field, $facet_label, $facets_limit, $view
 
 		# print facet if values in facet
 		if ($count_facet_values > 0) {
+            $rndNumber=rand();
+?>
 
-			?>
-<div id="<?= $facet_field ?>" class="facet">
-	<h2>
-		<?= $facet_label ?>
-	</h2>
+        <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ID_Facet_<?php echo $rndNumber ?>" aria-expanded="true" aria-controls="collapseTwo">
+                  <i class="fas fa-caret-right"></i>
+                  <span><?= $facet_label ?></span>
+                </a>
+                <div id="ID_Facet_<?php echo $rndNumber ?>" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                  <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Click to Filter</h6>
 
 <?php
-
-
 // If taxonomy filter, show opened hierarchy before the facet values
 if (isset($selected_facets[$pathfacet]) && isset($cfg['facets'][$pathfacet]['tree']) && $cfg['facets'][$pathfacet]['tree']==true) { $is_taxonomy=true;} else { $is_taxonomy=false;}
 
@@ -460,7 +489,7 @@ if ($is_taxonomy==true) {
 
 				      $paths = explode($pathfacet_valueseparator, $trimmedpath);
 
-						print '<a onclick="waiting_on();" title="' . t('Remove filter') . '" href="' . buildurl_delvalue($params, $selected_facet, $facet_value, 's', 1) . '">' . $cfg['facets'][$selected_facet]['label'] . '</a><ul>';
+						print '<a class="collapse-item" onclick="waiting_on();" title="' . t('Remove filter') . '" href="' . buildurl_delvalue($params, $selected_facet, $facet_value, 's', 1) . '">' . substrwords($cfg['facets'][$selected_facet]['label'],15) . '</a>';
 
 				      $fullpath = '';
       				for ($i = 0; $i < count($paths) - 1; $i++) {
@@ -472,25 +501,14 @@ if ($is_taxonomy==true) {
 							$taxonomy = explode("\t", $label);
 							$label = end($taxonomy);
 
-							echo '<ul><li><a onclick="waiting_on();" href="' . buildurl($params, $selected_facet, array($fullpath), 's', 1) . '">' . htmlspecialchars($label) . '</a>' . "\n";
+							echo '<a class="collapse-item" onclick="waiting_on();" href="' . buildurl($params, $selected_facet, array($fullpath), 's', 1) . '">' . substrwords(htmlspecialchars($label),15) . '</a>';
 						}
 						$label = end($paths);
 						$taxonomy = explode("\t", $label);
 						$label = end($taxonomy);
 
-						echo '<ul><li><b>' . htmlspecialchars($label) . '</b>';
-
-
           }
         }
-
-	
-		if ($view=='entities' || $is_taxonomy == true) { ?>
-		<ul>
-		<?php } else { ?>
-		<ul class="no-bullet">
-		<?php
-		}
 
 		$i = 0;
 		foreach ($results->facet_counts->facet_fields->$facet_field as $facet => $count) {
@@ -510,34 +528,29 @@ if ($is_taxonomy==true) {
 					} else {
 					  $link_value = $facet;
 					}
-					
+
 					$link_filter = buildurl($params, $pathfacet, array($link_value), 's', 1);
 					$link_filter_exclude = buildurl_addvalue($params, 'NOT_' . $pathfacet, $link_value, 's', 1);
-				
+
 				} else {
 					$link_filter = buildurl_addvalue($params, $facet_field, $facet, 's', 1);
 					$link_filter_exclude = buildurl_addvalue($params, 'NOT_' . $facet_field, $facet, 's', 1);
 				}
-				
+
 				if ($view == 'entities') {
 					$link_documents = buildurl_addvalue($params, $facet_field, $facet, 'view', null, 's', 1);
 
-	 				print '<li class="entities"><a title="Add to filters" onclick="waiting_on();" href="' . $link_filter . '">'.htmlspecialchars($label).'</a> (<a title="Exclude all results with this entity" onclick="waiting_on();" href="' . $link_filter_exclude . '">-</a>)
-in <a title="Search documents for this entity" onclick="waiting_on();" href="' . $link_documents . '">' . $count . ' ' . t('document(s)') . '</a>
-					</li>';
-					
+	 				print '<a class="collapse-item" title="Add to filters" onclick="waiting_on();" href="' . $link_filter . '">' . substrwords(htmlspecialchars($label),15) . '</a>';
+
 				} elseif($view == 'graph') {
 
 					$link_documents = buildurl_addvalue($params, $facet_field, $facet, 'view', null, 's', 1);
 
-	 				print '<li class="entities">' . htmlspecialchars($label) . ' in <a title="Search documents for this entity" onclick="waiting_on();" href="' . $link_documents . '">' . $count . ' ' . t('document(s)') . '</a>';
+	 				print '<a class="collapse-item" title="Search documents for this entity" onclick="waiting_on();" href="' . $link_documents . '">' . $count . ' ' . t('document(s)') . '</a>';
 
 				} else {
 
-		 			print '<li><a onclick="waiting_on();" href="' . $link_filter . '">' . htmlspecialchars($label) . '</a> (' . $count . ')
-					<a title="Exclude this value" onclick="waiting_on();" href="' . $link_filter_exclude . '">-</a>
-					</li>';
-					
+		 			print '<a class="collapse-item" onclick="waiting_on();" href="' . $link_filter . '">' . substrwords(htmlspecialchars($label),15) . '(' . $count . ') </a>';
 				}
 
 			}
@@ -545,64 +558,20 @@ in <a title="Search documents for this entity" onclick="waiting_on();" href="' .
 			$i++;
 
 		}
-		
+
 		if ($is_taxonomy) {
-			for ($i = 0; $i < count($paths); $i++) {
-      		echo '</li></ul>' . "\n";
-		 	}
-			echo '</ul>';
 		}
 		?>
-	</ul>
-<?php
-
-if ($pathfacet) {
-	$facet_field = $pathfacet;
-}
-
-$facetlimit_more = $facetlimit + $facetlimit_step;
-$facetlimit_less = $facetlimit - $facetlimit_step;
-if ($facetlimit_less <= 0) {$facetlimit_less = '0';}
-
-if ($count_facet_values > $facetlimit) {
-	$link_facetlimit_more = buildurl($params, $facet='f_'.$facet_field.'_facet_limit', $newvalue=$facetlimit_more);
-} else $link_facetlimit_more = '';
-
-if ($facetlimit > 0) {
-
-	$link_facetlimit_less = buildurl($params, $facet='f_'.$facet_field.'_facet_limit', $newvalue=$facetlimit_less);
-} else {
-	$link_facetlimit_less = '';
-}
-
-print '<div><p><small>Show ';
-
-if ($link_facetlimit_less) {
-	print '<a href="'.$link_facetlimit_less.'">less (-)</a>';
-} else {
-	print 'less (-)';
-}
-
-print ' | ';
-
-if ($link_facetlimit_more) {
-	print '<a href="'.$link_facetlimit_more.'">more (+)</a>';
-} else {
-	print 'more (+)';
-}
-
-print '</small></p></div>';
-
-?>
-
-
-</div>
+     </div>
+    </div>
+  </li>
 <?php
 		}
 	} // if isset facetfield
 
 }
 
+////////-----------------------------------------------------------------------------------------------------
 
 function strip_empty_lines($s, $max_empty_lines) {
 
@@ -1535,3 +1504,32 @@ if ($view == 'rss') {
 }
 
 ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

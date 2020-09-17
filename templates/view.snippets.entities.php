@@ -1,6 +1,6 @@
           <?php foreach ($facets as $field => $facet): ?>
 
-            <span class="<?= implode(' ', $facet['class']) ?>">
+            <span class="<?= implode(' ', $facet['class']) ?>" >
             <span class="facet-name"
                   title="<?= $facet['title'] ?>"><?= $facet['name'] ?></span>
 

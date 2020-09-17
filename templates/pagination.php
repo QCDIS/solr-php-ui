@@ -6,26 +6,20 @@
 
 ?>
 
-<div class="row">
-  <hr/>
-</div>
-
-
-<div class="pages" class="row">
-  <ul class="pagination text-center" role="navigation" aria-label="Pagination">
-    <li
+<div class="pages" style="width:100%; text-align:center; font-weight: bold; color:#035ba8;" >
+    <span
       class="pagination-previous <?php if (!$is_prev_page): print 'disabled'; endif; ?>">
       <?php if ($is_prev_page) { ?>
       <a onclick="waiting_on();" href="<?php print $link_prev; ?>">
         <?php } ?>
 
-        <?php print t('prev') ?>
+     <?php //print t('prev') ?>
 
-        <?php if ($is_prev_page) { ?></a><?php } ?>
+        <?php if ($is_prev_page) { ?> <i class="fas fa-chevron-circle-left" style="font-size:large;"></i> </a> &nbsp; <?php } ?>
 
-    </li>
+    </span>
 
-    <li>
+    <span>
 
       <?php
 
@@ -76,21 +70,16 @@
 
 
       ?>
-    </li>
+    </span>
 
-    <li
+    <span
       class="pagination-next <?php if (!$is_next_page): print 'disabled'; endif; ?>">
       <?php if ($is_next_page) { ?>
       <a onclick="waiting_on();" href="<?php print $link_next; ?>">
         <?php } ?>
 
-        <?php print t('next') ?>
+      <?php //print t('next') ?>
 
-        <?php if ($is_next_page) { ?></a><?php } ?>
-
-    </li>
-  </ul>
-</div>
-<div class="row">
-  <hr/>
+        <?php if ($is_next_page) { ?>&nbsp; <i class="fas fa-chevron-circle-right" style="font-size:large;"></i></a><?php } ?>
+    </span>
 </div>
