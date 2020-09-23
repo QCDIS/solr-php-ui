@@ -93,7 +93,7 @@ foreach ($analyse_dropdowns as $anl_item => $title) {
 
 
 <!-- Per View (List, Image, ...) Selector -->
-
+<!--
     <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
       <i class="fas fa-poll-h"></i>
@@ -110,7 +110,7 @@ foreach ($analyse_dropdowns as $anl_item => $title) {
       </div>
     </div>
   </li>
-
+-->
 
 
 <!-- Analyse dropdown -->

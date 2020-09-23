@@ -23,13 +23,13 @@
 
 
 </head>
-<body id="page-top">
+<body id="page-top" class="sidebar-toggled">
 
   <!-- Page Wrapper -->
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gray-900 sidebar sidebar-dark accordion" id="accordionSidebar">
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
 
 
       <!-- Sidebar - Brand -->
@@ -37,19 +37,10 @@
         <div class="sidebar-brand-icon rotate-n-15">
 
         </div>
-        <div class="sidebar-brand-text mx-3"><img src="images/envri_logo_final.png" style="width:80px; height:50px;"></div>
+        <div style="background-color:white; width:100%;padding:5px; border-radius:10px;"><img src="images/envri_logo_final.png" style="width:55px; height:40px;"></div>
       </a>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
 
-      <!-- Nav Item - Dashboard -->
-
-      <li class="nav-item active">
-        <a class="nav-link" href="./">
-          <i class="fas fa-list-ol"></i>
-          <span>Ranked Results</span></a>
-      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider">
@@ -70,7 +61,7 @@
             <h6 class="collapse-header">Query string</h6>
             <a class="collapse-item" href="./"><?php echo t("New search"); ?></a>
             <a class="collapse-item" href="./"><?php echo t("Newest documents"); ?></a>
-            <a class="collapse-item" data-toggle="searchoptions"><?php echo t("advanced_search"); ?></a>
+            <a class="collapse-item" data-toggle="searchoptions" onclick="AdvancedSearch()"><?php echo t("advanced_search"); ?></a>
             <a class="collapse-item" target="_blank"
              title="Search with a list if there are results for each list entry"
              href="/search-apps/search-list/"><?php echo t("search_by_list"); ?></a>
@@ -80,6 +71,25 @@
       <!-- Nav Item - Pages Collapse Menu -->
 
      <?php include 'templates/select_view.php'; ?>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Facets
+      </div>
+        <?php
+            // If preview, show metadata.
+            if ($view == "preview") {
+              include "templates/view.preview.sidebar.php";
+            }
+            else {
+              // show facets
+              include "templates/view.facets.php";
+            }
+        ?>
+
 
       <!-- Divider -->
       <hr class="sidebar-divider">
@@ -105,25 +115,6 @@
           </div>
         </div>
       </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Facets
-      </div>
-        <?php
-            // If preview, show metadata.
-            if ($view == "preview") {
-              include "templates/view.preview.sidebar.php";
-            }
-            else {
-              // show facets
-              include "templates/view.facets.php";
-            }
-        ?>
-
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
@@ -245,9 +236,9 @@
 
 
           <?php
-            if ($view == 'list' || $view == 'images' || $view == 'videos' || $view == 'audios') {
+            //if ($view == 'list' || $view == 'images' || $view == 'videos' || $view == 'audios') {
                 include 'templates/select_sort.php';
-            }
+           // }
          ?>
 
           <!-- Topbar Navbar -->
@@ -614,6 +605,13 @@ function AdvancedSearch() {
                 $('#AdvancedSearch').modal('show');
             });
         }
+
+//if (sessionStorage.getItem("sidebarToggle") == "Slide"){
+//    document.getElementById("sidebarToggle").click();
+//    sessionStorage.setItem("sidebarToggle", "Slide");
+//}
+
+
 </script>
 
 </body>

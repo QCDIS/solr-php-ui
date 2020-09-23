@@ -97,7 +97,6 @@ function get_icon($ResultFileType) {
  
       ?>
 
-
     <div class="col-lg-12 mb-12" id="<?= $result_nr ?>">
       <!-- Illustrations -->
       <div class="card shadow mb-4">

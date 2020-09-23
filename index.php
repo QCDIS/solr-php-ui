@@ -468,7 +468,7 @@ function print_facet(&$results, $facet_field, $facet_label, $facets_limit, $view
         <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ID_Facet_<?php echo $rndNumber ?>" aria-expanded="true" aria-controls="collapseTwo">
                   <i class="fas fa-caret-right"></i>
-                  <span><?= $facet_label ?></span>
+                  <span><?= $facet_label=="Persons"?"People":$facet_label ?></span>
                 </a>
                 <div id="ID_Facet_<?php echo $rndNumber ?>" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                   <div class="bg-white py-2 collapse-inner rounded">
@@ -644,11 +644,11 @@ if ($view == 'rss') {
     $sort = 'newest';
 }
 
-if ($cfg['etl_status']) {
+//if ($cfg['etl_status']) {
 
-	$cfg['facets']['etl_error_plugins_ss'] = array ('label'=>'Failed tasks while import & analysis (ETL)');
+//	$cfg['facets']['etl_error_plugins_ss'] = array ('label'=>'Failed tasks while import & analysis (ETL)');
 
-}
+//}
 
 include 'config/config.facets.php';
 

@@ -1,268 +1,4 @@
 
-<html>
-<head>
-  <title><?= t('Search') . ($query ? ': ' . htmlspecialchars($query) : '') ?></title>
-  <link rel="stylesheet" href="css/foundation.css">
-
-  <script src="js/vendor/jquery.js"></script>
-  <script src="js/vendor/what-input.js"></script>
-  <script src="js/vendor/foundation.js"></script>
-  <script src="js/app.js"></script>
-
-  <script type="text/javascript" src="jquery/jquery.autocomplete.js"></script>
-  <script type="text/javascript" src="autocomplete.js"></script>
-  <link rel="stylesheet" href="css/app.css" type="text/css"/>
-  <link rel="alternate" type="application/rss+xml" title="RSS" href="<?= $link_rss ?>">
-</head>
-<body>
-<?php
-
-if (file_exists('templates/custom/view.index.topbar.php')) {
-  include 'templates/custom/view.index.topbar.php';
-}
-else {
-  include 'templates/view.index.topbar.php';
-} ?>
-
-<div class="row">
-  <div id="searchform-wrapper" class="small-12 medium-8 large-9 columns">
-    <?php
-    /*
-     * SearchForm
-    */
-    ?>
-    <form id="searchform" accept-charset="utf-8" method="get">
-
-      <?php echo $form_hidden_parameters ?>
-      <div id="search-field" class="small-12 medium-8 large-8 columns">
-        <input id="q" name="q" type="text"
-               value="<?php echo htmlspecialchars($query, ENT_QUOTES, 'utf-8'); ?>"/>
-      </div>
-
-      <div id="search-button" class="small-12 medium-2 large-2 columns">
-
-        <input id="submit" type="submit" class="button postfix"
-               value="<?= t("Search"); ?>"
-               onclick="waiting_on()"/>
-      </div>
-
-      <button type="button"
-              data-toggle="searchoptions"><?= t('Search options'); ?></button>
-
-      <div class="callout searchoptions secondary small-12 columns"
-           id="searchoptions" data-toggler
-           data-animate="slide-in-left slide-out-left">
-
-        <div class="row">
-          <div class="small-12 columns">
-            <h4><?= t('Search options'); ?></h4>
-          </div>
-        </div>
-
-        <div class="row">
-          <div id="search-op" class="small-12 columns">
-            <fieldset class="fieldset">
-              <legend><?= t("Search operator"); ?>:</legend>
-              <div class="small-12 large-12 columns"><?= t("Find:") ?></div>
-              <div class="small-12 large-4 columns">
-                <input type="radio"
-                       name="operator" <?= ($operator == 'OR') ? 'checked' : '' ?>
-                       value="OR"> <?= t("At least one word (OR)") ?>
-              </div>
-              <div class="small-12 large-4 columns">
-                <input type="radio"
-                       name="operator" <?= ($operator == 'AND') ? 'checked' : '' ?>
-                       value="AND"> <?= t("All words (AND)") ?>
-              </div>
-              <div class="small-12 large-4 columns">
-                <input type="radio"
-                       name="operator" <?= ($operator == 'Phrase') ? 'checked' : '' ?>
-                       value="Phrase"> <?= t("Exact expression (Phrase)") ?>
-              </div>
-            </fieldset>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="small-12 columns">
-            <fieldset class="fieldset">
-              <legend><?= t('Semantic search &amp; fuzzy search') ?></legend>
-              <div class="small-12 large-12 columns">
-                Also find:
-              </div>
-              <div class="small-12 large-6 columns">
-                <input type="checkbox" name="stemming" id="stemming"
-                       value="stemming" <?= ($stemming == TRUE) ? 'checked' : '' ?>>
-                <label
-                  for="stemming"><?= t('Other word forms (grammar &amp; stemming)') ?></label>
-              </div>
-              <div class="small-12 large-6 columns">
-                <input type="checkbox" name="synonyms" id="synonyms"
-                       value="synonyms" <?= ($synonyms == TRUE) ? 'checked' : '' ?>>
-                <label for="synonyms"><?= t('Synonyms & aliases') ?></label>
-              </div>
-            </fieldset>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-
-<div class="row">
-  <div id="main" class="small-12 medium-8 large-9 columns">
-    <?php
-    include 'templates/select_view.php';
-
-//    if ($cfg['etl_status_warning']) {
-//      include 'templates/view.etl_status.php';
-//    }
-
-    // if no results, show message
-    if ($total == 0) {
-      ?>
-      <div id="noresults" class="panel"><?php
-        if ($error) {
-          print '<p>' . t('Error:') . '</p><p>' . $error . '</p>';
-        }
-        else {
-          // Todo: Use t() elsewhere as well.
-          print t('No results');
-        } ?>
-      </div>
-      <?php
-    } // total == 0
-    else { // there are results documents
-
-      if ($error) {
-        print '<p>' . t('Error:') . '</p><p>' . $error . '</p>';
-      }
-
-      // print the results with selected view template
-      if ($view == 'list') {
-
-        include 'templates/pagination.php';
-        include 'templates/view.list.php';
-        include 'templates/pagination.php';
-
-      }
-      elseif ($view == 'preview') {
-
-        include 'templates/pagination.php';
-        include 'templates/view.preview.php';
-        include 'templates/pagination.php';
-
-      }
-      elseif ($view == 'images') {
-
-        include 'templates/pagination.php';
-        include 'templates/view.images.php';
-        include 'templates/pagination.php';
-
-      }
-      elseif ($view == 'videos') {
-
-        include 'templates/pagination.php';
-        include 'templates/view.videos.php';
-        include 'templates/pagination.php';
-
-      }
-      elseif ($view == 'audios') {
-
-        include 'templates/pagination.php';
-        include 'templates/view.audios.php';
-        include 'templates/pagination.php';
-
-      }
-      elseif ($view == 'table') {
-
-        include 'templates/pagination.php';
-        include 'templates/view.table.php';
-        include 'templates/pagination.php';
-
-      }
-      elseif ($view == 'words') {
-
-        include 'templates/view.words.php';
-
-      }
-      elseif ($view == 'graph') {
-
-        include 'templates/view.graph.php';
-
-      }
-      elseif ($view == 'entities') {
-
-        include 'templates/view.entities.php';
-
-      }
-      elseif ($view == 'trend') {
-
-        include 'templates/view.trend.php';
-
-      }
-      elseif ($view == 'map') {
-
-        include 'templates/view.map.php';
-
-      }
-      else {
-
-        include 'templates/pages.php';
-        include 'templates/view.list.php';
-        include 'templates/pages.php';
-
-      }
-    } // if total <> 0: there were documents
-    ?>
-
-  </div><?php ?>
-
-  <div id="sidebar" class="small-12 medium-4 large-3 columns">
-    <?php
-    // If preview, show metadata.
-    if ($view == "preview") {
-      include "templates/view.preview.sidebar.php";
-    }
-    else {
-      // show facets
-      include "templates/view.facets.php";
-    }
-    ?>
-  </div>
-</div>
-
-<?php
-// Wait indicator - will be activated on click = next search (which can take a while and additional clicks would make it worse)
-?>
-<div id="wait">
-  <img src="images/ajax-loader.gif">
-  <p><?= t('wait'); ?></p>
-</div>
-
-</body>
-</html>
-
-
-
-
-
-
-
-
--------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -289,32 +25,22 @@ else {
 </head>
 <body id="page-top">
 
-
-
-
   <!-- Page Wrapper -->
   <div id="wrapper">
 
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
+
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="./">
         <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fab fa-searchengin"></i>
+
         </div>
-        <div class="sidebar-brand-text mx-3">OSS Engine</div>
+        <div style="background-color:white; width:100%;padding:5px; border-radius:10px;"><img src="images/envri_logo_final.png" style="width:60px; height:45px;"></div>
       </a>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
 
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="index.html">
-          <i class="fas fa-list-ol"></i>
-          <span>Ranked Results</span></a>
-      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider">
@@ -327,7 +53,7 @@ else {
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseQuerString" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-puzzle-piece"></i>
+          <i class="fas fa-question-circle"></i>
           <span>Query</span>
         </a>
         <div id="collapseQuerString" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -339,49 +65,32 @@ else {
             <a class="collapse-item" target="_blank"
              title="Search with a list if there are results for each list entry"
              href="/search-apps/search-list/"><?php echo t("search_by_list"); ?></a>
-
-
           </div>
         </div>
       </li>
       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-puzzle-piece"></i>
-          <span>Results</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Specific results</h6>
-            <a class="collapse-item" href="#">Preview</a>
-            <a class="collapse-item" href="#">Entities</a>
-            <a class="collapse-item" href="#">Images</a>
-            <a class="collapse-item" href="#">Videos</a>
-            <a class="collapse-item" href="#">Audios</a>
-            <a class="collapse-item" href="#">Map</a>
-            <a class="collapse-item" title="Subscribe this search by RSS-Newsfeed" href="<?= $link_rss ?>"><?php echo t("Alert"); ?></a>
-          </div>
-        </div>
-      </li>
 
-      <!-- Nav Item - Utilities Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-          <i class="fas fa-chart-area"></i>
-          <span>Analysis</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Analysis of results:</h6>
-            <a class="collapse-item" href="#">Fuzzy search (Variants)</a>
-            <a class="collapse-item" href="#">Named entities</a>
-            <a class="collapse-item" href="#">Connections (Graph)</a>
-            <a class="collapse-item" href="#">Trend</a>
-            <a class="collapse-item" href="#">Table</a>
-            <a class="collapse-item" href="#">Words and word cloud</a>
-          </div>
-        </div>
-      </li>
+     <?php include 'templates/select_view.php'; ?>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Facets
+      </div>
+        <?php
+            // If preview, show metadata.
+            if ($view == "preview") {
+              include "templates/view.preview.sidebar.php";
+            }
+            else {
+              // show facets
+              include "templates/view.facets.php";
+            }
+        ?>
+
+
       <!-- Divider -->
       <hr class="sidebar-divider">
       <div class="sidebar-heading">
@@ -407,15 +116,21 @@ else {
         </div>
       </li>
 
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+      <li class="nav-item">
+        <a class="nav-link" href="https://mns-research.nl/" target="_blank">
+          <i class="fas fa-users-cog"></i>
+          <span>About us</span></a>
+      </li>
+      <hr class="sidebar-divider">
+      <!-- Sidebar Toggler (Sidebar) -->
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle" style="font-size:15pt;"></button>
+      </div>
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
-
-      <!-- Sidebar Toggler (Sidebar) -->
-      <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-      </div>
-
     </ul>
     <!-- End of Sidebar -->
 
@@ -518,6 +233,13 @@ else {
               </div>
             </div>
           </form>
+
+
+          <?php
+            if ($view == 'list' || $view == 'images' || $view == 'videos' || $view == 'audios') {
+                include 'templates/select_sort.php';
+            }
+         ?>
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
@@ -683,6 +405,7 @@ else {
               </div>
             </li>
 
+
           </ul>
 
         </nav>
@@ -694,7 +417,7 @@ else {
           <div class="row">
 
             <?php
-            //include 'templates/select_view.php';
+           // include 'templates/select_view.php';
 
         //    if ($cfg['etl_status_warning']) {
         //      include 'templates/view.etl_status.php';
@@ -797,8 +520,22 @@ else {
               }
             } // if total <> 0: there were documents
             ?>
-          </div>
+
+          </div><?php ?>
         </div>
+
+        <?php
+        // Wait indicator - will be activated on click = next search (which can take a while and additional clicks would make it worse)
+        ?>
+        <div id="wait">
+          <img src="images/ajax-loader.gif">
+          <p><?= t('wait'); ?></p>
+        </div>
+
+
+
+
+
         <!-- /.container-fluid -->
 
       </div>
@@ -868,162 +605,14 @@ function AdvancedSearch() {
                 $('#AdvancedSearch').modal('show');
             });
         }
+
+//if (sessionStorage.getItem("sidebarToggle") == "Slide"){
+//    document.getElementById("sidebarToggle").click();
+//    sessionStorage.setItem("sidebarToggle", "Slide");
+//}
+
+
 </script>
 
 </body>
 </html>
-
--------------------------------------------------------------------------------------------------------------------------
-
-<div id="facets">
-  <?php
-
-  // if active filters, show them and possibility to disable
-  if ($selected_facets or $deselected_facets) {
-    ?>
-    <div id="filter" class="facet">
-      <h2 title="<?php echo t('Filter criterias'); ?>">
-        <?php echo t("Selected filters"); ?>
-      </h2>
-      <ul id="selected" class="no-bullet">
-        <?php
-
-			foreach ($selected_facets as $selected_facet => $facetvalue_array) {
-
-				if ($selected_facet == 'path') {
-						$pathfacet_valueseparator = '/';
-				} else {
-						$pathfacet_valueseparator = "\t";
-				}
-
-				foreach ($facetvalue_array as $facet_value) {
-
-
-					if (isset($cfg['facets'][$selected_facet]['tree']) && $cfg['facets'][$selected_facet]['tree']==true) {
-
-				      $trimmedpath = trim($facet_value, $pathfacet_valueseparator);
-
-				      $paths = explode($pathfacet_valueseparator, $trimmedpath);
-
-						print '<a onclick="waiting_on();" title="' . t('Remove filter') . '" href="' . buildurl_delvalue($params, $selected_facet, $facet_value, 's', 1) . '">(&times;)</a> ' . $cfg['facets'][$selected_facet]['label'] . ': <ul>';
-
-				      $fullpath = '';
-      				for ($i = 0; $i < count($paths) - 1; $i++) {
-       					if ($fullpath != '') {
-      						$fullpath .= $pathfacet_valueseparator;
-      					}
-							$fullpath .= $paths[$i];
-
-							$label = $paths[$i];
-							$taxonomy = explode("\t", $label);
-							$label = end($taxonomy);
-
-							echo '<ul><li><a onclick="waiting_on();" href="' . buildurl($params, $selected_facet, array($fullpath), 's', 1) . '">' . htmlspecialchars($label) . '</a>' . "\n";
-						}
-						$label = end($paths);
-						$taxonomy = explode("\t", $label);
-						$label = end($taxonomy);
-
-						echo '<ul><li><b>' . htmlspecialchars($label) . '</b></li></ul>';
-
-				      for ($i = 0; $i < count($paths) - 1; $i++) {
-        					echo '</li></ul>' . "\n";
-				      }
-				      echo '</ul>';
-
-					} else {
-            		print '<li><a onclick="waiting_on();" title="' . t('Remove filter') . '" href="' . buildurl_delvalue($params, $selected_facet, $facet_value, 's', 1) . '">(&times;)</a> ' . $cfg['facets'][$selected_facet]['label'] . ': ' . htmlspecialchars($facet_value) . '</li>';
-					}
-          }
-        }
-
-        foreach ($deselected_facets as $deselected_facet => $facetvalue_array) {
-          foreach ($facetvalue_array as $facet_value) {
-
-				$taxonomy = explode("\t", $facet_value);
-				$label = end($taxonomy);
-
-            print '<li><a onclick="waiting_on();" title="' . t('Remove filter') . '" href="' . buildurl_delvalue($params, 'NOT_' . $deselected_facet, $facet_value, 's', 1) . '">(&times;)</a> NOT ' . $cfg['facets'][$deselected_facet]['label'] . ': ' . htmlspecialchars($label) . '</li>';
-          }
-        }
-
-        ?>
-      </ul>
-    </div>
-    <?php
-  }
-  ?>
-
-
-
-
-  <div id="file_modified_dt" class="facet">
-    <h2>
-      <?php echo t('File date'); ?>
-    </h2>
-
-    <?php // navigation up
-
-    if ($upzoom_link) {
-      print '<a onclick="waiting_on();" href="' . $upzoom_link . '">' . $upzoom_label . '</a> &gt; ' . $date_label;
-    }
-
-    ?>
-    <ul class="no-bullet">
-
-      <?php
-
-      // newest first
-      if ($zoom = 'years') {
-        $datevaluessorted = array_reverse($datevalues);
-      }
-      else {
-        $datavaluessorted = $datavalues;
-      }
-
-      foreach ($datevaluessorted as $value) {
-
-        if ($value['count'] > 0) {
-          print '<li><a onclick="waiting_on();" href="' . $value['link'] . '">' . $value['label'] . '</a> (' . $value['count'] . ')</li>';
-        }
-      }
-
-
-      ?>
-    </ul>
-
-  </div>
-
-  <?php
-
-  // Print all configurated facets
-  foreach ($cfg['facets'] as $facet => $facet_config) {
-
-    if ($cfg['debug']) {
-      print ($facet) . '<br />';
-      print_r($facet_config);
-    }
-
-    $facet_enabled = true;
-    if (isset($facet_config['enabled'])) {
-    	$facet_enabled = $facet_config['enabled'];
-    }
-
-    if ($facet_enabled==true && !in_array($facet, $exclude_facets)) {
-
-		if ( isset($facet_config['pathfacet']) ) {
-			$path = FALSE;
-			if (isset($facet_config['path'])) {
-				$path=$facet_config['path'];
-			}
-      	print_facet($results, $facet_config['pathfacet'], t($facet_config['label']), $facets_limit, 'list', $facet, $path);
-      } else {
-      	print_facet($results, $facet, t($facet_config['label']), $facets_limit);
-      }
-
-    }
-
-  }
-  ?>
-
-</div>

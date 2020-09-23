@@ -1,7 +1,7 @@
 <?php if ($view != "words" && $view != 'trend'): ?>
-  <div id="sort" class="row float-right">
-    <label for="select_sort"><?= t('Sort') ?></label>
-    <select id="select_sort">
+  <div id="sort" class="row float-right" >
+    <label for="select_sort"><?= t('Sort') ?> &nbsp; </label>
+    <select id="select_sort" class="dropdown no-arrow" onchange="changeSort()">>
 
       <?php $sort_relevance = (is_null($sort)) ? 'selected' : ''; ?>
       <option <?= $sort_relevance ?>
@@ -15,19 +15,14 @@
       <option <?= $sort_oldest ?>
         value="<?= buildurl($params, "sort", 'oldest', 's', 1) ?>"><?= t('Oldest') ?></option>
 
-      <?php $sort_other = ($sort != NULL && $sort != 'newest' && $sort != 'oldest') ? 'selected' : ''; ?>
-      <option <?= $sort_other ?>
-        value="<?= buildurl($params, "sort", $sort, 's', 1) ?>"><?= htmlspecialchars($sort) ?></option>
-
     </select>
     <script type="text/javascript">
-      //$.ready(function () {
-      $('#select_sort').change(function () {
-        var dest = $(this).val();
-        waiting_on();
+    function changeSort()
+    {
+        var dest = document.getElementById("select_sort").value
         window.location = dest;
-      });
-      //});
+    }
     </script>
   </div>
 <?php endif; ?>
+
