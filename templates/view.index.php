@@ -112,6 +112,9 @@
              href="/search-apps/datasources/"><?php echo t("manage_datasources"); ?></a>
             <a class="collapse-item" target="_blank" title="Configuration"
              href="/search-apps/setup/"><?php echo t("config"); ?></a>
+             <a class="collapse-item" title="Import structured data"
+             href="<?php echo buildurl($params, 'view', 'ImportTuples', null, null); ?>">Import tuples</a>
+
           </div>
         </div>
       </li>
@@ -119,9 +122,9 @@
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
-        <a class="nav-link" href="https://mns-research.nl/" target="_blank">
+        <a class="nav-link" href="<?php echo buildurl($params, 'view', 'OSSTeam', null, null); ?>" target="_blank">
           <i class="fas fa-users-cog"></i>
-          <span>About us</span></a>
+          <span>OSS Team</span></a>
       </li>
       <hr class="sidebar-divider">
       <!-- Sidebar Toggler (Sidebar) -->
@@ -481,35 +484,168 @@
               }
               elseif ($view == 'table') {
 
-                include 'templates/pagination.php';
-                include 'templates/view.table.php';
-                include 'templates/pagination.php';
-
+               ?>
+                <div class="container-fluid">
+                  <!-- Content Row -->
+                  <div class="row">
+                    <div class="col-lg-12 mb-4">
+                      <div class="card shadow mb-12">
+                        <div class="card-header py-12">
+                          <h6 class="m-0 font-weight-bold text-primary">Table</h6>
+                        </div>
+                        <div class="card-body" style="min-height:750px">
+                        <?php
+                            include 'templates/pagination.php';
+                            include 'templates/view.table.php';
+                            include 'templates/pagination.php';
+                         ?>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+            <?php
               }
               elseif ($view == 'words') {
 
-                include 'templates/view.words.php';
+               ?>
+                <div class="container-fluid">
+                  <!-- Content Row -->
+                  <div class="row">
+                    <div class="col-lg-12 mb-4">
+                      <div class="card shadow mb-12">
+                        <div class="card-header py-12">
+                          <h6 class="m-0 font-weight-bold text-primary">Words (count of docs)</h6>
+                        </div>
+                        <div class="card-body" style="min-height:750px">
+                        <?php
+                            include 'templates/view.words.php';
+                         ?>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+            <?php
+
+
 
               }
               elseif ($view == 'graph') {
 
-                include 'templates/view.graph.php';
+
+               ?>
+                <div class="container-fluid">
+                  <!-- Content Row -->
+                  <div class="row">
+                    <div class="col-lg-12 mb-4">
+                      <div class="card shadow mb-12">
+                        <div class="card-header py-12">
+                          <h6 class="m-0 font-weight-bold text-primary">Connection (Graph)</h6>
+                        </div>
+                        <div class="card-body" style="min-height:750px">
+                        <?php
+                            include 'templates/view.graph.php';
+                         ?>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+            <?php
+
+
+
 
               }
               elseif ($view == 'entities') {
 
-                include 'templates/view.entities.php';
+
+               ?>
+                <div class="container-fluid">
+                  <!-- Content Row -->
+                  <div class="row">
+                    <div class="col-lg-12 mb-4">
+                      <div class="card shadow mb-12">
+                        <div class="card-header py-12">
+                          <h6 class="m-0 font-weight-bold text-primary">Named entities</h6>
+                        </div>
+                        <div class="card-body" style="min-height:750px">
+                        <?php
+                            include 'templates/view.entities.php';
+                         ?>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+            <?php
+
+
 
               }
               elseif ($view == 'trend') {
 
-                include 'templates/view.trend.php';
+                             ?>
+                <div class="container-fluid">
+                  <!-- Content Row -->
+                  <div class="row">
+                    <div class="col-lg-12 mb-4">
+                      <div class="card shadow mb-12">
+                        <div class="card-header py-12">
+                          <h6 class="m-0 font-weight-bold text-primary">Trend</h6>
+                        </div>
+                        <div class="card-body" style="min-height:750px">
+                        <?php
+                             include 'templates/view.trend.php';
+                         ?>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+            <?php
 
               }
               elseif ($view == 'map') {
 
-                include 'templates/view.map.php';
 
+                             ?>
+                <div class="container-fluid">
+                  <!-- Content Row -->
+                  <div class="row">
+                    <div class="col-lg-12 mb-4">
+                      <div class="card shadow mb-12">
+                        <div class="card-header py-12">
+                          <h6 class="m-0 font-weight-bold text-primary">Map</h6>
+                        </div>
+                        <div class="card-body" style="min-height:750px">
+                        <?php
+                             include 'templates/view.map.php';
+                         ?>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+            <?php
+              }
+              elseif ($view == 'ImportTuples') {
+
+               ?>
+                <div class="container-fluid">
+                  <!-- Content Row -->
+                  <div class="row">
+                    <div class="col-lg-12 mb-4">
+                      <div class="card shadow mb-12">
+                        <div class="card-header py-12">
+                          <h6 class="m-0 font-weight-bold text-primary">Import Tuples</h6>
+                        </div>
+                        <div class="card-body" style="min-height:750px">
+                        <?php   include 'templates/ImportTuples.php'; ?>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+            <?php
+
+              }
+              elseif ($view == 'OSSTeam') {
+                    include 'templates/OSSTeam.php';
               }
               else {
 
@@ -520,7 +656,6 @@
               }
             } // if total <> 0: there were documents
             ?>
-
           </div><?php ?>
         </div>
 
