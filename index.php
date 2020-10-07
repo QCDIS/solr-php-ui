@@ -15,6 +15,7 @@
 
 # do not change config here, use ./config/config.php!
 
+
 $cfg['debug'] = false;
 
 $cfg['etl_status'] = false;
