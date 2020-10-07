@@ -186,11 +186,8 @@
                 <?php echo $form_hidden_parameters ?>
                   <div class="input-group">
                       <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" id="q" name="q" type="text"
-                       value="<?php echo htmlspecialchars($query, ENT_QUOTES, 'utf-8'); ?>"/>
+                       value="<?php echo htmlspecialchars($query, ENT_QUOTES, 'utf-8'); ?>" required=""  oninvalid="this.setCustomValidity('The search query is empty!')" oninput="setCustomValidity('')"/>
                     <div class="input-group-append">
-                         <button class="btn btn-primary" type="button" value="<?= t("Search"); ?>" onclick="AdvancedSearch()">
-                        <i class="fas fa-filter"></i>
-                        </button>
                         <button class="btn btn-primary" id="submit" type="submit" value="<?= t("Search"); ?>" onclick="waiting_on()">
                           <i class="fas fa-search fa-sm"></i>
                         </button>

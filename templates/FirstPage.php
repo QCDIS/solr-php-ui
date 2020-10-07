@@ -34,24 +34,23 @@
 </head>
 <body id="page-top" style="background-color:white;">
 
-<div class="centerSearchBox">
-    <img src="images/envri_logo_final.png" style="width:200px; height:155px;">
-    <br /> <br />   <br />
+    <div class="centerSearchBox">
+        <img src="images/envri_logo_final.png" style="width:200px; height:155px;">
+        <br /> <br /> <br />
 
-<div style="display:inline-block;min-width:300px; width:30%;">
-    <form id="searchform1" accept-charset="utf-8" method="get">
-    <div class="input-group" style="border:solid 1px blue; border-radius:5px;">
-      <input type="text" class="form-control bg-light border-0 big" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" id="q" name="q" type="text"
-       value="<?php echo htmlspecialchars($query, ENT_QUOTES, 'utf-8'); ?>" />
-      <div class="input-group-append">
-        <button class="btn btn-primary" id="submit" type="submit" value="<?= t("Search"); ?>" onclick='waiting_on();' style="border:solid 1px ;">
-          <i class="fas fa-search fa-sm"></i>
-        </button>
-      </div>
+    <div style="display:inline-block;min-width:300px; width:30%;">
+        <form id="searchform1" accept-charset="utf-8" method="get">
+            <div class="input-group" style="border:solid 1px blue; border-radius:5px;">
+              <input type="text" class="form-control bg-light border-0 big" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" id="q" name="q" type="text"
+               value="<?php echo htmlspecialchars($query, ENT_QUOTES, 'utf-8'); ?>" required=""  oninvalid="this.setCustomValidity('The search query is empty!')" oninput="setCustomValidity('')"/>
+              <div class="input-group-append">
+                <button class="btn btn-primary" id="submit" type="submit" value="<?= t("Search"); ?>" onclick='waiting_on();' style="border:solid 1px ;">
+                  <i class="fas fa-search fa-sm"></i>
+                </button>
+              </div>
+            </div>
+        </form>
     </div>
-    </form>
-</div>
-
 
 </body>
 </html>
