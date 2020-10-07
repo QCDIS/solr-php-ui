@@ -64,7 +64,6 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Query string</h6>
             <a class="collapse-item" href="./"><?php echo t("New search"); ?></a>
-            <a class="collapse-item" href="./"><?php echo t("Newest documents"); ?></a>
             <a class="collapse-item" data-toggle="searchoptions" onclick="AdvancedSearch()"><?php echo t("advanced_search"); ?></a>
             <a class="collapse-item" target="_blank"
              title="Search with a list if there are results for each list entry"
@@ -129,6 +128,11 @@
         <a class="nav-link" href="<?php echo buildurl($params, 'view', 'OSSTeam', null, null); ?>" target="_blank">
           <i class="fas fa-users-cog"></i>
           <span>OSS Team</span></a>
+
+          <a class="nav-link" href="<?php echo buildurl($params, 'view', 'SendFeedback', null, null); ?>" target="_blank">
+          <i class="fas fa-comments"></i>
+          <span>Send feedback</span></a>
+
       </li>
       <hr class="sidebar-divider">
       <!-- Sidebar Toggler (Sidebar) -->
@@ -537,7 +541,7 @@
                         <div class="card-header py-12">
                           <h6 class="m-0 font-weight-bold text-primary">Map</h6>
                         </div>
-                        <div class="card-body" style="min-height:750px">
+                        <div class="card-body" style="min-height:740px">
                         <?php
                              include 'templates/view.map.php';
                          ?>
@@ -558,7 +562,7 @@
                         <div class="card-header py-12">
                           <h6 class="m-0 font-weight-bold text-primary">Import Tuples</h6>
                         </div>
-                        <div class="card-body" style="min-height:750px">
+                        <div class="card-body" style="min-height:740px">
                         <?php   include 'templates/ImportTuples.php'; ?>
                         </div>
                       </div>
@@ -569,6 +573,9 @@
               }
               elseif ($view == 'OSSTeam') {
                     include 'templates/OSSTeam.php';
+              }
+              elseif ($view == 'SendFeedback') {
+                    include 'templates/SendFeedback.php';
               }
               else {
 
