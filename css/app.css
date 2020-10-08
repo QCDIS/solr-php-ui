@@ -415,8 +415,9 @@ a.disabled {
     content: ":"
 }
 .facet-name {
+    color:#900C3F;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: bold;
     line-height: 24px;
 }
 
@@ -476,10 +477,12 @@ a.disabled {
 }
 
 .organization_ss .facet-value {
+    color:black;
     background-color: #eaf9d5;
 }
 
 .location_ss .facet-value {
+    color:black;
     background-color: #e3ebf9;
 }
 

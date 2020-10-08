@@ -1504,6 +1504,55 @@ if ($view == 'rss') {
 	include "templates/view.index.php";
 }
 
+function FacetsPreprocessing($facet, $type){
+
+    $result="";
+
+    if($type=="Infrastructures"){
+        if(strpos($facet, "SDN") !== false){
+            $result="SDN";
+        }
+        elseif(strpos($facet, "ICOS") !== false){
+            $result="ICOS";
+        }
+        elseif(strpos($facet, "eLTER") !== false){
+            $result="eLTER";
+        }
+        elseif(strpos($facet, "EMSO") !== false){
+            $result="EMSO";
+        }
+        elseif(strpos($facet, "EPOS") !== false){
+            $result="EPOS";
+        }
+        elseif(strpos($facet, "Euro-Argo") !== false){
+            $result="Euro-Argo";
+        }
+        elseif(strpos($facet, "LifeWatch") !== false){
+            $result="LifeWatch";
+        }
+    }
+    elseif ($type=="Domains"){
+        $Lfacet=strtolower($facet);
+        if(strpos($Lfacet, "marine") !== false){
+            $result="marine";
+        }
+        elseif(strpos($Lfacet, "earth") !== false){
+            $result="earth";
+        }
+        elseif(strpos($Lfacet, "athmosphere") !== false){
+            $result="athmosphere";
+        }
+        elseif(strpos($Lfacet, "ecosystem") !== false){
+            $result="ecosystem";
+        }
+    }
+
+    return $result;
+}
+
+
+
+
 ?>
 
 

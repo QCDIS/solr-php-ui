@@ -1,4 +1,5 @@
 <?php
+
 // do not config here, this config file will be overwritten by Thesaurus and Ontologies Manager
 
 //$cfg['facets']['path'] = array ('label'=>'Path(s)', 'facet_limit'=>10, 'snippets_limit'=>10, 'graph_limit'=>0, 'snippets_enabled'=>false, 'graph_enabled'=>false, 'tree'=>true, 'closed'=>false);
@@ -9,11 +10,11 @@
 
 //$cfg['facets']['annotation_tag_ss'] = array ('label'=>'Tags (Hypothesis)', 'facet_limit'=>'10', 'snippets_limit'=>'10', 'graph_limit'=>'50', 'tree'=>false, 'enabled'=>true, 'closed'=>false, 'snippets_enabled'=>true, 'graph_enabled'=>true);
 
-$cfg['facets']['person_ss'] = array ('label'=>'Persons', 'facet_limit'=>'10', 'snippets_limit'=>'10', 'graph_limit'=>'50', 'tree'=>false, 'enabled'=>true, 'closed'=>false, 'snippets_enabled'=>true, 'graph_enabled'=>true);
+//$cfg['facets']['person_ss'] = array ('label'=>'Persons', 'facet_limit'=>'10', 'snippets_limit'=>'10', 'graph_limit'=>'50', 'tree'=>false, 'enabled'=>true, 'closed'=>false, 'snippets_enabled'=>true, 'graph_enabled'=>true);
 
-$cfg['facets']['organization_ss'] = array ('label'=>'Organizations', 'facet_limit'=>'10', 'snippets_limit'=>'10', 'graph_limit'=>'50', 'tree'=>false, 'enabled'=>true, 'closed'=>false, 'snippets_enabled'=>true, 'graph_enabled'=>true);
+$cfg['facets']['organization_ss'] = array ('label'=>'Infrastructures', 'facet_limit'=>'10', 'snippets_limit'=>'10', 'graph_limit'=>'50', 'tree'=>false, 'enabled'=>true, 'closed'=>false, 'snippets_enabled'=>true, 'graph_enabled'=>true);
 
-$cfg['facets']['location_ss'] = array ('label'=>'Locations', 'facet_limit'=>'10', 'snippets_limit'=>'10', 'graph_limit'=>'50', 'tree'=>false, 'enabled'=>true, 'closed'=>false, 'snippets_enabled'=>true, 'graph_enabled'=>true);
+$cfg['facets']['location_ss'] = array ('label'=>'Domains', 'facet_limit'=>'10', 'snippets_limit'=>'10', 'graph_limit'=>'50', 'tree'=>false, 'enabled'=>true, 'closed'=>false, 'snippets_enabled'=>true, 'graph_enabled'=>true);
 
 //$cfg['facets']['language_s'] = array ('label'=>'Language', 'facet_limit'=>'10', 'snippets_limit'=>'10', 'graph_limit'=>'50', 'tree'=>false, 'enabled'=>true, 'closed'=>false, 'snippets_enabled'=>false, 'graph_enabled'=>false);
 

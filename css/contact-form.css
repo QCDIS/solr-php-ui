@@ -51,7 +51,7 @@
 }
 
 .fcf-form-control:focus {
-    border: 1px solid #313131;
+    border: 1px solid blue;
 }
 
 select.fcf-form-control[size], select.fcf-form-control[multiple] {

@@ -1,618 +1,261 @@
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <title><?= t('Search') . ($query ? ': ' . htmlspecialchars($query) : '') ?></title>
-  <link rel="alternate" type="application/rss+xml" title="RSS" href="<?= $link_rss ?>">
-
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <!-- Custom fonts for this template-->
-  <link href="UI/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-  <!-- Custom styles for this template-->
-  <link href="UI/css/sb-admin-2.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/app.css" type="text/css"/>
-
-
-
-
-</head>
-<body id="page-top">
-
-  <!-- Page Wrapper -->
-  <div id="wrapper">
-
-    <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
-
-      <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="./">
-        <div class="sidebar-brand-icon rotate-n-15">
-
-        </div>
-        <div style="background-color:white; width:100%;padding:5px; border-radius:10px;"><img src="images/envri_logo_final.png" style="width:60px; height:45px;"></div>
-      </a>
-
-
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Search
-      </div>
-
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseQuerString" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-question-circle"></i>
-          <span>Query</span>
-        </a>
-        <div id="collapseQuerString" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Query string</h6>
-            <a class="collapse-item" href="./"><?php echo t("New search"); ?></a>
-            <a class="collapse-item" href="./"><?php echo t("Newest documents"); ?></a>
-            <a class="collapse-item" data-toggle="searchoptions"><?php echo t("advanced_search"); ?></a>
-            <a class="collapse-item" target="_blank"
-             title="Search with a list if there are results for each list entry"
-             href="/search-apps/search-list/"><?php echo t("search_by_list"); ?></a>
-          </div>
-        </div>
-      </li>
-      <!-- Nav Item - Pages Collapse Menu -->
-
-     <?php include 'templates/select_view.php'; ?>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Facets
-      </div>
-        <?php
-            // If preview, show metadata.
-            if ($view == "preview") {
-              include "templates/view.preview.sidebar.php";
-            }
-            else {
-              // show facets
-              include "templates/view.facets.php";
-            }
-        ?>
-
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-      <div class="sidebar-heading">
-        Knowledge base
-      </div>
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSettings" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-cogs"></i>
-          <span>Settings</span>
-        </a>
-        <div id="collapseSettings" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Configuration:</h6>
-            <a class="collapse-item" target="_blank"
-             title="Manage structure, navigation and interactive filters by ontologies like thesauri or lists of named entities like organizations, persons or locations"
-             href="/search-apps/thesaurus/"><?php echo t("manage_structure"); ?></a>
-            <a class="collapse-item" target="_blank" title="Manage datasources"
-             href="/search-apps/datasources/"><?php echo t("manage_datasources"); ?></a>
-            <a class="collapse-item" target="_blank" title="Configuration"
-             href="/search-apps/setup/"><?php echo t("config"); ?></a>
-          </div>
-        </div>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
-      <li class="nav-item">
-        <a class="nav-link" href="https://mns-research.nl/" target="_blank">
-          <i class="fas fa-users-cog"></i>
-          <span>About us</span></a>
-      </li>
-      <hr class="sidebar-divider">
-      <!-- Sidebar Toggler (Sidebar) -->
-      <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle" style="font-size:15pt;"></button>
-      </div>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider d-none d-md-block">
-    </ul>
-    <!-- End of Sidebar -->
-
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-      <!-- Main Content -->
-      <div id="content">
-
-        <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-          <!-- Sidebar Toggle (Topbar) -->
-          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-            <i class="fa fa-bars"></i>
-          </button>
-
-          <!-- Topbar Search -->
-          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" id="searchform1" accept-charset="utf-8" method="get">
-            <div class="modal fade" id="AdvancedSearch" role="dialog">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-
-                        <!-- Modal Header -->
-                        <div class="modal-header">
-                            <h4 class="modal-title" style="font-weight: bold;" id="MessageTitle">Advanced Search</h4>
-                            <button type="button" class="close" data-dismiss="modal" style="color: red;" title="Close">&times;</button>
-                        </div>
-
-                        <!-- Modal body -->
-                        <div class="modal-body">
-                            <br />
-                            <div style="text-align: left;" id="MessageText">
-                                <div id="search-op">
-                                   <fieldset class="fieldset">
-                                      <h5><b><?= t("Search operator"); ?>:</b></h5>
-                                      <div><?= t("Find:") ?></div>
-                                      <div>
-                                        <input type="radio"
-                                               name="operator" <?= ($operator == 'OR') ? 'checked' : '' ?>
-                                               value="OR"> <?= t("At least one word (OR)") ?>
-                                      </div>
-                                      <div>
-                                        <input type="radio"
-                                               name="operator" <?= ($operator == 'AND') ? 'checked' : '' ?>
-                                               value="AND"> <?= t("All words (AND)") ?>
-                                      </div>
-                                      <div>
-                                        <input type="radio"
-                                               name="operator" <?= ($operator == 'Phrase') ? 'checked' : '' ?>
-                                               value="Phrase"> <?= t("Exact expression (Phrase)") ?>
-                                      </div>
-                                    </fieldset>
-                                </div>
-                                <br />
-                                <div>
-                                    <fieldset>
-                                      <h5><b><?= t('Semantic search &amp; fuzzy search:') ?></b></h5>
-                                      <div>
-                                        Also find:
-                                      </div>
-                                      <div>
-                                        <input type="checkbox" name="stemming" id="stemming"
-                                               value="stemming" <?= ($stemming == TRUE) ? 'checked' : '' ?>>
-                                        <label
-                                          for="stemming"><?= t('Other word forms (grammar &amp; stemming)') ?></label>
-                                      </div>
-                                      <div>
-                                        <input type="checkbox" name="synonyms" id="synonyms"
-                                               value="synonyms" <?= ($synonyms == TRUE) ? 'checked' : '' ?> >
-                                        <label for="synonyms"><?= t('Synonyms & aliases') ?></label>
-                                      </div>
-                                    </fieldset>
-                                </div>
-                            </div>
-                            <br />
-                        </div>
-
-                        <!-- Modal footer -->
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary btn-block text-uppercase" style="width: 100px; margin: 10px;" data-dismiss="modal">Ok</button>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-           <?php echo $form_hidden_parameters ?>
-            <div class="input-group">
-              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" id="q" name="q" type="text"
-               value="<?php echo htmlspecialchars($query, ENT_QUOTES, 'utf-8'); ?>"/>
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="button" value="<?= t("Search"); ?>" onclick="AdvancedSearch()">
-                  <i class="fas fa-filter"></i>
-
-                <button class="btn btn-primary" id="submit" type="submit" value="<?= t("Search"); ?>" onclick="waiting_on()">
-                  <i class="fas fa-search fa-sm"></i>
-                </button>
-                </button>
-
-              </div>
-            </div>
-          </form>
-
-
-          <?php
-            if ($view == 'list' || $view == 'images' || $view == 'videos' || $view == 'audios') {
-                include 'templates/select_sort.php';
-            }
-         ?>
-
-          <!-- Topbar Navbar -->
-          <ul class="navbar-nav ml-auto">
-
-           <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-            <li class="nav-item dropdown no-arrow d-sm-none">
-              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-search fa-fw"></i>
-              </a>
-              <!-- Dropdown - Messages -->
-              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
-                  <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" id="searchform1" accept-charset="utf-8" method="get">
-                   <?php echo $form_hidden_parameters ?>
-                    <div class="input-group">
-                      <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" id="q" name="q" type="text"
-                       value="<?php echo htmlspecialchars($query, ENT_QUOTES, 'utf-8'); ?>"/>
-                      <div class="input-group-append">
-                                      <button class="btn btn-primary" type="button" value="<?= t("Search"); ?>" onclick="AdvancedSearch()">
-                  <i class="fas fa-filter"></i>
-                        <button class="btn btn-primary" id="submit" type="submit" value="<?= t("Search"); ?>" onclick="waiting_on()">
-                          <i class="fas fa-search fa-sm"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-            </li>
-
-
-
-            <!-- Nav Item - Alerts -->
-            <li class="nav-item dropdown no-arrow mx-1">
-              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-bell fa-fw"></i>
-                <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">3+</span>
-              </a>
-              <!-- Dropdown - Alerts -->
-              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
-                <h6 class="dropdown-header">
-                  Alerts Center
-                </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-primary">
-                      <i class="fas fa-file-alt text-white"></i>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">December 12, 2019</div>
-                    <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-success">
-                      <i class="fas fa-donate text-white"></i>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">December 7, 2019</div>
-                    $290.29 has been deposited into your account!
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-warning">
-                      <i class="fas fa-exclamation-triangle text-white"></i>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">December 2, 2019</div>
-                    Spending Alert: We've noticed unusually high spending for your account.
-                  </div>
-                </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-              </div>
-            </li>
-
-            <!-- Nav Item - Messages -->
-            <li class="nav-item dropdown no-arrow mx-1">
-              <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-envelope fa-fw"></i>
-                <!-- Counter - Messages -->
-                <span class="badge badge-danger badge-counter">7</span>
-              </a>
-              <!-- Dropdown - Messages -->
-              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
-                <h6 class="dropdown-header">
-                  Message Center
-                </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="https://source.unsplash.com/fn_BT9fwg_E/60x60" alt="">
-                    <div class="status-indicator bg-success"></div>
-                  </div>
-                  <div class="font-weight-bold">
-                    <div class="text-truncate">Hi there! I am wondering if you can help me with a problem I've been having.</div>
-                    <div class="small text-gray-500">Emily Fowler · 58m</div>
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="https://source.unsplash.com/AU4VPcFN4LE/60x60" alt="">
-                    <div class="status-indicator"></div>
-                  </div>
-                  <div>
-                    <div class="text-truncate">I have the photos that you ordered last month, how would you like them sent to you?</div>
-                    <div class="small text-gray-500">Jae Chun · 1d</div>
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="https://source.unsplash.com/CS2uCrpNzJY/60x60" alt="">
-                    <div class="status-indicator bg-warning"></div>
-                  </div>
-                  <div>
-                    <div class="text-truncate">Last month's report looks great, I am very happy with the progress so far, keep up the good work!</div>
-                    <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="">
-                    <div class="status-indicator bg-success"></div>
-                  </div>
-                  <div>
-                    <div class="text-truncate">Am I a good boy? The reason I ask is because someone told me that people say this to all dogs, even if they aren't good...</div>
-                    <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                  </div>
-                </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-              </div>
-            </li>
-
-            <div class="topbar-divider d-none d-sm-block"></div>
-
-            <!-- Nav Item - User Information -->
-            <li class="nav-item dropdown no-arrow">
-              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
-                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
-              </a>
-              <!-- Dropdown - User Information -->
-              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Profile
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Settings
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Activity Log
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Logout
-                </a>
-              </div>
-            </li>
-
-
-          </ul>
-
-        </nav>
-        <!-- End of Topbar -->
-
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
-          <!-- Content Row -->
-          <div class="row">
-
-            <?php
-           // include 'templates/select_view.php';
-
-        //    if ($cfg['etl_status_warning']) {
-        //      include 'templates/view.etl_status.php';
-        //    }
-
-            // if no results, show message
-            if ($total == 0) {
-              ?>
-              <div id="noresults" class="panel"><?php
-                if ($error) {
-                  print '<p>' . t('Error:') . '</p><p>' . $error . '</p>';
-                }
-                else {
-                  // Todo: Use t() elsewhere as well.
-                  print t('No results');
-                } ?>
-              </div>
-              <?php
-            } // total == 0
-            else { // there are results documents
-
-              if ($error) {
-                print '<p>' . t('Error:') . '</p><p>' . $error . '</p>';
-              }
-
-              // print the results with selected view template
-              if ($view == 'list') {
-
-                include 'templates/pagination.php';
-                include 'templates/view.list.php';
-                include 'templates/pagination.php';
-
-              }
-              elseif ($view == 'preview') {
-
-                include 'templates/pagination.php';
-                include 'templates/view.preview.php';
-                include 'templates/pagination.php';
-
-              }
-              elseif ($view == 'images') {
-
-                include 'templates/pagination.php';
-                include 'templates/view.images.php';
-                include 'templates/pagination.php';
-
-              }
-              elseif ($view == 'videos') {
-
-                include 'templates/pagination.php';
-                include 'templates/view.videos.php';
-                include 'templates/pagination.php';
-
-              }
-              elseif ($view == 'audios') {
-
-                include 'templates/pagination.php';
-                include 'templates/view.audios.php';
-                include 'templates/pagination.php';
-
-              }
-              elseif ($view == 'table') {
-
-                include 'templates/pagination.php';
-                include 'templates/view.table.php';
-                include 'templates/pagination.php';
-
-              }
-              elseif ($view == 'words') {
-
-                include 'templates/view.words.php';
-
-              }
-              elseif ($view == 'graph') {
-
-                include 'templates/view.graph.php';
-
-              }
-              elseif ($view == 'entities') {
-
-                include 'templates/view.entities.php';
-
-              }
-              elseif ($view == 'trend') {
-
-                include 'templates/view.trend.php';
-
-              }
-              elseif ($view == 'map') {
-
-                include 'templates/view.map.php';
-
-              }
-              else {
-
-                include 'templates/pages.php';
-                include 'templates/view.list.php';
-                include 'templates/pages.php';
-
-              }
-            } // if total <> 0: there were documents
-            ?>
-
-          </div><?php ?>
-        </div>
-
-        <?php
-        // Wait indicator - will be activated on click = next search (which can take a while and additional clicks would make it worse)
-        ?>
-        <div id="wait">
-          <img src="images/ajax-loader.gif">
-          <p><?= t('wait'); ?></p>
-        </div>
-
-
-
-
-
-        <!-- /.container-fluid -->
-
-      </div>
-      <!-- End of Main Content -->
-
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright &copy; OSS Engine 2020</span>
-          </div>
-        </div>
-      </footer>
-      <!-- End of Footer -->
-
-    </div>
-    <!-- End of Content Wrapper -->
-
-  </div>
-  <!-- End of Page Wrapper -->
-
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
-
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bootstrap core JavaScript-->
-  <script src="UI/vendor/jquery/jquery.min.js"></script>
-  <script src="UI/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Core plugin JavaScript-->
-  <script src="UI/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src="UI/js/sb-admin-2.min.js"></script>
-
-  <!-- Page level plugins -->
-  <script src="UI/vendor/chart.js/Chart.min.js"></script>
-
-  <!-- Page level custom scripts -->
-  <script src="UI/js/demo/chart-area-demo.js"></script>
-  <script src="UI/js/demo/chart-pie-demo.js"></script>
-
-<script>
-
-function AdvancedSearch() {
-            $(document).ready(function () {
-                $('#AdvancedSearch').modal('show');
-            });
-        }
-
-//if (sessionStorage.getItem("sidebarToggle") == "Slide"){
-//    document.getElementById("sidebarToggle").click();
-//    sessionStorage.setItem("sidebarToggle", "Slide");
-//}
-
-
-</script>
-
-</body>
-</html>
+<?php
+//
+// View Import Tuples
+//
+?>
+<?php
+
+
+function addNewDocumentToSolr($ModificationDate,$BaseURL,$PageURL,$LatestPageTitle,$PageTitle,$ParentPageTitle,$SiteTitle,$SpaceKey,$SpaceKeyName,$TitleTxt,$Wikilink,$FileExtension,$path0,$path1,$path2,$Path_basename,$MainText,$Email,$EmailDomain,$Phone,$Ontology3,$Ontology3URI,$Ontology3ReferableURI,$Ontology3MatchText,$Person,$Organization,$WorkOfArt,$Date,$Law,$Product,$Location,$Version) {
+
+        ?> <div> adding a new doc</div> <?php
+
+        $document = new Apache_Solr_Document();
+
+        $document->file_modified_dt=$ModificationDate;
+        $document->etl_error_plugins_ss=["export_neo4j"];
+        $document->etl_error_txt=["Connection refused"];
+        $document->etl_filter_blacklist_time_millis_i=0;
+        $document->etl_filter_blacklist_b=true;
+        $document->etl_enhance_extract_text_tika_server_ocr_enabled_b=true;
+        $document->Content-Encoding_ss=["UTF-8"];
+        $document->Content-Language_ss=["en-GB"];
+        $document->content_type_ss=["text/html; charset=UTF-8"];
+        $document->X-Parsed-By_ss=["org.apache.tika.parser.DefaultParser";
+        $document->X-UA-Compatible_ss=["IE=EDGE,chrome=IE7"];
+        $document->ajs-access-mode_ss=["READ_WRITE"];
+        $document->ajs-atl-token_ss=["acfee9c855261506b77e853c42c5b479029b605b"];
+        $document->ajs-base-url_ss=$BaseURL;
+        $document->ajs-browse-page-tree-mode_ss=["view"];
+        $document->ajs-build-number_ss=["8501"];
+        $document->ajs-can-remove-page_ss=["false"];
+        $document->ajs-can-remove-page-hierarchy_ss=["false"];
+        $document->ajs-confluence-flavour_ss=["VANILLA"];
+        $document->ajs-connection-timeout_ss=["10000"];
+        $document->ajs-content-type_ss=["page"];
+        $document->ajs-context-path_ss=[""];
+        $document->ajs-create-issue-metadata-show-discovery_ss=["false"];
+        $document->ajs-current-user-avatar-uri-reference_ss=["/images/icons/profilepics/anonymous.svg"];
+        $document->ajs-current-user-avatar-url_ss=[""];
+        $document->ajs-current-user-fullname_ss=[""];
+        $document->ajs-date.format_ss=["yyyy MMM dd"];
+        $document->ajs-discovered-plugin-features_ss=["$discoveredList"];
+        $document->ajs-enabled-dark-features_ss=["site-wide.shared-drafts,site-wide.synchrony,clc.quick.create,confluence.view.edit.transition,cql.search.screen,confluence-inline-comments-resolved,frontend.editor.v4,http.session.registrar,nps.survey.inline.dialog,confluence.efi.onboarding.new.templates,frontend.editor.v4.compatibility,atlassian.cdn.static.assets,pdf-preview,previews.sharing,previews.versions,file-annotations,confluence.efi.onboarding.rich.space.content,collaborative-audit-log,previews.conversion-service,editor.ajax.save,read.only.mode,graphql,previews.trigger-all-file-types,attachment.extracted.text.extractor,lucene.caching.filter,confluence.table.resizable,notification.batch,previews.sharing.pushstate,confluence-inline-comments-rich-editor,site-wide.synchrony.opt-in,file-annotations.likes,gatekeeper-ui-v2,v2.content.name.searcher,mobile.supported.version,pulp,confluence-inline-comments,confluence-inline-comments-dangling-comment,quick-reload-inline-comments-flags"];
+        $document->ajs-from-page-title_ss=[""];
+        $document->ajs-global-settings-attachment-max-size_ss=["104857600"];
+        $document->ajs-global-settings-quick-search-enabled_ss=["true"];
+        $document->ajs-is-confluence-admin_ss=["false"];
+        $document->ajs-jira-metadata-count_ss=["0"];
+        $document->ajs-keyboardshortcut-hash_ss=["fd8be8ca3737604dd15b20afeef6c267"];
+        $document->ajs-latest-page-id_ss=["23234478"];
+        $document->ajs-latest-published-page-title_ss=$LatestPageTitle;
+        $document->ajs-macro-placeholder-timeout_ss=["5000"];
+        $document->ajs-max-number-editors_ss=["12"];
+        $document->ajs-page-id_ss=["23234478"];
+        $document->ajs-page-title_ss=$PageTitle;
+        $document->ajs-page-version_ss=["7"];
+        $document->ajs-parent-page-id_ss=["42303641"];
+        $document->ajs-parent-page-title_ss=$ParentPageTitle;
+        $document->ajs-remote-user_ss=[""];
+        $document->ajs-remote-user-has-browse-users-permission_ss=["false"];
+        $document->ajs-remote-user-has-licensed-access_ss=["false"];
+        $document->ajs-remote-user-key_ss=[""];
+        $document->ajs-render-mode_ss=["READ_WRITE"];
+        $document->ajs-shared-drafts_ss=["true"];
+        $document->ajs-site-title_ss=$SiteTitle;
+        $document->ajs-space-key_ss=$SpaceKey;
+        $document->ajs-space-name_ss=$SpaceKeyName;
+        $document->ajs-static-resource-url-prefix_ss=["/s/-sjzpff/8501/824f149d70ae2ad1d29a82a2fd43b16cca383892/_"];
+        $document->ajs-use-keyboard-shortcuts_ss=["true"];
+        $document->ajs-user-date-pattern_ss=["dd MMM yyyy"];
+        $document->ajs-user-locale_ss=["en_GB"];
+        $document->ajs-version-number_ss=["7.6.2"];
+        $document->atlassian-token_ss=["acfee9c855261506b77e853c42c5b479029b605b"];
+        $document->page-version_ss=["7"];
+        $document->resourceName_ss=["b'tmpnxqi717y'"];
+        $document->title_txt=$TitleTxt;
+        $document->wikilink_ss=$Wikilink;
+        $document->etl_count_images_yet_no_ocr_i=0;
+        $document->etl_enhance_ocr_descew_b=true;
+        $document->etl_enhance_pdf_ocr_b=true;
+        $document->etl_enhance_extract_text_tika_server_time_millis_i=13;
+        $document->etl_enhance_extract_text_tika_server_b=true;
+        $document->language_s="en";
+        $document->etl_enhance_detect_language_tika_server_time_millis_i=5;
+        $document->etl_enhance_detect_language_tika_server_b=true;
+        $document->content_type_group_ss=["Text document"];
+        $document->etl_enhance_contenttype_group_time_millis_i=0;
+        $document->etl_enhance_contenttype_group_b=true;
+        $document->etl_enhance_pst_time_millis_i=0;
+        $document->etl_enhance_pst_b=true;
+        $document->etl_enhance_csv_time_millis_i=0;
+        $document->etl_enhance_csv_b=true;
+        $document->filename_extension_s=$FileExtension;
+        $document->path0_s=$path0;
+        $document->path1_s=$path1;
+        $document->path2_s=$path2;
+        $document->path_basename_s=$Path_basename;
+        $document->etl_enhance_path_time_millis_i=0;
+        $document->etl_enhance_path_b=true;
+        $document->etl_enhance_zip_time_millis_i=0;
+        $document->etl_enhance_zip_b=true;
+        $document->etl_enhance_warc_time_millis_i=0;
+        $document->etl_enhance_warc_b=true;
+        $document->etl_enhance_extract_hashtags_time_millis_i=1;
+        $document->etl_enhance_extract_hashtags_b=true;
+        $document->etl_clean_title_time_millis_i=0;
+        $document->etl_clean_title_b=true;
+        $document->etl_enhance_rdf_annotations_by_http_request_time_millis_i=3;
+        $document->etl_enhance_rdf_annotations_by_http_request_b=true;
+        $document->_text_=$MainText;
+        $document->text_txt_en=$MainText;
+        $document->etl_enhance_multilingual_time_millis_i=2;
+        $document->etl_enhance_multilingual_b=true;
+        $document->etl_enhance_rdf_time_millis_i=0;
+        $document->etl_enhance_rdf_b=true;
+        $document->etl_enhance_regex_time_millis_i=4;
+        $document->etl_enhance_regex_b=true;
+        $document->email_ss=$Email;
+        $document->email_domain_ss=$EmailDomain;
+        $document->etl_enhance_extract_email_time_millis_i=6;
+        $document->etl_enhance_extract_email_b=true;
+        $document->phone_ss=$Phone;
+        $document->phone_normalized_ss=$Phone;
+        $document->etl_enhance_extract_phone_time_millis_i=3;
+        $document->etl_enhance_extract_phone_b=true;
+        $document->ontology_3_ss=$Ontology3;
+        $document->ontology_3_ss_uri_ss=$Ontology3URI;
+        $document->ontology_3_ss_preflabel_and_uri_ss=$Ontology3ReferableURI;
+        $document->ontology_3_ss_matchtext_ss=$Ontology3MatchText;
+        $document->etl_enhance_entity_linking_time_millis_i=31;
+        $document->etl_enhance_entity_linking_b=true;
+        $document->person_ss=$Person;
+        $document->organization_ss=$Organization;
+        $document->work_of_art_ss=$WorkOfArt;
+        $document->date_ss=$Date;
+        $document->law_ss=$Law;
+        $document->product_ss=$Product;
+        $document->location_ss=$Location;
+        $document->etl_enhance_ner_spacy_time_millis_i=185;
+        $document->etl_enhance_ner_spacy_b=true;
+        $document->etl_enhance_extract_law_time_millis_i=6;
+        $document->etl_enhance_extract_law_b=true;
+        $document->etl_error_export_neo4j_txt=["Connection refused"];
+        $document->etl_export_neo4j_time_millis_i=1;
+        $document->etl_export_neo4j_b=true;
+        $document->etl_time_millis_i=271;
+        $document->id=$PageURL;
+        $document->X-TIKA_content_handler_ss=["ToTextContentHandler"];
+        $document->X-TIKA_embedded_depth_ss=["0"];
+        $document->X-TIKA_parse_time_millis_ss=["5"];
+        $document->dc_title_ss=$TitleTxt;
+        $document->content_txt=$MainText;
+        $document->_version_=$Version;
+
+        ?> <div> Ping 4</div> <?php
+        $solr->addDocument($document);
+        ?> <div> Ping 5</div> <?php
+        $solr->commit();
+        $solr->optimize();
+        ?> <div> Commited</div> <?php
+}
+
+function dataEntry()
+{
+    $ModificationDate="2020-10-25T23:14:04Z";
+    $BaseURL="www.google.com";
+    $PageURL="www.google.com";
+    $LatestPageTitle="Title1";
+    $PageTitle="Title2";
+    $ParentPageTitle="Title0";
+    $SiteTitle="Titles";
+    $SpaceKey="key1";
+    $SpaceKeyName="keys";
+    $TitleTxt="TitleText";
+    $Wikilink="KB";
+    $FileExtension="";
+    $path0="a";
+    $path1="b";
+    $path2="c";
+    $Path_basename="www.google.com";
+    $MainText=["Main text is here..."];
+    $Email="s.farshidi@uu.nl";
+    $EmailDomain="uu.nl";
+    $Phone="+31615373513";
+    $Ontology3="ont1";
+    $Ontology3URI="ont1";
+    $Ontology3ReferableURI="ont1";
+    $Ontology3MatchText="ont1";
+    $Person="Siamak Farshidi";
+    $Organization="UvA";
+    $WorkOfArt="UvA";
+    $Date="today";
+    $Law="criminal";
+    $Product="MySQL";
+    $Location="Utrecht";
+    $Version=0;
+    ?> <div> init adding a new doc</div> <?php
+    addNewDocumentToSolr($ModificationDate,$BaseURL,$PageURL,$LatestPageTitle,$PageTitle,$ParentPageTitle,$SiteTitle,$SpaceKey,$SpaceKeyName,$TitleTxt,$Wikilink,$FileExtension,$path0,$path1,$path2,$Path_basename,$MainText,$Email,$EmailDomain,$Phone,$Ontology3,$Ontology3URI,$Ontology3ReferableURI,$Ontology3MatchText,$Person,$Organization,$WorkOfArt,$Date,$Law,$Product,$Location,$Version);
+}
+
+
+dataEntry();
+
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        $document->file_modified_dt=$ModificationDate;
+        $document->title_txt=$TitleTxt;
+        $document->wikilink_ss=$Wikilink;
+        $document->language_s="en";
+        $document->content_type_group_ss=["Text document"];
+        $document->filename_extension_s=$FileExtension;
+        $document->path0_s=$path0;
+        $document->path1_s=$path1;
+        $document->path2_s=$path2;
+        $document->path_basename_s=$Path_basename;
+        $document->_text_=$MainText;
+        $document->text_txt_en=$MainText;
+        $document->email_ss=$Email;
+        $document->email_domain_ss=$EmailDomain;
+        $document->phone_ss=$Phone;
+        $document->phone_normalized_ss=$Phone;
+        $document->ontology_3_ss=$Ontology3;
+        $document->ontology_3_ss_uri_ss=$Ontology3URI;
+        $document->ontology_3_ss_preflabel_and_uri_ss=$Ontology3ReferableURI;
+        $document->ontology_3_ss_matchtext_ss=$Ontology3MatchText;
+        $document->person_ss=$Person;
+        $document->organization_ss=$Organization;
+        $document->work_of_art_ss=$WorkOfArt;
+        $document->date_ss=$Date;
+        $document->law_ss=$Law;
+        $document->product_ss=$Product;
+        $document->location_ss=$Location;
+        $document->id=$PageURL;
+        $document->dc_title_ss=$TitleTxt;
+        $document->content_txt=$MainText;

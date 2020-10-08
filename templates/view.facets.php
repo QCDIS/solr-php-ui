@@ -105,7 +105,7 @@
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ID_Facet_Num" aria-expanded="true" aria-controls="collapseTwo">
           <i class="fas fa-caret-right"></i>
-          <span>print ($facet)</span>
+          <span><?php print ($facet) ?></span>
         </a>
         <div id="ID_Facet_Num" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">

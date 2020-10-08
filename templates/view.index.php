@@ -115,8 +115,9 @@
              href="/search-apps/datasources/"><?php echo t("manage_datasources"); ?></a>
             <a class="collapse-item" target="_blank" title="Configuration"
              href="/search-apps/setup/"><?php echo t("config"); ?></a>
-             <a class="collapse-item" title="Import structured data"
-             href="<?php echo buildurl($params, 'view', 'ImportTuples', null, null); ?>">Import tuples</a>
+
+             <!-- <a class="collapse-item" title="Import structured data"
+             href="<?php echo buildurl($params, 'view', 'ImportTuples', null, null); ?>">Import tuples</a> -->
 
           </div>
         </div>
