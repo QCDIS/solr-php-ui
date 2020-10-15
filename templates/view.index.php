@@ -30,6 +30,11 @@
    }
    else
    {
+
+     if ($view == 'LoginPage') {
+        include 'RegistrationSystem/index.php';
+     }
+
 ?>
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -93,7 +98,10 @@
             }
         ?>
 
-
+<?php
+    //if (isset($_SESSION['username']))
+    {
+?>
       <!-- Divider -->
       <hr class="sidebar-divider">
       <div class="sidebar-heading">
@@ -116,13 +124,15 @@
             <a class="collapse-item" target="_blank" title="Configuration"
              href="/search-apps/setup/"><?php echo t("config"); ?></a>
 
-             <!-- <a class="collapse-item" title="Import structured data"
-             href="<?php echo buildurl($params, 'view', 'ImportTuples', null, null); ?>">Import tuples</a> -->
+             <a class="collapse-item" title="Import structured data"
+             href="<?php echo buildurl(null, 'view', 'ImportTuples', null, null); ?>">Import tuples</a>
 
           </div>
         </div>
       </li>
-
+<?php
+    }
+?>
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
@@ -198,6 +208,9 @@
               </div>
             </li>
 
+<?php
+    if (isset($_SESSION['username'])) {
+?>
             <!-- Nav Item - Alerts -->
             <li class="nav-item dropdown no-arrow mx-1">
               <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -326,13 +339,36 @@
                   Activity Log
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item" href="<?php echo buildurl(null, 'view', 'LoginPage', null, null); ?>" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                   Logout
                 </a>
               </div>
             </li>
+<?php
+    }
+    else{
+?>
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Guest</span>
+                <div style="background-color:#4e73df;;top:auto;text-align:center;display:inline-block; border:2px #4e73df solid; padding:3px; border-radius:100%; width:35px; height:35px;">
+                <i style="font-size:18pt; color:white" class="fas fa-user"></i> </div>
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="<?php echo buildurl(null, 'view', 'LoginPage', null, null); ?>">
+                  <i class="fas fa-sign-in-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+              <span>Login</span></a>
+              </div>
+            </li>
 
+
+<?php
+    }
+?>
 
           </ul>
 
@@ -625,25 +661,29 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
+
+
+      <!-- Logout Modal-->
+      <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+              <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+              <a class="btn btn-primary" href="<?php echo buildurl(null, 'view', 'LoginPage', null, null); ?>">
+                <i class="fas fa-sign-out-alt"></i>
+              <span>Logout</span></a>
+
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-
   <!-- Bootstrap core JavaScript-->
   <script src="UI/vendor/jquery/jquery.min.js"></script>
   <script src="UI/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

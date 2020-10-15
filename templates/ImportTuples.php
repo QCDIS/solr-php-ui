@@ -11,7 +11,7 @@ function addNewDocumentToSolr($solr,$ContentType,$ModificationDate,$BaseURL,$Pag
                               $path0,$path1,$path2,$Path_basename,$MainText,$Email,$EmailDomain,
                               $Phone,$Ontology3,$Ontology3URI,$Ontology3ReferableURI,
                               $Ontology3MatchText,$Person,$Organization,$WorkOfArt,
-                              $Date,$Law,$Product,$Location) {
+                              $Date,$Law,$Product,$Location) {lo
 
         $document = new Apache_Solr_Document();
 
@@ -54,37 +54,41 @@ function addNewDocumentToSolr($solr,$ContentType,$ModificationDate,$BaseURL,$Pag
 function dataEntry($solr)
 {
     $ContentType=["text/html; charset=UTF-8"];
-    $ModificationDate="112020-12-25T23:14:04Z";
-    $BaseURL="https://uu.nl/";
-    $PageURL="https://uu.nl/";
-    $LatestPageTitle="11Titl999e1";
-    $PageTitle="11Titl999e2";
-    $ParentPageTitle="11Ti99tle0";
-    $SiteTitle="New Title";
-    $SpaceKey="11key1";
-    $SpaceKeyName="11keys";
-    $TitleTxt="19999eee1TitleText";
-    $Wikilink="11KB";
+    $ModificationDate="2020-09-25T23:14:04Z";
+    $BaseURL="https://uva.nl/";
+    $PageURL="https://uva.nl/";
+    $LatestPageTitle="uvauvauvauva";
+    $PageTitle="dsfsdfs";
+    $ParentPageTitle="sfdsfsfd";
+    $SiteTitle="[*STANDARD_DOC*]";
+    $SpaceKey="11key1sfsfdsfs";
+    $SpaceKeyName="11keysdfsdfssdf";
+    $TitleTxt="19999eeesfdsfsdf1TitleText";
+    $Wikilink="11KBsfsfsdf";
     $FileExtension="html";
-    $path0="11a";
-    $path1="11b";
-    $path2="11c";
-    $Path_basename="https://uu.nl/";
-    $MainText=["11Siamak FarshidiSiamak FarshidiSiamak","Farshidi - fdsfds sdfsdfsdf sdf sdf ds f sf dsf sdf s f"];
-    $Email="s.farshidi@uu.nl";
-    $EmailDomain="11uu.nl";
+    $path0="11ssffa";
+    $path1="11fsfddsb";
+    $path2="11csfsdf";
+    $Path_basename="https://11Titl999sfe2.nl/";
+    $MainText=["11sdf wetewt 11Titl999sfe2  Siamak FarshidiSiamak FarshidiSiamak","Farshidi - fdsfds sdfsdfsdf sdf sdf ds f sf dsf sdf s f"];
+    $Email="s.farshidi@uva.nl";
+    $EmailDomain="uva.nl";
     $Phone="+31615373513";
-    $Ontology3="11ont1";
-    $Ontology3URI="11ont1";
-    $Ontology3ReferableURI="11ont1";
-    $Ontology3MatchText="11ont1";
-    $Person=["Siamak Farshidi","Zhiming Zhao"];
-    $Organization=["UvA","UU","IR"];
+    $Ontology3="11ondft1";
+    $Ontology3URI="11ossfnt1";
+    $Ontology3ReferableURI="11onsfdt1";
+    $Ontology3MatchText="1sfdsfd1ont1";
+    $Person=["Siamak Farshidi","Zhiming Zhao","Jack Daniel"];
+    $Organization=["UvA","UU","IR","NL"];
     $WorkOfArt="UvA";
-    $Date=["today","2017", "2018"];
-    $Law="11criminal";
-    $Product=["MySQL","MongoDB"];
-    $Location=["Utrecht","Amsterdam"];
+    $Date=["today","2017", "2018","2020"];
+    $Law="11criminalfg";
+    $Product=["MySQL","MongoDB","Solr"];
+    $Location=["Utrecht","Amsterdam","Tehran"];
+?>
+
+<div> <?php  echo "done!" ?> </div>
+<?php
 
     addNewDocumentToSolr($solr,$ContentType, $ModificationDate,$BaseURL,$PageURL,
                          $LatestPageTitle,$PageTitle,$ParentPageTitle,$SiteTitle,

@@ -128,19 +128,18 @@ function get_icon($ResultFileType) {
             </div>
             <span class="facets">
             <?php
-    /////////////////////////////////////////////////////////////////////////// Facets for each search query
               $facets = get_facets($result_nr, $doc, $cfg['facets']);
               include 'templates/view.snippets.entities.php';
-    ///////////////////////////////////////////////////////////////////////////
             ?>
             </span>
 
             <?php
               include 'templates/view.commands.php';
             ?>
-        </div>
+       </div>
       </div>
     </div>
-  <?php endforeach; ?>
+   <?php endforeach; ?>
+ </ul>
 </div>
 
