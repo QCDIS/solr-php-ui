@@ -1527,22 +1527,104 @@ function FacetsPreprocessing($facet, $type){
         elseif(strpos($facet, "Euro-Argo") !== false){
             $result="Euro-Argo";
         }
-        elseif(strpos($facet, "LifeWatch") !== false){
-            $result="LifeWatch";
-        }
+        elseif(strpos($facet, "ESONET-Vi") !== false){
+            $result="ESONET-Vi";
+            }
+        elseif(strpos($facet, "EISCAT_3D") !== false){
+            $result="EISCAT_3D";
+            }
+        elseif(strpos($facet, "EMBRC") !== false){
+            $result="EMBRC";
+            }
+        elseif(strpos($facet, "EUROFLEETS2") !== false){
+            $result="EUROFLEETS2";}
+        elseif(strpos($facet, "IAGOS") !== false){
+            $result="IAGOS";}
+        elseif(strpos($facet, "AnaEE") !== false){
+            $result="AnaEE";}
+        elseif(strpos($facet, "JERICO-NEXT") !== false){
+            $result="JERICO-NEXT";}
+        elseif(strpos($facet, "EUFAR") !== false){
+            $result="EUFAR";}
+        elseif(strpos($facet, "Euro-Argo") !== false){
+            $result="Euro-Argo";}
+        elseif(strpos($facet, "SIOS") !== false){
+            $result="SIOS";}
+        elseif(strpos($facet, "FixO3") !== false){
+            $result="FixO3";}
+        elseif(strpos($facet, "INTERACT") !== false){
+            $result="INTERACT";}
+        elseif(strpos($facet, "LTER-Europe") !== false){
+            $result="LTER-Europe";}
+        elseif(strpos($facet, "ACTRIS") !== false){
+            $result="ACTRIS";}
+        elseif(strpos($facet, "CETAF") !== false){
+            $result="CETAF";}
+        elseif(strpos($facet, "EUROCHAMP-2020") !== false){
+            $result="EUROCHAMP-2020";}
+        elseif(strpos($facet, "ELIXIR") !== false){
+            $result="ELIXIR";}
+        elseif(strpos($facet, "ARISE") !== false){
+            $result="ARISE";}
+        elseif(strpos($facet, "EuroGOOS") !== false){
+            $result="EuroGOOS";}
+        elseif(strpos($facet, "IS-ENES2") !== false){
+            $result="IS-ENES2";}
+        elseif(strpos($facet, "SeaDataNet") !== false){
+            $result="SeaDataNet";}
+        elseif(strpos($facet, "EMPHASIS") !== false){
+            $result="EMPHASIS";}
+        elseif(strpos($facet, "DANUBIUS") !== false){
+            $result="DANUBIUS";}
     }
     elseif ($type=="Domains"){
         $Lfacet=strtolower($facet);
-        if(strpos($Lfacet, "marine") !== false){
+        if(
+            strpos($Lfacet, "marine") ||
+            strpos($facet, "EMBRC") ||
+            strpos($facet, "EUROFLEETS2") ||
+            strpos($facet, "JERICO-NEXT") ||
+            strpos($facet, "Euro-Argo") ||
+            strpos($facet, "SIOS") ||
+            strpos($facet, "FixO3") ||
+            strpos($facet, "ICOS") ||
+            strpos($facet, "EuroGOOS") ||
+            strpos($facet, "EMSO") ||
+            strpos($facet, "DANUBIUS")
+        !== false){
             $result="marine";
         }
-        elseif(strpos($Lfacet, "earth") !== false){
+        elseif(
+                strpos($Lfacet, "earth") ||
+                strpos($facet, "EPOS") ||
+                strpos($facet, "SIOS")
+        !== false){
             $result="earth";
         }
-        elseif(strpos($Lfacet, "athmosphere") !== false){
+        elseif(
+            strpos($Lfacet, "athmosphere") ||
+            strpos($facet, "EISCAT_3D") ||
+            strpos($facet, "IAGOS") ||
+            strpos($facet, "EUFAR") ||
+            strpos($facet, "SIOS") ||
+            strpos($facet, "ICOS") ||
+            strpos($facet, "ACTRIS") ||
+            strpos($facet, "IS-ENES2") ||
+            strpos($facet, "EUROCHAMP-2020")
+        !== false){
             $result="athmosphere";
         }
-        elseif(strpos($Lfacet, "ecosystem") !== false){
+        elseif(
+            strpos($Lfacet, "ecosystem") ||
+            strpos($facet, "EMBRC") ||
+            strpos($facet, "AnaEE") ||
+            strpos($facet, "SIOS") ||
+            strpos($facet, "INTERACT") ||
+            strpos($facet, "ICOS") ||
+            strpos($facet, "CETAF") ||
+            strpos($facet, "ELIXIR	") ||
+            strpos($facet, "EMPHASIS	")
+        !== false){
             $result="ecosystem";
         }
     }
@@ -1554,8 +1636,6 @@ function FacetsPreprocessing($facet, $type){
 
 
 ?>
-
-
 
 
 

@@ -3,15 +3,16 @@
 //
 // Pagination
 //
-
 ?>
 
 <div class="pages" style="width:100%; text-align:center; font-weight: bold; color:#035ba8;" >
+ <span style="float:left; padding-left: 25px;" > <?php include 'templates/select_sort.php'; ?> </span>
     <span
       class="pagination-previous <?php if (!$is_prev_page): print 'disabled'; endif; ?>">
       <?php if ($is_prev_page) { ?>
       <a onclick="waiting_on();" href="<?php print $link_prev; ?>">
         <?php } ?>
+
 
      <?php //print t('prev') ?>
 
@@ -79,7 +80,9 @@
         <?php } ?>
 
       <?php //print t('next') ?>
-
         <?php if ($is_next_page) { ?>&nbsp; <i class="fas fa-chevron-circle-right" style="font-size:large;"></i></a><?php } ?>
+
     </span>
+
+
 </div>

@@ -20,7 +20,6 @@
 
 
 
-
 </head>
 <body id="page-top" class="sidebar-toggled">
 
@@ -39,7 +38,7 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
 
-    <!-- Sidebar -->
+    <!-- ---------------------------------------------------------------------------------------------------- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
 
 
@@ -61,6 +60,7 @@
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
+
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseQuerString" aria-expanded="true" aria-controls="collapseTwo">
           <i class="fas fa-question-circle"></i>
           <span>Query</span>
@@ -75,31 +75,55 @@
              href="/search-apps/search-list/"><?php echo t("search_by_list"); ?></a>
           </div>
         </div>
-      </li>
-      <!-- Nav Item - Pages Collapse Menu -->
 
-     <?php include 'templates/select_view.php'; ?>
+        <a class="nav-link" href="<?php echo buildurl($params, 'view', 'Websites', null, null); ?>">
+          <i class="fas fa-globe"></i>
+          <span>Websites</span>
+        </a>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider">
+        <a class="nav-link" href="<?php echo buildurl($params, 'view', 'Services', null, null); ?>">
+          <i class="fab fa-uikit"></i>
+          <span>Services</span>
+        </a>
 
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Facets
-      </div>
+        <a class="nav-link" href="<?php echo buildurl($params, 'view', 'ResearchInfrastructures', null, null); ?>">
+             <i class="fas fa-cubes"></i>
+              <span>Research Infrastructures</span>
+        </a>
+
+        <a class="nav-link" href="<?php echo buildurl($params, 'view', 'Datasets', null, null); ?>">
+              <i class="fas fa-coins"></i>
+              <span>Datasets</span>
+        </a>
+        <a class="nav-link" href="<?php echo buildurl($params, 'view', 'APIs', null, null); ?>" >
+              <i class="fas fa-code"></i>
+              <span>APIs</span>
+        </a>
+
+       <!-- Visualization Button --------------------------------------------- -->
         <?php
-            // If preview, show metadata.
-            if ($view == "preview") {
-              include "templates/view.preview.sidebar.php";
+        // Setup parameters for graph visualization by Open Semantic Visual Linked Data Graph Explorer
+        $link_graph = '/search-apps/graph/?q='.$query;
+        $link_graph .= '&fl=' . implode(',', $graph_fields);
+        foreach ($cfg['facets'] as $facet => $facet_config) {
+           if ( in_array($facet, $graph_fields) ) {
+                // todo: read from coming facet config graph_limit
+                $facetlimit = 50;
+                if (isset($facets_limit[$facet])) {
+                    $facetlimit = $facets_limit[$facet];
+                }
+                $link_graph .= "&f." . $facet . ".facet.limit=" . $facetlimit;
             }
-            else {
-              // show facets
-              include "templates/view.facets.php";
-            }
+        }
         ?>
-
+        <a class="nav-link" href="<?= $link_graph ?>" target="_blank">
+              <i class="fab fa-hubspot"></i>
+              <span>Graph Visualization</span>
+        </a>
+       <!-- ------------------------------------------------------------------ -->
+      </li>
 <?php
-    //if (isset($_SESSION['username']))
+    if (isset($_SESSION['username']))
     {
 ?>
       <!-- Divider -->
@@ -154,7 +178,7 @@
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
     </ul>
-    <!-- End of Sidebar -->
+    <!-- --------------------------------------------------------------------------------------------- End of Sidebar -->
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -171,15 +195,8 @@
           </button>
 
           <!-- Topbar Search -->
-
-
-
-
           <?php
                 include 'templates/SearchBox.php';
-            //if ($view == 'list' || $view == 'images' || $view == 'videos' || $view == 'audios') {
-                include 'templates/select_sort.php';
-           // }
          ?>
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
@@ -208,9 +225,9 @@
               </div>
             </li>
 
-<?php
-    if (isset($_SESSION['username'])) {
-?>
+    <?php
+        if (isset($_SESSION['username'])) {
+    ?>
             <!-- Nav Item - Alerts -->
             <li class="nav-item dropdown no-arrow mx-1">
               <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -345,10 +362,10 @@
                 </a>
               </div>
             </li>
-<?php
-    }
-    else{
-?>
+    <?php
+        }
+        else{
+    ?>
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -364,18 +381,14 @@
               <span>Login</span></a>
               </div>
             </li>
-
-
-<?php
-    }
-?>
-
-          </ul>
-
+    <?php
+        }
+    ?>
+     </ul>
         </nav>
-        <!-- End of Topbar -->
+        <!-- ------------------------------------------------------------------------------------------ End of Topbar -->
 
-        <!-- Begin Page Content -->
+        <!-- ------------------------------------------------------------------------------------- Begin Page Content -->
         <div class="container-fluid">
           <!-- Content Row -->
           <div class="row">
@@ -660,9 +673,6 @@
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-
-
-
       <!-- Logout Modal-->
       <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">

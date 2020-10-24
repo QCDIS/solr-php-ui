@@ -1,22 +1,108 @@
-<?php
-//
-// View Import Tuples
-//
-?>
-<?php
 
-function addNewDocumentToSolr($solr,$ContentType,$ModificationDate,$BaseURL,$PageURL,
+<form id="frm-upload" action="" method="post"
+    enctype="multipart/form-data">
+    <div style="padding:20px; border:1px solid lightgray;  margin-bottom:10px; ">
+        <div>Choose file: &nbsp;</div>
+        <div>
+            <input type="file" class="file-input" name="file-input">
+
+                    <input type="submit" id="btn-submit" name="upload" class="btn btn-primary"
+            value="Upload">
+        </div>
+    </div>
+</form>
+<?php if(!empty($response)) { ?>
+<div class="response <?php echo $response["type"]; ?>
+    ">
+    <?php echo $response["message"]; ?>
+</div>
+<?php }?>
+
+<?php
+if(!empty(isset($_POST["upload"]))) {
+    if (($fp = fopen($_FILES["file-input"]["tmp_name"], "r")) !== FALSE) {
+        preprocessing($_FILES["file-input"]["tmp_name"]);
+        showCSVContent($_FILES["file-input"]["tmp_name"]);
+        $response = array("type" => "success", "message" => "CSV is uploaded successfully");
+        uploadCSVfileToSolr($_FILES["file-input"]["tmp_name"], $solr);
+    }
+    else {
+        $response = array("type" => "error", "message" => "Unable to process CSV");
+    }
+}
+?>
+<?php if(!empty($response)) { ?>
+<div>
+    <?php echo $response["message"]; ?>
+</div>
+
+
+<?php } ?>
+
+<?php
+function preprocessing($filename)
+{
+    $file_contents = file_get_contents($filename);
+    $file_contents = str_replace("http://www.oil-e.net/ontology/envri-rm.owl#ResearchInfrastructure","ResearchInfrastructure",$file_contents);
+    $file_contents = str_replace("ResearchInfrastructure","Research Infrastructure",$file_contents);
+    $file_contents = str_replace("http://envri.eu/entity/QWmvj6lQv","marine domain",$file_contents);
+    $file_contents = str_replace("http://envri.eu/entity/QmAOWQhKx","atmospheric domain",$file_contents);
+    $file_contents = str_replace("http://envri.eu/entity/QRW2A7WrJ","ecosystem domain",$file_contents);
+    $file_contents = str_replace("envri:QRW2A7WrJ","ecosystem domain",$file_contents);
+    $file_contents = str_replace("http://envri.eu/entity/QqKsuhT0R","solid earth domain",$file_contents);
+    file_put_contents($filename,$file_contents);
+    //----------------------------------------------------------
+}
+
+function showCSVContent($filename)
+{
+   $row = 1;
+   echo '<div class="table-responsive">';
+   echo '<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">';
+
+    if (($handle = fopen($filename, "r")) !== FALSE) {
+      while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+        $num = count($data);
+        if($row==1){
+            echo "<thead>";
+            for ($c=0; $c < $num; $c++) {
+                echo "<th>" . $data[$c] . "</th>";
+            }
+            echo "</thead>";
+            echo "<tfoot>";
+            for ($c=0; $c < $num; $c++) {
+                echo "<th>" . $data[$c] . "</th>";
+            }
+            echo "</tfoot>";
+            echo "<tbody>";
+        }
+        else{
+            echo "<tr>";
+            for ($c=0; $c < $num; $c++) {
+                echo "<td>" . $data[$c] . "</td>";
+            }
+            echo "</tr>";
+        }
+        $row++;
+      }
+      fclose($handle);
+    }
+   echo '</tbody>';
+   echo '</table>';
+   echo '</div>';
+}
+
+function addNewDocumentToSolr($solr,$ContentType,$BaseURL,$PageURL,
                               $LatestPageTitle,$PageTitle,$ParentPageTitle,$SiteTitle,
                               $SpaceKey,$SpaceKeyName,$TitleTxt,$Wikilink,$FileExtension,
                               $path0,$path1,$path2,$Path_basename,$MainText,$Email,$EmailDomain,
                               $Phone,$Ontology3,$Ontology3URI,$Ontology3ReferableURI,
                               $Ontology3MatchText,$Person,$Organization,$WorkOfArt,
-                              $Date,$Law,$Product,$Location) {lo
+                              $Date,$Law,$Product,$Location) {
 
         $document = new Apache_Solr_Document();
 
         $document->content_type_ss=$ContentType;
-        $document->file_modified_dt=$ModificationDate;
         $document->title_txt=$TitleTxt;
         $document->wikilink_ss=$Wikilink;
         $document->language_s="en";
@@ -47,58 +133,67 @@ function addNewDocumentToSolr($solr,$ContentType,$ModificationDate,$BaseURL,$Pag
         $document->dc_title_ss=$TitleTxt;
         $document->content_txt=$MainText;
 
+        print_r("okay 1");
+
         $solr->addDocument($document);
-        $solr->commit();
+
+        print_r("okay 2");
+
+
 }
 
-function dataEntry($solr)
-{
-    $ContentType=["text/html; charset=UTF-8"];
-    $ModificationDate="2020-09-25T23:14:04Z";
-    $BaseURL="https://uva.nl/";
-    $PageURL="https://uva.nl/";
-    $LatestPageTitle="uvauvauvauva";
-    $PageTitle="dsfsdfs";
-    $ParentPageTitle="sfdsfsfd";
-    $SiteTitle="[*STANDARD_DOC*]";
-    $SpaceKey="11key1sfsfdsfs";
-    $SpaceKeyName="11keysdfsdfssdf";
-    $TitleTxt="19999eeesfdsfsdf1TitleText";
-    $Wikilink="11KBsfsfsdf";
-    $FileExtension="html";
-    $path0="11ssffa";
-    $path1="11fsfddsb";
-    $path2="11csfsdf";
-    $Path_basename="https://11Titl999sfe2.nl/";
-    $MainText=["11sdf wetewt 11Titl999sfe2  Siamak FarshidiSiamak FarshidiSiamak","Farshidi - fdsfds sdfsdfsdf sdf sdf ds f sf dsf sdf s f"];
-    $Email="s.farshidi@uva.nl";
-    $EmailDomain="uva.nl";
-    $Phone="+31615373513";
-    $Ontology3="11ondft1";
-    $Ontology3URI="11ossfnt1";
-    $Ontology3ReferableURI="11onsfdt1";
-    $Ontology3MatchText="1sfdsfd1ont1";
-    $Person=["Siamak Farshidi","Zhiming Zhao","Jack Daniel"];
-    $Organization=["UvA","UU","IR","NL"];
-    $WorkOfArt="UvA";
-    $Date=["today","2017", "2018","2020"];
-    $Law="11criminalfg";
-    $Product=["MySQL","MongoDB","Solr"];
-    $Location=["Utrecht","Amsterdam","Tehran"];
-?>
+function uploadCSVfileToSolr($filename, $solr){
 
-<div> <?php  echo "done!" ?> </div>
-<?php
+///////////////////////////////////////////////
+    $ParentPageTitle="null";
+    $SpaceKey="null";
+    $SpaceKeyName="null";
+    $Wikilink="null";
+    $path0="null";
+    $path1="null";
+    $path2="null";
+    $Ontology3="null";
+    $Ontology3URI="null";
+    $Ontology3ReferableURI="null";
+    $Ontology3MatchText="null";
+    $WorkOfArt="null";
+    $Law="null";
+    $Product=["null"];
+    $Email="null";
+    $EmailDomain="null";
+    $Phone="null";
+    $Person=["null"];
+///////////////////////////////////////////////
 
-    addNewDocumentToSolr($solr,$ContentType, $ModificationDate,$BaseURL,$PageURL,
-                         $LatestPageTitle,$PageTitle,$ParentPageTitle,$SiteTitle,
-                         $SpaceKey,$SpaceKeyName,$TitleTxt,$Wikilink,$FileExtension,
-                         $path0,$path1,$path2,$Path_basename,$MainText,$Email,$EmailDomain,
-                         $Phone,$Ontology3,$Ontology3URI,$Ontology3ReferableURI,
-                         $Ontology3MatchText,$Person,$Organization,$WorkOfArt,$Date,
-                         $Law,$Product,$Location);
+    if (($handle = fopen($filename, "r")) !== FALSE) {
+      while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+
+        $FileExtension="html";
+        $ContentType=["text/html; charset=UTF-8"];
+        $BaseURL= $data[3];
+        $PageURL=$data[3];
+        $LatestPageTitle=$data[2];
+        $PageTitle=$data[2];
+        $SiteTitle=$data[1];
+        $TitleTxt=$data[2];
+        $FileExtension="html";
+        $Path_basename=$data[3];
+        $MainText=[$data[4]];
+        $Organization=[$data[0]];
+        $Date=["today"];
+        $Location=[$data[5]];
+
+        addNewDocumentToSolr($solr,$ContentType,$BaseURL,$PageURL,
+                                 $LatestPageTitle,$PageTitle,$ParentPageTitle,$SiteTitle,
+                                 $SpaceKey,$SpaceKeyName,$TitleTxt,$Wikilink,$FileExtension,
+                                 $path0,$path1,$path2,$Path_basename,$MainText,$Email,$EmailDomain,
+                                 $Phone,$Ontology3,$Ontology3URI,$Ontology3ReferableURI,
+                                 $Ontology3MatchText,$Person,$Organization,$WorkOfArt,$Date,
+                                 $Law,$Product,$Location);
+     }
+     $solr->commit();
+      fclose($handle);
+    }
 }
-
-dataEntry($solr);
-
 ?>
+

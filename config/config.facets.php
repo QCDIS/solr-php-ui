@@ -14,7 +14,7 @@
 
 $cfg['facets']['organization_ss'] = array ('label'=>'Infrastructures', 'facet_limit'=>'10', 'snippets_limit'=>'10', 'graph_limit'=>'50', 'tree'=>false, 'enabled'=>true, 'closed'=>false, 'snippets_enabled'=>true, 'graph_enabled'=>true);
 
-$cfg['facets']['location_ss'] = array ('label'=>'Domains', 'facet_limit'=>'10', 'snippets_limit'=>'10', 'graph_limit'=>'50', 'tree'=>false, 'enabled'=>true, 'closed'=>false, 'snippets_enabled'=>true, 'graph_enabled'=>true);
+//$cfg['facets']['location_ss'] = array ('label'=>'Domains', 'facet_limit'=>'10', 'snippets_limit'=>'10', 'graph_limit'=>'50', 'tree'=>false, 'enabled'=>true, 'closed'=>false, 'snippets_enabled'=>true, 'graph_enabled'=>true);
 
 //$cfg['facets']['language_s'] = array ('label'=>'Language', 'facet_limit'=>'10', 'snippets_limit'=>'10', 'graph_limit'=>'50', 'tree'=>false, 'enabled'=>true, 'closed'=>false, 'snippets_enabled'=>false, 'graph_enabled'=>false);
 

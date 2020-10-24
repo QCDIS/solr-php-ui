@@ -3,12 +3,20 @@
 
 	// variable declaration
 	$username = "";
+    $db_password="";
 	$email    = "";
 	$errors = array(); 
 	$_SESSION['success'] = "";
 
 	// connect to database
-	$db = mysqli_connect('localhost', 'root', '', 'registration');
+	$db = mysqli_connect('localhost', 'root', $db_password, 'registration');
+
+    if (!$db) {
+        echo "Error: Unable to connect to MySQL." . PHP_EOL;
+        echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
+        echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
+        exit;
+    }
 
 	// REGISTER USER
 	if (isset($_POST['reg_user'])) {
