@@ -37,7 +37,6 @@
     <div class="centerSearchBox">
         <img src="images/envri_logo_final.png" style="width:200px; height:155px;">
         <br /> <br /> <br />
-
     <div style="display:inline-block;min-width:300px; width:30%;">
         <form id="searchform1" accept-charset="utf-8" method="get">
             <div class="input-group" style="border:solid 1px blue; border-radius:5px;">
