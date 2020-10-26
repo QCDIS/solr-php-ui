@@ -1624,6 +1624,9 @@ function FacetsPreprocessing($facet, $type){
             strpos($facet, "CETAF") ||
             strpos($facet, "ELIXIR	") ||
             strpos($facet, "EMPHASIS	")
+
+
+
         !== false){
             $result="ecosystem";
         }

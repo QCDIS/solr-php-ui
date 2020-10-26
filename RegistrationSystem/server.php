@@ -39,10 +39,13 @@
                     echo "Table users created successfully"."<br/>";
 
                     $sql = "INSERT INTO users (username, password, role, email)
-                    VALUES ('admin', 'u1v2a3', 'admin', 'root@admin.nl')";
+                    VALUES ('admin', 'u1v2a3', 'admin', 'root@admin.nl');";
 
-                    if ($db->query($sql) === TRUE) {
-                      echo "New record created successfully"."<br/>";
+                    $sql .= "INSERT INTO users (username, password, role, email)
+                    VALUES ('user', 'user', 'user', 'user@user.nl');";
+
+                    if ($db->multi_query($sql) === TRUE) {
+                      echo "New records created successfully"."<br/>";
                       header('location: login.php');
                     }
                     else {
@@ -83,7 +86,7 @@
 		if (count($errors) == 0) {
 			$password = md5($password_1);//encrypt the password before saving in the database
 			$MySQLquery = "INSERT INTO users (username, password, role, email)
-                    VALUES ('$username', '$password', 'user', '$email')";
+                            VALUES ('$username', '$password', 'user', '$email')";
 
 			mysqli_query($db, $MySQLquery);
 

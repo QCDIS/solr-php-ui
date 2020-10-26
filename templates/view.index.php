@@ -1,4 +1,4 @@
-<?php session_start();?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -124,7 +124,7 @@
        <!-- ------------------------------------------------------------------ -->
       </li>
 
-<?php if (isset($_SESSION['uid'])): ?>
+<?php if (isset($_SESSION['userid']) && $_SESSION['role']=="admin"):  ?>
       <!-- Divider -->
       <hr class="sidebar-divider">
       <div class="sidebar-heading">
@@ -240,6 +240,7 @@
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Settings
                 </a>
+
                 <a class="dropdown-item" href="#">
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                   Search Log

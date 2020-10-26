@@ -15,16 +15,16 @@
 
   $cfg['solr']['port'] = 8983;
   $cfg['solr']['path'] = '/solr';
-  
+
   $cfg['solr']['core'] = 'opensemanticsearch';
 
   // include configs
-  
+
   include 'config/config.php';
-  
-  // build solr uri from config  
+
+  // build solr uri from config
   $solruri = 'http://' . $cfg['solr']['host'] . ':' . $cfg['solr']['port'] . $cfg['solr']['path'] . '/' . $cfg['solr']['core'];
-  
+
   $limit = 15;
 
   $query = (string)$_GET["query"];
@@ -33,7 +33,7 @@
   $result = file_get_contents($uri);
 
   $termsxml = simplexml_load_string($result);
-	
+
   echo "{ query:'" . $query . "', suggestions:[";
 
   $first = true;
@@ -43,6 +43,6 @@
 	 echo "'" . $term['name'] . "'";
 
   }
-  
+
   echo ' ] }';
 ?>
