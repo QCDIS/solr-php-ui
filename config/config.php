@@ -66,8 +66,8 @@ $cfg['language'] = 'en';
 // $cfg['solr']['host'] = 'localhost';
 // $cfg['solr']['port'] = 8983;
 // $cfg['solr']['path'] = '/solr';
-$cfg['solr']['core'] = 'opensemanticsearch';
 
+$cfg['solr']['core'] = $_SESSION['SolrCurrentCore'];
 //
 // Additional facets (f.e. fields imported by some connector which should be shown in the sidebar)
 //

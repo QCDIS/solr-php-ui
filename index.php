@@ -1,4 +1,14 @@
 <?php
+
+session_start();
+
+if(!isset($_SESSION['SolrCurrentCore'])){
+    $_SESSION['SolrCurrentCore']="opensemanticsearch";
+}
+else{
+    $cfg['solr']['core'] = $_SESSION['SolrCurrentCore'];
+}
+
 // SOLR PHP Client UI
 //
 // PHP-UI of Open Semantic Search - https://opensemanticsearch.org
@@ -15,7 +25,6 @@
 
 # do not change config here, use ./config/config.php!
 
-
 $cfg['debug'] = false;
 
 $cfg['etl_status'] = false;
@@ -31,7 +40,7 @@ if (getenv('SOLR_PHP_UI_SOLR_HOST')) {
 $cfg['solr']['port'] = 8983;
 $cfg['solr']['path'] = '/solr';
 
-$cfg['solr']['core'] = 'core1';
+$cfg['solr']['core'] = $_SESSION['SolrCurrentCore'];
 
 $cfg['languages'] = array('en','de','es','fr','hu','nl','pt','it','cz','ro','ru','ar','fa');
 

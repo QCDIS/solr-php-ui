@@ -1,4 +1,4 @@
-
+<?php session_start(); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -512,9 +512,27 @@
               }
               else {
 
-                include 'templates/pages.php';
+
+ //               if ($view == 'Websites'){
+  //                  $_SESSION['SolrCurrentCore']="opensemanticsearch";
+
+ //               }
+//                else if ($view == 'ResearchInfrastructures'){
+   //                 $_SESSION['SolrCurrentCore']="ResearchInfrastructures";
+     //           }
+      //          else if ($view == 'Services'){
+       //             $_SESSION['SolrCurrentCore']="Services";
+      //          }
+        //        else if ($view == 'Datasets'){
+         //           $_SESSION['SolrCurrentCore']="Datasets";
+          //      }
+          //      else if ($view == 'APIs'){
+            //        $_SESSION['SolrCurrentCore']="APIs";
+          //      }
+
+                include 'templates/pagination.php';
                 include 'templates/view.list.php';
-                include 'templates/pages.php';
+                include 'templates/pagination.php';
 
               }
             } // if total <> 0: there were documents
