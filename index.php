@@ -580,6 +580,82 @@ if ($is_taxonomy==true) {
 	} // if isset facetfield
 
 }
+////////-----------------------------------------------------------------------------------------------------
+
+
+function addSearchQueryToSearchLog($UID, $SearchQuery){
+
+    $db_password="fachmann573";
+	$errors = array();
+
+	// connect to database
+	$db = mysqli_connect('localhost', 'root', $db_password, 'SearchHistory');
+
+    if (!$db) {
+        echo "Error: Unable to connect to MySQL." . PHP_EOL ."<br/>";
+        echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL."<br/>";
+        echo "Debugging error: " . mysqli_connect_error() . PHP_EOL."<br/>";
+
+        if(mysqli_connect_errno()=="1049"){
+            $db = mysqli_connect('localhost', 'root', $db_password);
+            $sql = "CREATE DATABASE SearchHistory";
+            if ($db->query($sql) === TRUE) {
+                //echo "Database created successfully"."<br/>";
+                $db = mysqli_connect('localhost', 'root', $db_password, 'SearchHistory');
+                $sql = "CREATE TABLE SearchLog (
+                            id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                            UID VARCHAR(50) NOT NULL,
+                            SearchQuery VARCHAR(250) NOT NULL,
+                            Frequency BIGINT,
+                            reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                        )";
+
+                if ($db->query($sql) === TRUE) {
+                    echo "The table created successfully"."<br/>";
+
+                    $sql = "INSERT INTO SearchLog (UID, SearchQuery,Frequency)
+                    VALUES ('$UID', '$SearchQuery',1);";
+
+                    if ($db->query($sql) === TRUE) {
+                     // echo "New records created successfully"."<br/>";
+                    }
+                    else {
+                      echo "Error: " . $sql . "<br>" . $db->error ."<br/>";
+                    }
+                }
+                else {
+                  echo "Error creating table: " . $db->error."<br/>";
+                }
+            }
+            else {
+              echo "Error creating database: " . $db->error."<br/>";
+            }
+        }
+
+        exit;
+    }
+    else{
+        $sql = "
+        IF EXISTS (SELECT * FROM SearchLog WHERE UID='$UID' and SearchQuery='$SearchQuery')
+        THEN
+            UPDATE SearchLog
+            SET Frequency = Frequency+1
+            WHERE UID='$UID' and SearchQuery='$SearchQuery';
+        ELSE
+           INSERT INTO SearchLog (UID, SearchQuery, Frequency)
+           VALUES ('$UID', '$SearchQuery', 1);
+        END IF;";
+
+        if ($db->query($sql) === TRUE) {
+          //echo "New records created successfully"."<br/>";
+        }
+        else {
+          echo "Error: " . $sql . "<br>" . $db->error ."<br/>";
+        }
+    }
+
+    $db->close();
+}
 
 ////////-----------------------------------------------------------------------------------------------------
 
@@ -893,7 +969,6 @@ if (!$query) {
 			$sort = 'newest';
 		}
 	}
-
 } else {
 	// Build query for Solr
 
@@ -930,6 +1005,9 @@ if (!$query) {
 	// boost ranking of documents matching whole phrase
 	$additionalParameters['pf'] =	$additionalParameters['qf'];
 
+    if(isset($_SESSION['userid'])){
+        addSearchQueryToSearchLog($_SESSION['userid'], $query);
+    }
 }
 
 
@@ -1511,6 +1589,98 @@ if ($view == 'rss') {
 	include "templates/view.embedded.php";
 } else {
 	include "templates/view.index.php";
+}
+
+
+function getIRImage($IR){
+    $image="";
+
+    if($IR=="DANUBIUS"){
+        $image="DANUBIUS-RI.png";
+    }
+    else if($IR=="EMPHASIS"){
+        $image="EMPHASIS.png";
+    }
+    else if($IR=="SeaDataNet"){
+        $image="SeaDataNet.jpg";
+    }
+    else if($IR=="IS-ENES2"){
+        $image="ISENES.png";
+    }
+    else if($IR=="EuroGOOS"){
+        $image="EuroGOOS.png";
+    }
+    else if($IR=="ARISE"){
+        $image="arise.jpg";
+    }
+    else if($IR=="ELIXIR"){
+        $image="ELIXIR.png";
+    }
+    else if($IR=="EUROCHAMP-2020"){
+        $image="EUROCHAMP.png";
+    }
+    else if($IR=="CETAF"){
+        $image="CETAF.jpeg";
+    }
+    else if($IR=="ACTRIS"){
+        $image="actris.png";
+    }
+    else if($IR=="LTER-Europe"){
+        $image="LTER.jpg";
+    }
+    else if($IR=="INTERACT"){
+        $image="INTERACT.jpg";
+    }
+    else if($IR=="FixO3"){
+        $image="fixo3.png";
+    }
+    else if($IR=="SIOS"){
+        $image="sios.png";
+    }
+    else if($IR=="Euro-Argo"){
+        $image="euroArgo.png";
+    }
+    else if($IR=="EUFAR"){
+        $image="EUFAR.jpg";
+    }
+    else if($IR=="JERICO-NEXT"){
+        $image="JERICO.jpg";
+    }
+    else if($IR=="AnaEE"){
+        $image="anaee.png";
+    }
+    else if($IR=="IAGOS"){
+        $image="IAGOSERI.png";
+    }
+    else if($IR=="EUROFLEETS2"){
+        $image="Eurofleets.jpg";
+    }
+    else if($IR=="EMBRC"){
+        $image="EMBRC.png";
+    }
+    else if($IR=="EISCAT_3D"){
+        $image="EISCAT3D.png";
+    }
+    else if($IR=="ESONET-Vi"){
+        $image="ESONET.jpg";
+    }
+    else if($IR=="EPOS"){
+        $image="EPOS.png";
+    }
+    else if($IR=="EMSO"){
+        $image="EMSOERIC.png";
+    }
+    else if($IR=="eLTER"){
+        $image="elterRI.png";
+    }
+    else if($IR=="ICOS"){
+        $image="ICOS.jpg";
+    }
+    else if($IR=="SDN"){
+        $image="";
+    }
+
+    return $image;
 }
 
 function FacetsPreprocessing($facet, $type){

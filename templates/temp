@@ -410,8 +410,61 @@ dataEntry();
 
 
 
-
-
+        elseif(strpos($facet, "") !== false){
+            $result="EPOS";
+        }
+        elseif(strpos($facet, "") !== false){
+            $result="Euro-Argo";
+        }
+        elseif(strpos($facet, "") !== false){
+            $result="ESONET-Vi";
+            }
+        elseif(strpos($facet, "") !== false){
+            $result="EISCAT_3D";
+            }
+        elseif(strpos($facet, "") !== false){
+            $result="EMBRC";
+            }
+        elseif(strpos($facet, "") !== false){
+            $result="EUROFLEETS2";}
+        elseif(strpos($facet, "") !== false){
+            $result="IAGOS";}
+        elseif(strpos($facet, "") !== false){
+            $result="AnaEE";}
+        elseif(strpos($facet, "") !== false){
+            $result="JERICO-NEXT";}
+        elseif(strpos($facet, "") !== false){
+            $result="EUFAR";}
+        elseif(strpos($facet, "") !== false){
+            $result="Euro-Argo";}
+        elseif(strpos($facet, "") !== false){
+            $result="SIOS";}
+        elseif(strpos($facet, "") !== false){
+            $result="FixO3";}
+        elseif(strpos($facet, "") !== false){
+            $result="INTERACT";}
+        elseif(strpos($facet, "") !== false){
+            $result="LTER-Europe";}
+        elseif(strpos($facet, "") !== false){
+            $result="ACTRIS";}
+        elseif(strpos($facet, "") !== false){
+            $result="CETAF";}
+        elseif(strpos($facet, "") !== false){
+            $result="EUROCHAMP-2020";}
+        elseif(strpos($facet, "") !== false){
+            $result="ELIXIR";}
+        elseif(strpos($facet, "") !== false){
+            $result="ARISE";}
+        elseif(strpos($facet, "") !== false){
+            $result="EuroGOOS";}
+        elseif(strpos($facet, "") !== false){
+            $result="IS-ENES2";}
+        elseif(strpos($facet, "") !== false){
+            $result="SeaDataNet";}
+        elseif(strpos($facet, "") !== false){
+            $result="EMPHASIS";}
+        elseif(strpos($facet, "") !== false){
+            $result="DANUBIUS";}
 
 
 

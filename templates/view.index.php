@@ -6,7 +6,7 @@
 <head>
   <title><?= t('Search') . ($query ? ': ' . htmlspecialchars($query) : '') ?></title>
   <link rel="alternate" type="application/rss+xml" title="RSS" href="<?= $link_rss ?>">
-
+    <link rel="icon" href="/images/envri_logo_final.png" type="image/x-icon" />
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -48,7 +48,7 @@
         <div class="sidebar-brand-icon rotate-n-15">
 
         </div>
-        <div style="background-color:white; width:100%;padding:5px; border-radius:10px;"><img src="images/envri_logo_final.png" style="width:55px; height:40px;"></div>
+        <div style="background-color:white; width:100%;padding:5px; border-radius:10px;"><img src="images/envri_logo_final.png" style="width:55px; height:40px;" /></div>
       </a>
 
       <!-- Divider -->
@@ -117,43 +117,20 @@
             }
         }
         ?>
-        <a class="nav-link" href="<?= $link_graph ?>" target="_blank">
+        <!--
+            <a class="nav-link" href="<?= $link_graph ?>" target="_blank">
+                  <i class="fab fa-hubspot"></i>
+                  <span>Graph Visualization</span>
+            </a>
+        -->
+        <a class="nav-link" href="OntologyVisualization/OntologyVisualization.php" target="_blank">
               <i class="fab fa-hubspot"></i>
-              <span>Graph Visualization</span>
+              <span>Ontology Visualization</span>
         </a>
+
        <!-- ------------------------------------------------------------------ -->
       </li>
 
-<?php if (isset($_SESSION['userid']) && $_SESSION['role']=="admin"):  ?>
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-      <div class="sidebar-heading">
-        Knowledge base
-      </div>
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSettings" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-cogs"></i>
-          <span>Settings</span>
-        </a>
-        <div id="collapseSettings" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Configuration:</h6>
-            <a class="collapse-item" target="_blank"
-             title="Manage structure, navigation and interactive filters by ontologies like thesauri or lists of named entities like organizations, persons or locations"
-             href="/search-apps/thesaurus/"><?php echo t("manage_structure"); ?></a>
-            <a class="collapse-item" target="_blank" title="Manage datasources"
-             href="/search-apps/datasources/"><?php echo t("manage_datasources"); ?></a>
-            <a class="collapse-item" target="_blank" title="Configuration"
-             href="/search-apps/setup/"><?php echo t("config"); ?></a>
-
-             <a class="collapse-item" title="Import structured data"
-             href="<?php echo buildurl(null, 'view', 'ImportTuples', null, null); ?>">Import tuples</a>
-
-          </div>
-        </div>
-      </li>
-<?php endif ?>
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
@@ -236,21 +213,43 @@
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Profile
                 </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Settings
-                </a>
 
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Search Log
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="<?php echo buildurl(null, 'view', 'LoginPage', null, null); ?>" data-toggle="modal" data-target="#logoutModal">
-                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Logout
-                </a>
-              </div>
+            <?php if ($_SESSION['role'] =="admin"):  ?>
+            <div class="dropdown-divider"></div>
+             <a class="dropdown-item" target="_blank"
+                 title="Manage structure, navigation and interactive filters by ontologies like thesauri or lists of named entities like organizations, persons or locations"
+                 href="/search-apps/thesaurus/">
+                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                 <?php echo t("manage_structure"); ?>
+             </a>
+            <a class="dropdown-item" target="_blank" title="Manage datasources"
+                href="/search-apps/datasources/">
+                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                <?php echo t("manage_datasources"); ?>
+             </a>
+            <a class="dropdown-item" target="_blank" title="Configuration"
+                href="/search-apps/setup/">
+                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                <?php echo t("config"); ?>
+            </a>
+             <a class="dropdown-item" title="Import structured data"
+                href="<?php echo buildurl(null, 'view', 'ImportTuples', null, null); ?>">
+                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                Import tuples
+             </a>
+
+            <?php endif ?>
+             <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="<?php echo buildurl(null, 'view', 'SearchLog', null, null); ?>">
+              <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+              Search Log
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="<?php echo buildurl(null, 'view', 'LoginPage', null, null); ?>" data-toggle="modal" data-target="#logoutModal">
+              <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+              Logout
+            </a>
+          </div>
             </li>
     <?php else: ?>
             <!-- Nav Item - User Information -->
@@ -341,6 +340,26 @@
                 include 'templates/view.audios.php';
                 include 'templates/pagination.php';
 
+              }
+              elseif($view == 'SearchLog'){
+                   ?>
+                    <div class="container-fluid">
+                      <!-- Content Row -->
+                      <div class="row">
+                        <div class="col-lg-12 mb-4">
+                          <div class="card shadow mb-12">
+                            <div class="card-header py-12">
+                              <h6 class="m-0 font-weight-bold text-primary">Search Log</h6>
+                            </div>
+                            <div class="card-body" style="min-height:750px">
+                            <?php
+                                include 'templates/SearchLog.php';
+                             ?>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                <?php
               }
               elseif ($view == 'table') {
 
