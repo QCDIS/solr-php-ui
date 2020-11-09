@@ -8222,7 +8222,7 @@ webvowl.app =
 	  var missingImportsWarning = false;
 	  var showLoadingDetails = false;
 	  var visibilityStatus = true;
-	  
+
 	  var DEFAULT_JSON_NAME = "foaf"; // This file is loaded by default
 	  var conversion_sessionId;
 	  

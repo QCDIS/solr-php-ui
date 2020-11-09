@@ -79,12 +79,12 @@
 
         <a class="nav-link" href="<?php echo buildurl($params, 'view', 'Websites', null, null); ?>">
           <i class="fas fa-globe"></i>
-          <span>Websites</span>
+          <span>Webpages</span>
         </a>
 
         <a class="nav-link" href="<?php echo buildurl($params, 'view', 'Services', null, null); ?>">
           <i class="fab fa-uikit"></i>
-          <span>Services</span>
+          <span>Service Catalogs</span>
         </a>
 
         <a class="nav-link" href="<?php echo buildurl($params, 'view', 'ResearchInfrastructures', null, null); ?>">
@@ -117,17 +117,30 @@
             }
         }
         ?>
+        </li>
+       <hr class="sidebar-divider">
+          <!-- Heading -->
+          <div class="sidebar-heading">
+            Visualization
+          </div>
+
+          <!-- Nav Item - Pages Collapse Menu -->
+          <li class="nav-item">
         <!--
             <a class="nav-link" href="<?= $link_graph ?>" target="_blank">
                   <i class="fab fa-hubspot"></i>
                   <span>Graph Visualization</span>
             </a>
         -->
-        <a class="nav-link" href="OntologyVisualization/OntologyVisualization.php" target="_blank">
-              <i class="fab fa-hubspot"></i>
-              <span>Ontology Visualization</span>
-        </a>
-
+            <a class="nav-link" href="<?php echo buildurl($params, 'view', 'SearchResultVisualizationGraph','q', $query,); ?>"  target="_blank" >
+                  <i class="fab fa-hubspot"></i>
+                  <span>Ontology</span>
+            </a>
+            <a class="nav-link" href="SPARQLendpointVisualization/EndpointVisulization.php" target="_blank">
+                  <i class="fas fa-stream"></i>
+                 <span>Linked Data</span>
+            </a>
+         </li>
        <!-- ------------------------------------------------------------------ -->
       </li>
 
@@ -312,6 +325,11 @@
                 include 'templates/view.list.php';
                 include 'templates/pagination.php';
 
+              }
+              elseif($view=='SearchResultVisualizationGraph'){
+
+                 include 'templates/pagination.php';
+                 include 'templates/SearchResultVisualizationGraph.php';
               }
               elseif ($view == 'preview') {
 

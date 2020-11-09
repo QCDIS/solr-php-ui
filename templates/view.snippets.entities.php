@@ -1,6 +1,7 @@
 <?php
 $CurrentFacets=array();
 
+
 foreach ($facets as $field => $facet):
           foreach ($facet['values'] as $value):
             $val=FacetsPreprocessing($value['value'],$facet['name']);

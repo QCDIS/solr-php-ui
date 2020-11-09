@@ -2,6 +2,15 @@
 
 session_start();
 
+//-------------------------------------------------------------------------Prevent Caching
+header("Expires: Tue, 03 Jul 2001 06:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Connection: close");
+//-------------------------------------------------------------------------
+
 if(!isset($_SESSION['SolrCurrentCore'])){
     $_SESSION['SolrCurrentCore']="opensemanticsearch";
 }
@@ -795,6 +804,11 @@ $limit_list = 10;
 if ($view=='list') {
 	$limit = $limit_list;
 }
+
+else if ($view=='SearchResultVisualizationGraph') {
+	$limit = 10000;
+}
+
 elseif ($view=='rss') {
 	$limit = 20;
 }
@@ -1028,7 +1042,7 @@ if ($view != 'table' && $view != 'preview') {
 
 
 // if listview add (custom) fields to results for printing named entites snippets
-if ($view == 'list') {
+if ($view == 'list' || $view=='SearchResultVisualizationGraph') {
 	foreach ($cfg['facets'] as $facet => $facet_config) {
 
 		if (isset($facet_config['snippets_enabled']) && $facet_config['snippets_enabled'] == true) {
