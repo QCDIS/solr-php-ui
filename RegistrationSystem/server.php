@@ -6,7 +6,6 @@
 
     $_SESSION = array();
 
-
 	$username = "";
     $db_password="fachmann573";
 	$email    = "";

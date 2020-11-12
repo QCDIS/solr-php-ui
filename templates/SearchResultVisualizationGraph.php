@@ -3,6 +3,99 @@
 session_start();
 require_once(__DIR__ . '/helpers.php');
 $result_nr = 0;
+
+ $RI_List = array();
+ $WebsiteList = array();
+ $WebpageList = array();
+ $Website_RI_List=array();
+
+ $str_genralInfo="";
+
+ $str_website_RI_class="";
+ $str_website_RI_classAttribute="";
+
+ $str_property="";
+ $str_propertyAttribute="";
+
+foreach ($results->response->docs as $doc):
+
+  if(!is_valid_result($doc)) continue;
+
+    //---------------------------------------------------- Extract knowledge (1)
+    $result_nr++;
+    $id = $doc->id;
+    $container = isset($doc->container_s) ? $doc->container_s : NULL;
+    list ($url_display, $url_display_basename, $url_preview, $url_openfile, $url_annotation, $url_container_display, $url_container_display_basename) = get_urls($doc->id, $container);
+    $url_prioritize = NULL;
+    //---------------------------------------------------- Extract knowledge (2)
+    $Website= getBaseURL($doc);
+    $RIs = getResearchInfrastructures($result_nr,$doc, $cfg);
+    $Webpage_title = getTitle($doc);
+    $Webpage_Url=$url_openfile;
+    $Webpage_description=getBriefDescription($doc, $cfg, $results, $result_nr,$results->highlighting->$id->content_txt);
+    //----------------------------------------------------
+
+    if($view=='VisualizeWebpages'){
+
+        $Website=$Webpage_title;
+        $WesiteDescrition="";//$Webpage_description;
+        $Website_URL=$Webpage_Url;
+    }
+    else{
+        $Website_URL=$Webpage_Url;
+        $WesiteDescrition="Please visit the website for more information: " . $Website_URL;
+    }
+
+
+        if($Website!="" and !in_array($Website,$WebsiteList)){
+            array_push($WebsiteList,$Website);
+            $str_website_RI_class= (strlen($str_website_RI_class)>0 ? $str_website_RI_class ."," : "") . '{"id" : "'.$Website.'", "type" : "owl:Class" } ';
+            $str_website_RI_classAttribute=(strlen($str_website_RI_classAttribute)>0 ? $str_website_RI_classAttribute ."," : "") . '{ "label" : "'.$Website.'", "id" : "'. $Website.'" ,
+            "comment" : {"en" : "'. $WesiteDescrition .'"}, "iri": "'. $Website_URL.'"  }';
+        }
+
+    foreach ($RIs as $RI):
+        if($RI!="" and !in_array($RI,$RI_List)){
+            array_push($RI_List,$RI);
+            $str_website_RI_class= (strlen($str_website_RI_class)>0 ? $str_website_RI_class ."," : "") . '{"id" : "'.$RI.'", "type" : "rdfs:Datatype" }';
+            $str_website_RI_classAttribute=(strlen($str_website_RI_classAttribute)>0 ? $str_website_RI_classAttribute ."," : "") . '{ "label" : "'.$RI.'", "id" : "'. $RI.'" }';
+        }
+        $Website_RI_List[$Website][$RI]++;
+    endforeach;
+endforeach;
+
+$sum=0;
+foreach ($WebsiteList as $W):
+    foreach ($RI_List as $I):
+        if(isset($Website_RI_List[$W][$I])){
+
+            $sum++;
+            $propertyTitle=$W."_".$I;
+            $str_property= (strlen($str_property)>0 ? $str_property ."," : "") . '{"id" : "'.$propertyTitle.'", "type" : "owl:objectProperty" }';
+            $str_propertyAttribute= (strlen($str_propertyAttribute)>0 ? $str_propertyAttribute ."," : "") .
+            '{ "id": "'.$propertyTitle.'" , "domain" : "'.$W.'",  "range" : "'.$I.'", "label": "'.$Website_RI_List[$W][$I].'"}';
+        }
+    endforeach;
+endforeach;
+
+GenerateJSONFileVisualization( $str_website_RI_class,
+                           $str_website_RI_classAttribute,
+                           $str_property,
+                           $str_propertyAttribute,
+                           count($WebsiteList),
+                           count($RI_List),
+                           count($WebpageList),
+                           $sum,
+                           (count($WebsiteList) + count($RI_List)),
+                           '0',
+                           "Visualization of the search results.",
+                           $query,
+                           "OntologyVisualization/data/foaf.json" );
+
+
+
+echo "<script> window.open('/OntologyVisualization/OntologyVisualization.php','_self'); </script>";
+
 //----------------------------------------------------------------------------------------
 function is_valid_result($doc) {
     $Result=$doc->content_type_ss;
@@ -115,124 +208,52 @@ function getBriefDescription($doc, $cfg, $results, $result_nr,$content_txt){
       return  $briefDescription;
 }
 //----------------------------------------------------------------------------------------
-
- $RI_datatypes = array();
- $websites_classes = array();
- $webpages_properties = array();
- $website_IR=array();
-
-
- $str_genralInfo="";
-
- $str_website_RI_class="";
- $str_website_RI_classAttribute="";
-
- $str_property="";
- $str_propertyAttribute="";
-
-foreach ($results->response->docs as $doc):
-
-  if(!is_valid_result($doc)) continue;
-
-  //---------------------------------------------------- Extract knowledge (1)
-  $result_nr++;
-  $id = $doc->id;
-  $container = isset($doc->container_s) ? $doc->container_s : NULL;
-  list ($url_display, $url_display_basename, $url_preview, $url_openfile, $url_annotation, $url_container_display, $url_container_display_basename) = get_urls($doc->id, $container);
-  $url_prioritize = NULL;
-  //---------------------------------------------------- Extract knowledge (2)
-  $Website= getBaseURL($doc);
-  $RIs = getResearchInfrastructures($result_nr,$doc, $cfg);
-  $Webpage_title = getTitle($doc);
-  $Webpage_Url=$url_openfile;
-  $Webpage_description=getBriefDescription($doc, $cfg, $results, $result_nr,$results->highlighting->$id->content_txt);
-  //----------------------------------------------------
-
-    if($Website!="" and !in_array($Website,$websites_classes)){
-        array_push($websites_classes,$Website);
-        $str_website_RI_class= (strlen($str_website_RI_class)>0 ? $str_website_RI_class ."," : "") . '{"id" : "'.$Website.'", "type" : "owl:Class" } ';
-        $str_website_RI_classAttribute=(strlen($str_website_RI_classAttribute)>0 ? $str_website_RI_classAttribute ."," : "") . '{ "label" : "'.$Website.'", "id" : "'. $Website.'" }';
-    }
-
-    foreach ($RIs as $RI):
-        if($RI!="" and !in_array($RI,$RI_datatypes)){
-            array_push($RI_datatypes,$RI);
-            $str_website_RI_class= (strlen($str_website_RI_class)>0 ? $str_website_RI_class ."," : "") . '{"id" : "'.$RI.'", "type" : "rdfs:Datatype" }';
-            $str_website_RI_classAttribute=(strlen($str_website_RI_classAttribute)>0 ? $str_website_RI_classAttribute ."," : "") . '{ "label" : "'.$RI.'", "id" : "'. $RI.'" }';
+function GenerateJSONFileVisualization($class, $classAttribute, $property, $propertyAttribute,
+                                       $classCount, $datatypeCount, $objectPropertyCount, $propertyCount,
+                                       $nodeCount, $individualCount, $description, $querytitle, $filename){
+    $str_genralInfo='
+      "_comment" : " '. $querytitle .'",
+      "header" : {
+        "languages" : [ "en"],
+        "baseIris" : [ "http://www.w3.org/2000/01/rdf-schema", "http://visualdataweb.de/test_cases_vowl/ontology/72" ],
+        "iri" : "",
+        "version" : "1.0",
+        "author" : [],
+        "description" : {
+          "undefined" : "'. $description .'"
+        },
+        "title" : {
+          "undefined" : "Search query: '. $querytitle .'"
         }
+      },
+      "namespace" : [ ],
+      "metrics" : {
+        "classCount" : '   . $classCount .',
+        "datatypeCount" : '. $datatypeCount .',
+        "objectPropertyCount" : '. $objectPropertyCount .',
+        "propertyCount" : '. $propertyCount .',
+        "nodeCount" : '    . $nodeCount .',
+        "individualCount" : '. $individualCount .'
+      }';
 
-        $website_IR[$Website][$RI]++;
+    $JSON_File='
+    { '. $str_genralInfo. ',
+     "class" : ['. $class .'],
+     "classAttribute" : ['. $classAttribute .'],
+     "property" : ['. $property .'],
+     "propertyAttribute" : ['. $propertyAttribute .']
+    }';
 
-        ///----------------------------
-//        $Pagetitle=$Webpage_title."_".$RI;
-//        array_push($webpages_properties,$Pagetitle);
-//        $str_property= (strlen($str_property)>0 ? $str_property ."," : "") . '{"id" : "'.$Pagetitle.'", "type" : "owl:objectProperty" }';
-//        $str_propertyAttribute= (strlen($str_propertyAttribute)>0 ? $str_propertyAttribute ."," : "") . '{ "id": "'.$Pagetitle.'" , "domain" : "'.$Website.'",  "range" : "'.$RI.'", "label": "'.$Pagetitle.'" }';
-       ///----------------------------
+    //echo $JSON_File;
 
-    endforeach;
-
-    //if($Webpage_title!="" and !in_array($Webpage_title,$webpages_properties)){
-    //    array_push($webpages_properties,$Webpage_title);
-    //}
-
-endforeach;
-
-$sum=0;
-foreach ($websites_classes as $W):
-    foreach ($RI_datatypes as $I):
-        if(isset($website_IR[$W][$I])){
-            $sum++;
-            $propertyTitle=$W."_".$I;
-            $str_property= (strlen($str_property)>0 ? $str_property ."," : "") . '{"id" : "'.$propertyTitle.'", "type" : "owl:objectProperty" }';
-            $str_propertyAttribute= (strlen($str_propertyAttribute)>0 ? $str_propertyAttribute ."," : "") .
-            '{ "id": "'.$propertyTitle.'" , "domain" : "'.$W.'",  "range" : "'.$I.'", "label": "'.$website_IR[$W][$I].'"}';
-        }
-    endforeach;
-endforeach;
+    $myfile = fopen($filename, "w") or die("Unable to open file!");
+    fwrite($myfile, $JSON_File);
+    fclose($myfile);
+}
+//----------------------------------------------------------------------------------------
 
 
 
-$str_genralInfo='
-  "_comment" : " '. $query .'",
-  "header" : {
-    "languages" : [ "en"],
-    "baseIris" : [ "http://www.w3.org/2000/01/rdf-schema", "http://visualdataweb.de/test_cases_vowl/ontology/72" ],
-    "iri" : "",
-    "version" : "1.0",
-    "author" : [],
-    "description" : {
-      "undefined" : "Visualization of the search results."
-    },
-    "title" : {
-      "undefined" : "Search query: '. $query .'"
-    }
-  },
-  "namespace" : [ ],
-  "metrics" : {
-    "classCount" : '   . count($websites_classes) .',
-    "datatypeCount" : '. count($RI_datatypes) .',
-    "objectPropertyCount" : '.count($webpages_properties).',
-    "propertyCount" : '. $sum .',
-    "nodeCount" : '    . (count($websites_classes) + count($RI_datatypes)) .',
-    "individualCount" : 0
-  }';
-
-$JSON_File='
-{ '. $str_genralInfo. ',
- "class" : ['. $str_website_RI_class .'],
- "classAttribute" : ['. $str_website_RI_classAttribute .'],
- "property" : ['. $str_property .'],
- "propertyAttribute" : ['. $str_propertyAttribute .']
-}';
-
-$myfile = fopen("OntologyVisualization/data/foaf.json", "w") or die("Unable to open file!");
-fwrite($myfile, $JSON_File);
-fclose($myfile);
-
-echo '<script>  </script>';
-
-echo "<script> window.open('/OntologyVisualization/OntologyVisualization.php','_self'); </script>";
 ?>
 
 

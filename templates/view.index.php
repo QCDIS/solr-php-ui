@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php
+session_start();
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -69,11 +71,11 @@
         <div id="collapseQuerString" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Query string</h6>
-            <a class="collapse-item" href="./"><?php echo t("New search"); ?></a>
-            <a class="collapse-item" data-toggle="searchoptions" onclick="AdvancedSearch()"><?php echo t("advanced_search"); ?></a>
+            <a class="collapse-item" href="./"> <i class="fas fa-glasses"></i> &nbsp; <?php echo t("New search"); ?></a>
+            <a class="collapse-item" data-toggle="searchoptions" onclick="AdvancedSearch()"> <i class="fas fa-sliders-h"></i> &nbsp; <?php echo t("advanced_search"); ?></a>
             <a class="collapse-item" target="_blank"
              title="Search with a list if there are results for each list entry"
-             href="/search-apps/search-list/"><?php echo t("search_by_list"); ?></a>
+             href="/search-apps/search-list/"> <i class="fas fa-clipboard-list"></i> &nbsp; <?php echo t("search_by_list"); ?></a>
           </div>
         </div>
 
@@ -132,15 +134,24 @@
                   <span>Graph Visualization</span>
             </a>
         -->
-            <a class="nav-link" href="<?php echo buildurl($params, 'view', 'SearchResultVisualizationGraph','q', $query,); ?>"  target="_blank" >
-                  <i class="fab fa-hubspot"></i>
-                  <span>Ontology</span>
-            </a>
-            <a class="nav-link" href="SPARQLendpointVisualization/EndpointVisulization.php" target="_blank">
-                  <i class="fas fa-stream"></i>
-                 <span>Linked Data</span>
-            </a>
+
+
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseVisualization" aria-expanded="true" aria-controls="collapseTwo">
+          <i class="fas fa-sitemap"></i>
+          <span>Results</span>
+        </a>
+        <div id="collapseVisualization" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Search Results</h6>
+            <a class="collapse-item"  href="<?php echo buildurl($params, 'view', 'VisualizeWebpages','q', $query,); ?>"  target="_blank" > <i class="fas fa-list-ul"></i> &nbsp; Webpages</a>
+            <a class="collapse-item"  href="<?php echo buildurl($params, 'view', 'VisualizeWebsites','q', $query,); ?>"  target="_blank" > <i class="far fa-list-alt"></i> &nbsp; Websites</a>
+          </div>
+        </div>
          </li>
+      <li class="nav-item">
+        <a class="nav-link" href="SPARQLendpointVisualization/EndpointVisulization.php" target="_blank"> <i class="fas fa-project-diagram"></i> <span> SPARQL endpoints </span></a>
+      </li>
+
        <!-- ------------------------------------------------------------------ -->
       </li>
 
@@ -299,6 +310,28 @@
         //    }
 
             // if no results, show message
+
+            if ($view == 'ImportTuples') {
+
+               ?>
+                <div class="container-fluid">
+                  <!-- Content Row -->
+                  <div class="row">
+                    <div class="col-lg-12 mb-4">
+                      <div class="card shadow mb-12">
+                        <div class="card-header py-12">
+                          <h6 class="m-0 font-weight-bold text-primary">Import Tuples</h6>
+                        </div>
+                        <div class="card-body" style="min-height:740px">
+                        <?php   include 'templates/ImportTuples.php'; ?>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+            <?php
+            }
+            else
+            {
             if ($total == 0) {
               ?>
               <div id="noresults" class="panel"><?php
@@ -326,7 +359,11 @@
                 include 'templates/pagination.php';
 
               }
-              elseif($view=='SearchResultVisualizationGraph'){
+              elseif($view=='VisualizeWebsites'){
+                 include 'templates/pagination.php';
+                 include 'templates/SearchResultVisualizationGraph.php';
+              }
+              elseif($view=='VisualizeWebpages'){
 
                  include 'templates/pagination.php';
                  include 'templates/SearchResultVisualizationGraph.php';
@@ -521,26 +558,6 @@
                 </div>
             <?php
               }
-              elseif ($view == 'ImportTuples') {
-
-               ?>
-                <div class="container-fluid">
-                  <!-- Content Row -->
-                  <div class="row">
-                    <div class="col-lg-12 mb-4">
-                      <div class="card shadow mb-12">
-                        <div class="card-header py-12">
-                          <h6 class="m-0 font-weight-bold text-primary">Import Tuples</h6>
-                        </div>
-                        <div class="card-body" style="min-height:740px">
-                        <?php   include 'templates/ImportTuples.php'; ?>
-                        </div>
-                      </div>
-                  </div>
-                </div>
-            <?php
-
-              }
               elseif ($view == 'OSSTeam') {
                     include 'templates/OSSTeam.php';
               }
@@ -554,9 +571,9 @@
   //                  $_SESSION['SolrCurrentCore']="opensemanticsearch";
 
  //               }
-//                else if ($view == 'ResearchInfrastructures'){
-   //                 $_SESSION['SolrCurrentCore']="ResearchInfrastructures";
-     //           }
+                   if ($view == 'ResearchInfrastructures'){
+                       $solrquery='ICOS';
+                  }
       //          else if ($view == 'Services'){
        //             $_SESSION['SolrCurrentCore']="Services";
       //          }
@@ -571,8 +588,9 @@
                 include 'templates/view.list.php';
                 include 'templates/pagination.php';
 
-              }
-            } // if total <> 0: there were documents
+               }
+              } // if total <> 0: there were documents
+            }
             ?>
           </div><?php ?>
         </div>

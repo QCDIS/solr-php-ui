@@ -5,11 +5,11 @@
         <div>Choose file: &nbsp;</div>
         <div>
             <input type="file" class="file-input" name="file-input">
-
                     <input type="submit" id="btn-submit" name="upload" class="btn btn-primary"
             value="Upload">
         </div>
     </div>
+    <input type="submit" id="btn-submit" name="deleteAll" class="btn btn-primary" value="delete all" />
 </form>
 <?php if(!empty($response)) { ?>
 <div class="response <?php echo $response["type"]; ?>
@@ -19,6 +19,11 @@
 <?php }?>
 
 <?php
+if(!empty(isset($_POST["deleteAll"]))) {
+    echo "deleting...";
+    DeletingAllDocuments($solr);
+}
+
 if(!empty(isset($_POST["upload"]))) {
     if (($fp = fopen($_FILES["file-input"]["tmp_name"], "r")) !== FALSE) {
         preprocessing($_FILES["file-input"]["tmp_name"]);
@@ -133,13 +138,23 @@ function addNewDocumentToSolr($solr,$ContentType,$BaseURL,$PageURL,
         $document->dc_title_ss=$TitleTxt;
         $document->content_txt=$MainText;
 
-        print_r("okay 1");
+//        print_r("okay 1");
 
         $solr->addDocument($document);
 
-        print_r("okay 2");
+//        print_r("okay 2");
 
 
+}
+
+function DeletingAllDocuments($solr){
+
+
+    //This will erase the entire index
+    $solr->deleteByQuery("*:*");
+    $solr->commit();
+
+    print_r("All docs have been deleted!");
 }
 
 function uploadCSVfileToSolr($filename, $solr){
@@ -148,7 +163,7 @@ function uploadCSVfileToSolr($filename, $solr){
     $ParentPageTitle="null";
     $SpaceKey="null";
     $SpaceKeyName="null";
-    $Wikilink="null";
+    $Wikilink="[* STANDARD DOC RI *]";
     $path0="null";
     $path1="null";
     $path2="null";

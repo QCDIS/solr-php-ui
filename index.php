@@ -1,3 +1,4 @@
+
 <?php
 
 session_start();
@@ -79,6 +80,7 @@ $cfg['disable_view_words'] = false;
 header('Content-Type: text/html; charset=utf-8');
 
 
+
 // include configs
 include 'config/config.php';
 include 'config/config.webadmin.php';
@@ -107,7 +109,7 @@ function mask_query ( $query, $facets=array() ) {
     // query, because then ':' is a operator to select a facet for query part.
 
 		$query = str_replace($facet.'\:', $facet.':', $query);
-		
+
 		// maybe todo:
 		// only if startswith (if startswith - facet, too)
 		// or after space or (
@@ -352,7 +354,7 @@ global $cfg;
 
 // get the label and uri of a (mixed) field from Solr index which stores both in one field
 function get_preflabel_and_uri($preflabel_and_uri) {
-	
+
 	// extract lanbel and uri from format "preferred label <uri>"
 	if (preg_match('/(.+)\ \<(\S+)\>$/', $preflabel_and_uri, $matches)) {
 		$label = $matches[1];
@@ -408,12 +410,12 @@ function get_fields(&$doc, $exclude=array(), $exclude_prefixes=array(), $exclude
 	   }
 
 	  }
-	  
+
 	  // if not excluded, include field to result
 	  if (!$exclude_field) {
 	    $fields[] = $field;
 	  };
-	
+
 	}
 
 	if ($sort) {
@@ -467,7 +469,7 @@ function print_facet(&$results, $facet_field, $facet_label, $facets_limit, $view
 	if ($pathfacet) {
 		if (isset($facets_limit[$pathfacet])) {
 			$facetlimit = $facets_limit[$pathfacet];
-		}	
+		}
 	} else {
 		if (isset($facets_limit[$facet_field])) {
 			$facetlimit = $facets_limit[$facet_field];
@@ -683,7 +685,7 @@ function strip_empty_lines($s, $max_empty_lines) {
 		// if only white spaces
 		if ( preg_match("/^[\s]*$/", $line) )
 		{
-				
+
 			$emptylines++;
 
 			// if not max, write empty line to result
@@ -698,7 +700,7 @@ function strip_empty_lines($s, $max_empty_lines) {
 		} else { // char is not newline, so reset newline counter and write char to result
 			$first = false;
 			$emptylines = 0;
-				
+
 			$result .= $line;
 		}
 
@@ -771,7 +773,7 @@ foreach ($cfg['facets'] as $facet=>$facet_value) {
 	} elseif(isset($cfg['facets'][$facet]['facet_limit'])) {
 		$facets_limit[$facet] = $cfg['facets'][$facet]['facet_limit'];
 	}
-	
+
 }
 
 
@@ -805,8 +807,8 @@ if ($view=='list') {
 	$limit = $limit_list;
 }
 
-else if ($view=='SearchResultVisualizationGraph') {
-	$limit = 10000;
+else if ($view=='VisualizeWebsites' || $view=="VisualizeWebpages") {
+	$limit = 100000;
 }
 
 elseif ($view=='rss') {
@@ -962,7 +964,7 @@ if ($cfg['etl_status_warning']) {
 
 	try {
 		$results = $solr->search('*:*', 0, 0, $etl_status_solr_query_params);
-		
+
 		$count_open_etl_tasks_extraction = (int)($results->facet_counts->facet_queries->count_open_etl_tasks_extraction);
 		$count_open_etl_tasks_ocr = (int)($results->facet_counts->facet_queries->count_open_etl_tasks_ocr);
 	} catch (Exception $e) {
@@ -989,7 +991,7 @@ if (!$query) {
 	// mask query for Solr
 	$solrquery = mask_query( $query, $cfg['facets'] );
 
-	
+
 	if ($operator == 'Phrase') {
 		$solrquery = '"' . $solrquery . '"';
 	}
@@ -1005,12 +1007,12 @@ if (!$query) {
 			$additionalParameters['qf'] .= ' text_txt_'.$language.'^2';
 		}
 	}
-	
+
 	if ($synonyms == true) {
 
 		// add fields with synonyms to query fields
 		$additionalParameters['qf'] .= ' synonyms^1';
-	
+
 		foreach($cfg['languages'] as $language) {
 			$additionalParameters['qf'] .= ' synonyms_'.$language.'^1';
 		}
@@ -1042,7 +1044,7 @@ if ($view != 'table' && $view != 'preview') {
 
 
 // if listview add (custom) fields to results for printing named entites snippets
-if ($view == 'list' || $view=='SearchResultVisualizationGraph') {
+if ($view == 'list' || $view=='VisualizeWebsites' || $view=="VisualizeWebpages") {
 	foreach ($cfg['facets'] as $facet => $facet_config) {
 
 		if (isset($facet_config['snippets_enabled']) && $facet_config['snippets_enabled'] == true) {
@@ -1132,7 +1134,7 @@ foreach ($cfg['facets'] as $configured_facet => $facet_config) {
 	if (isset($facet_config['tree']) && $facet_config['tree'] == true) {
 
 		$arr_facets[] = $configured_facet . '0' . $pathfacet_suffix;
-		
+
 	} else {
 		if ($configured_facet != 'path') {
 			$arr_facets[] = $configured_facet;
@@ -1147,7 +1149,7 @@ foreach ($cfg['facets'] as $configured_facet => $facet_config) {
 		$pathfacet = $configured_facet . '0' . $pathfacet_suffix;
 
 		$cfg['facets'][$configured_facet]['pathfacet'] = $pathfacet;
-	
+
 		// limit / count of values in path facet
 		if (isset($facets_limit[$configured_facet])) {
 			$additionalParameters['f.' . $pathfacet . '.facet.limit'] = $facets_limit[$configured_facet] + 1;
@@ -1170,44 +1172,44 @@ foreach ($cfg['facets'] as $configured_facet => $facet_config) {
 		foreach ($selected_facets[$selected_facet] as $selected_value) {
 
 			if (isset($facet_config['tree']) && $facet_config['tree'] == true) {
-	
+
 				$trimmedpath = trim($selected_value, $pathfacet_valueseparator);
 				$paths = explode($pathfacet_valueseparator, $trimmedpath);
-	
+
 				// if path check which path_x_s facet to select
 				$pathdeepth = count($paths);
 
 				$pathfacet = $configured_facet . $pathdeepth . $pathfacet_suffix;
-				
+
 				$arr_facets[] = $pathfacet;
-	
+
 				// limit / count of values in facet
 				if (isset($facets_limit[$selected_facet])) {
 					$additionalParameters['f.' . $pathfacet . '.facet.limit'] = $facets_limit[$selected_facet] + 1;
 				}
-	
+
 				$cfg['facets'][$configured_facet]['pathfacet'] = $pathfacet;
-				
+
 				$cfg['facets'][$configured_facet]['path'] = $selected_value;
-				
+
 				if ($pathfacet_valueseparator == '/') {
 					$pathfilter = path2query($selected_value, $selected_facet, $pathfacet_suffix, $pathfacet_valueseparator);
 					$solrfilterquery .= ' +' . $pathfilter;
 				} else {
 
 					$filterpathdeepth = count($paths) - 1;
-					
+
 					$filterpathfacet = $configured_facet . $filterpathdeepth . $pathfacet_suffix;
 					#mask special chars in facet name
 					$solrfacet = addcslashes($filterpathfacet, '+-&|!(){}[]^"~*?:\/ ');
 					#mask special chars in facet value
 					$solrfacetvalue = addcslashes($selected_value, '+-&|!(){}[]^"~*?:\/ ');
 					$solrfacetvalue = str_replace("\t", "\\\t", $solrfacetvalue);
-				
+
 					$solrfilterquery .= ' +' . $solrfacet . ':' . $solrfacetvalue;
-				
+
 				}
-				
+
 				# filter only facet values of the opened path for the case there are additional other values of a multi valued taxonomy at same depth from other hierarchy in the documents that match the selected hierarchy
 				if ($configured_facet != 'path') { // do not do that for not multivalued path index structure, where only part of path (without parents) per taxonomy field
 					$additionalParameters['f.' . $pathfacet . '.facet.prefix'] = $selected_value . "\t";
@@ -1219,7 +1221,7 @@ foreach ($cfg['facets'] as $configured_facet => $facet_config) {
 				#mask special chars in facet value
 				$solrfacetvalue = addcslashes($selected_value, '+-&|!(){}[]^"~*?:\/ ');
 				$solrfacetvalue = str_replace("\t", "\\\t", $solrfacetvalue);
-				
+
 				$solrfilterquery .= ' +' . $solrfacet . ':' . $solrfacetvalue;
 			}
 		}
@@ -1230,12 +1232,12 @@ foreach ($cfg['facets'] as $configured_facet => $facet_config) {
 
 		$deselected_facet = $configured_facet;
 		foreach ($deselected_facets[$deselected_facet] as $deselected_value) {
-	
+
 			if (isset($facet_config['tree']) && $facet_config['tree'] == true) {
-				
+
 				$trimmedpath = trim($deselected_value, $pathfacet_valueseparator);
 				$paths = explode($pathfacet_valueseparator, $trimmedpath);
-	
+
 				// if path check which path_x_s facet to select
 				$pathdeepth = count($paths);
 
@@ -1249,15 +1251,15 @@ foreach ($cfg['facets'] as $configured_facet => $facet_config) {
 				} else {
 
 					$filterpathdeepth = count($paths) - 1;
-					
+
 					$filterpathfacet = $configured_facet . $filterpathdeepth . $pathfacet_suffix;
 					#mask special chars in facet name
 					$solrfacet = addcslashes($filterpathfacet, '+-&|!(){}[]^"~*?:\/ ');
 					#mask special chars in facet value
 					$solrfacetvalue = addcslashes($deselected_value, '+-&|!(){}[]^"~*?:\/ ');
 					$solrfacetvalue = str_replace("\t", "\\\t", $solrfacetvalue);
-				
-					$solrfilterquery .= ' -(' . $solrfacet . ':' . $solrfacetvalue . ')';				
+
+					$solrfilterquery .= ' -(' . $solrfacet . ':' . $solrfacetvalue . ')';
 				}
 
 
@@ -1280,20 +1282,20 @@ $additionalParameters['facet.field'] = $arr_facets;
 
 
 function path2query($path, $facet, $pathfacet_suffix, $separator='\t') {
-	
+
 	$trimmedpath = trim($path, $separator);
-		
+
 	// pathfilter to set in Solr query
 	$paths = explode($separator, $trimmedpath);
-	
+
 	$pathfilter = '';
 	$pathcounter = 0;
-	
+
 	$first=true;
 	foreach ($paths as $subpath) {
 		$solrpath = addcslashes($subpath, '+-&|!(){}[]^"~*?:\/ ');
 		$solrpath = str_replace("\t", "\\\t", $solrpath);
-		
+
 		if ($first==false) {$pathfilter .= ' +';} else {$first=false;}
 
 		$pathfilter .= $facet . $pathcounter . $pathfacet_suffix . ':' . $solrpath;
@@ -1301,7 +1303,7 @@ function path2query($path, $facet, $pathfacet_suffix, $separator='\t') {
 		$pathcounter++;
 	}
 	return $pathfilter;
-	
+
 }
 
 
@@ -1520,7 +1522,7 @@ if ($solrquery or $solrfilterquery) {
 	} catch (Exception $e) {
 		$error = $e->__toString();
 	}
-			
+
 
 } // isquery -> Ask Solr
 
@@ -1604,6 +1606,8 @@ if ($view == 'rss') {
 } else {
 	include "templates/view.index.php";
 }
+
+
 
 
 function getIRImage($IR){
@@ -1827,10 +1831,6 @@ function FacetsPreprocessing($facet, $type){
 
     return $result;
 }
-
-
-
-
 ?>
 
 
