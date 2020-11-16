@@ -12,7 +12,7 @@
 
 //$cfg['facets']['person_ss'] = array ('label'=>'Persons', 'facet_limit'=>'10', 'snippets_limit'=>'10', 'graph_limit'=>'50', 'tree'=>false, 'enabled'=>true, 'closed'=>false, 'snippets_enabled'=>true, 'graph_enabled'=>true);
 
-$cfg['facets']['organization_ss'] = array ('label'=>'Infrastructures', 'facet_limit'=>'10', 'snippets_limit'=>'10', 'graph_limit'=>'50', 'tree'=>false, 'enabled'=>true, 'closed'=>false, 'snippets_enabled'=>true, 'graph_enabled'=>true);
+$cfg['facets']['organization_ss'] = array ('label'=>'RIs', 'facet_limit'=>'10', 'snippets_limit'=>'10', 'graph_limit'=>'50', 'tree'=>false, 'enabled'=>true, 'closed'=>false, 'snippets_enabled'=>true, 'graph_enabled'=>true);
 
 //$cfg['facets']['location_ss'] = array ('label'=>'Domains', 'facet_limit'=>'10', 'snippets_limit'=>'10', 'graph_limit'=>'50', 'tree'=>false, 'enabled'=>true, 'closed'=>false, 'snippets_enabled'=>true, 'graph_enabled'=>true);
 

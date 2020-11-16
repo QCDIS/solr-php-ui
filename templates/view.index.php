@@ -6,8 +6,8 @@ session_start();
 <html lang="en">
 
 <head>
-  <title><?= t('Search') . ($query ? ': ' . htmlspecialchars($query) : '') ?></title>
-  <link rel="alternate" type="application/rss+xml" title="RSS" href="<?= $link_rss ?>">
+  <title><?=t('Search') . ($query ? ': ' . htmlspecialchars($query) : '') ?></title>
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="<?=$link_rss ?>">
     <link rel="icon" href="/images/envri_logo_final.png" type="image/x-icon" />
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,21 +21,42 @@ session_start();
   <!-- Custom styles for this template-->
   <link href="UI/css/sb-admin-2.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/app.css" type="text/css"/>
-
-
-
 </head>
 <body id="page-top" class="sidebar-toggled">
 
-<?php  // New Search
-   if(empty($_GET)) {
+<?php // New Search
+if (empty($_GET))
+{
     include 'templates/FirstPage.php';
-   }
-   else
-   {
-     if ($view == 'LoginPage') {
+}
+else
+{
+    if ($view == 'LoginPage')
+    {
         header('location: /RegistrationSystem/login.php');
-     }
+    }
+
+    $_SESSION['CurrentCategory'] = "Webpages";
+    if ($view == 'Webpages')
+    {
+        $_SESSION['CurrentCategory'] = "Webpages";
+    }
+    elseif ($view == 'ResearchInfrastructures')
+    {
+        $_SESSION['CurrentCategory'] = "ResearchInfrastructures";
+    }
+    elseif ($view == 'Services')
+    {
+        $_SESSION['CurrentCategory'] = "Services";
+    }
+    elseif ($view == 'Datasets')
+    {
+        $_SESSION['CurrentCategory'] = "Datasets";
+    }
+    else if ($view == 'APIs')
+    {
+        $_SESSION['CurrentCategory'] = "APIs";
+    }
 
 ?>
   <!-- Page Wrapper -->
@@ -79,46 +100,59 @@ session_start();
           </div>
         </div>
 
-        <a class="nav-link" href="<?php echo buildurl($params, 'view', 'Websites', null, null); ?>">
-          <i class="fas fa-globe"></i>
+        <a class="nav-link"
+          style="<?php echo ($_SESSION['CurrentCategory'] == 'Webpages' ? 'color:yellow;font-weight: bold;' : ''); ?>"
+          href="<?php echo buildurl($params, 'view', 'Webpages', 'q', $query); ?>">
+          <i class="fas fa-globe"  style="<?php echo ($_SESSION['CurrentCategory'] == 'Webpages' ? 'color:yellow;font-weight: bold;' : ''); ?>"></i>
           <span>Webpages</span>
         </a>
 
-        <a class="nav-link" href="<?php echo buildurl($params, 'view', 'Services', null, null); ?>">
-          <i class="fab fa-uikit"></i>
+        <a class="nav-link"
+          style="<?php echo ($_SESSION['CurrentCategory'] == 'Services' ? 'color:yellow;font-weight: bold;' : ''); ?>"
+          href="<?php echo buildurl($params, 'view', 'Services', null, null); ?>">
+          <i class="fab fa-uikit" style="<?php echo ($_SESSION['CurrentCategory'] == 'Services' ? 'color:yellow;font-weight: bold;' : ''); ?>" ></i>
           <span>Service Catalogs</span>
         </a>
 
-        <a class="nav-link" href="<?php echo buildurl($params, 'view', 'ResearchInfrastructures', null, null); ?>">
-             <i class="fas fa-cubes"></i>
+        <a class="nav-link"
+            style="<?php echo ($_SESSION['CurrentCategory'] == 'ResearchInfrastructures' ? 'color:yellow;font-weight: bold;' : ''); ?>"
+            href="<?php echo buildurl($params, 'view', 'ResearchInfrastructures', q, $query); ?>">
+             <i class="fas fa-cubes" style="<?php echo ($_SESSION['CurrentCategory'] == 'ResearchInfrastructures' ? 'color:yellow;font-weight: bold;' : ''); ?>" ></i>
               <span>Research Infrastructures</span>
         </a>
 
-        <a class="nav-link" href="<?php echo buildurl($params, 'view', 'Datasets', null, null); ?>">
-              <i class="fas fa-coins"></i>
+        <a class="nav-link"
+            style="<?php echo ($_SESSION['CurrentCategory'] == 'Datasets' ? 'color:yellow;font-weight: bold;' : ''); ?>"
+            href="<?php echo buildurl($params, 'view', 'Datasets', null, null); ?>">
+              <i class="fas fa-coins" style="<?php echo ($_SESSION['CurrentCategory'] == 'Datasets' ? 'color:yellow;font-weight: bold;' : ''); ?>" ></i>
               <span>Datasets</span>
         </a>
-        <a class="nav-link" href="<?php echo buildurl($params, 'view', 'APIs', null, null); ?>" >
-              <i class="fas fa-code"></i>
+        <a class="nav-link"
+            style="<?php echo ($_SESSION['CurrentCategory'] == 'APIs' ? 'color:yellow;font-weight: bold;' : ''); ?>"
+            href="<?php echo buildurl($params, 'view', 'APIs', null, null); ?>" >
+              <i class="fas fa-code" style="<?php echo ($_SESSION['CurrentCategory'] == 'APIs' ? 'color:yellow;font-weight: bold;' : ''); ?>" ></i>
               <span>APIs</span>
         </a>
 
        <!-- Visualization Button --------------------------------------------- -->
         <?php
-        // Setup parameters for graph visualization by Open Semantic Visual Linked Data Graph Explorer
-        $link_graph = '/search-apps/graph/?q='.$query;
-        $link_graph .= '&fl=' . implode(',', $graph_fields);
-        foreach ($cfg['facets'] as $facet => $facet_config) {
-           if ( in_array($facet, $graph_fields) ) {
-                // todo: read from coming facet config graph_limit
-                $facetlimit = 50;
-                if (isset($facets_limit[$facet])) {
-                    $facetlimit = $facets_limit[$facet];
-                }
-                $link_graph .= "&f." . $facet . ".facet.limit=" . $facetlimit;
+    // Setup parameters for graph visualization by Open Semantic Visual Linked Data Graph Explorer
+    $link_graph = '/search-apps/graph/?q=' . $query;
+    $link_graph .= '&fl=' . implode(',', $graph_fields);
+    foreach ($cfg['facets'] as $facet => $facet_config)
+    {
+        if (in_array($facet, $graph_fields))
+        {
+            // todo: read from coming facet config graph_limit
+            $facetlimit = 50;
+            if (isset($facets_limit[$facet]))
+            {
+                $facetlimit = $facets_limit[$facet];
             }
+            $link_graph .= "&f." . $facet . ".facet.limit=" . $facetlimit;
         }
-        ?>
+    }
+?>
         </li>
        <hr class="sidebar-divider">
           <!-- Heading -->
@@ -129,7 +163,8 @@ session_start();
           <!-- Nav Item - Pages Collapse Menu -->
           <li class="nav-item">
         <!--
-            <a class="nav-link" href="<?= $link_graph ?>" target="_blank">
+            <a class="nav-link" href="<?=$link_graph
+?>" target="_blank">
                   <i class="fab fa-hubspot"></i>
                   <span>Graph Visualization</span>
             </a>
@@ -143,8 +178,8 @@ session_start();
         <div id="collapseVisualization" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Search Results</h6>
-            <a class="collapse-item"  href="<?php echo buildurl($params, 'view', 'VisualizeWebpages','q', $query,); ?>"  target="_blank" > <i class="fas fa-list-ul"></i> &nbsp; Webpages</a>
-            <a class="collapse-item"  href="<?php echo buildurl($params, 'view', 'VisualizeWebsites','q', $query,); ?>"  target="_blank" > <i class="far fa-list-alt"></i> &nbsp; Websites</a>
+            <a class="collapse-item"  href="<?php echo buildurl($params, 'view', 'VisualizeWebpages', 'q', $query,); ?>"  target="_blank" > <i class="fas fa-list-ul"></i> &nbsp; Webpages</a>
+            <a class="collapse-item"  href="<?php echo buildurl($params, 'view', 'VisualizeWebsites', 'q', $query,); ?>"  target="_blank" > <i class="far fa-list-alt"></i> &nbsp; Websites</a>
           </div>
         </div>
          </li>
@@ -194,8 +229,8 @@ session_start();
 
           <!-- Topbar Search -->
           <?php
-                include 'templates/SearchBox.php';
-         ?>
+    include 'templates/SearchBox.php';
+?>
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
 
@@ -214,7 +249,7 @@ session_start();
                       <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" id="q" name="q" type="text"
                        value="<?php echo htmlspecialchars($query, ENT_QUOTES, 'utf-8'); ?>" required=""  oninvalid="this.setCustomValidity('The search query is empty!')" oninput="setCustomValidity('')"/>
                     <div class="input-group-append">
-                        <button class="btn btn-primary" id="submit" type="submit" value="<?= t("Search"); ?>" onclick="waiting_on()">
+                        <button class="btn btn-primary" id="submit" type="submit" value="<?=t("Search"); ?>" onclick="waiting_on()">
                           <i class="fas fa-search fa-sm"></i>
                         </button>
                     </div>
@@ -223,7 +258,7 @@ session_start();
               </div>
             </li>
 
-    <?php if (isset($_SESSION['userid'])):  ?>
+    <?php if (isset($_SESSION['userid'])): ?>
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -238,7 +273,7 @@ session_start();
                   Profile
                 </a>
 
-            <?php if ($_SESSION['role'] =="admin"):  ?>
+            <?php if ($_SESSION['role'] == "admin"): ?>
             <div class="dropdown-divider"></div>
              <a class="dropdown-item" target="_blank"
                  title="Manage structure, navigation and interactive filters by ontologies like thesauri or lists of named entities like organizations, persons or locations"
@@ -262,7 +297,8 @@ session_start();
                 Import tuples
              </a>
 
-            <?php endif ?>
+            <?php
+        endif ?>
              <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="<?php echo buildurl(null, 'view', 'SearchLog', null, null); ?>">
               <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -275,7 +311,8 @@ session_start();
             </a>
           </div>
             </li>
-    <?php else: ?>
+    <?php
+    else: ?>
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -291,7 +328,8 @@ session_start();
               <span>Login</span></a>
               </div>
             </li>
-    <?php endif ?>
+    <?php
+    endif ?>
 
      </ul>
         </nav>
@@ -303,17 +341,10 @@ session_start();
           <div class="row">
 
             <?php
-           // include 'templates/select_view.php';
+    if ($view == 'ImportTuples')
+    {
 
-        //    if ($cfg['etl_status_warning']) {
-        //      include 'templates/view.etl_status.php';
-        //    }
-
-            // if no results, show message
-
-            if ($view == 'ImportTuples') {
-
-               ?>
+?>
                 <div class="container-fluid">
                   <!-- Content Row -->
                   <div class="row">
@@ -323,81 +354,93 @@ session_start();
                           <h6 class="m-0 font-weight-bold text-primary">Import Tuples</h6>
                         </div>
                         <div class="card-body" style="min-height:740px">
-                        <?php   include 'templates/ImportTuples.php'; ?>
+                        <?php include 'templates/ImportTuples.php'; ?>
                         </div>
                       </div>
                   </div>
                 </div>
             <?php
+    }
+    else
+    {
+        if ($total == 0)
+        {
+?>
+              <div id="noresults" class="panel"><?php
+            if ($error)
+            {
+                print '<p>' . t('Error:') . '</p><p>' . $error . '</p>';
             }
             else
             {
-            if ($total == 0) {
-              ?>
-              <div id="noresults" class="panel"><?php
-                if ($error) {
-                  print '<p>' . t('Error:') . '</p><p>' . $error . '</p>';
-                }
-                else {
-                  // Todo: Use t() elsewhere as well.
-                  print t('No results');
-                } ?>
+                // Todo: Use t() elsewhere as well.
+                print t('No results');
+            } ?>
               </div>
               <?php
-            } // total == 0
-            else { // there are results documents
-
-              if ($error) {
+        } // total == 0
+        else
+        { // there are results documents
+            if ($error)
+            {
                 print '<p>' . t('Error:') . '</p><p>' . $error . '</p>';
-              }
+            }
 
-              // print the results with selected view template
-              if ($view == 'list') {
+            // print the results with selected view template
+            if ($view == 'list')
+            {
 
                 include 'templates/pagination.php';
                 include 'templates/view.list.php';
                 include 'templates/pagination.php';
 
-              }
-              elseif($view=='VisualizeWebsites'){
-                 include 'templates/pagination.php';
-                 include 'templates/SearchResultVisualizationGraph.php';
-              }
-              elseif($view=='VisualizeWebpages'){
+            }
+            elseif ($view == 'VisualizeWebsites')
+            {
+                include 'templates/pagination.php';
+                include 'templates/SearchResultVisualizationGraph.php';
+            }
+            elseif ($view == 'VisualizeWebpages')
+            {
 
-                 include 'templates/pagination.php';
-                 include 'templates/SearchResultVisualizationGraph.php';
-              }
-              elseif ($view == 'preview') {
+                include 'templates/pagination.php';
+                include 'templates/SearchResultVisualizationGraph.php';
+            }
+            elseif ($view == 'preview')
+            {
 
                 include 'templates/pagination.php';
                 include 'templates/view.preview.php';
                 include 'templates/pagination.php';
 
-              }
-              elseif ($view == 'images') {
+            }
+            elseif ($view == 'images')
+            {
 
                 include 'templates/pagination.php';
                 include 'templates/view.images.php';
                 include 'templates/pagination.php';
 
-              }
-              elseif ($view == 'videos') {
+            }
+            elseif ($view == 'videos')
+            {
 
                 include 'templates/pagination.php';
                 include 'templates/view.videos.php';
                 include 'templates/pagination.php';
 
-              }
-              elseif ($view == 'audios') {
+            }
+            elseif ($view == 'audios')
+            {
 
                 include 'templates/pagination.php';
                 include 'templates/view.audios.php';
                 include 'templates/pagination.php';
 
-              }
-              elseif($view == 'SearchLog'){
-                   ?>
+            }
+            elseif ($view == 'SearchLog')
+            {
+?>
                     <div class="container-fluid">
                       <!-- Content Row -->
                       <div class="row">
@@ -408,17 +451,18 @@ session_start();
                             </div>
                             <div class="card-body" style="min-height:750px">
                             <?php
-                                include 'templates/SearchLog.php';
-                             ?>
+                include 'templates/SearchLog.php';
+?>
                             </div>
                           </div>
                       </div>
                     </div>
                 <?php
-              }
-              elseif ($view == 'table') {
+            }
+            elseif ($view == 'table')
+            {
 
-               ?>
+?>
                 <div class="container-fluid">
                   <!-- Content Row -->
                   <div class="row">
@@ -429,19 +473,20 @@ session_start();
                         </div>
                         <div class="card-body" style="min-height:750px">
                         <?php
-                            include 'templates/pagination.php';
-                            include 'templates/view.table.php';
-                            include 'templates/pagination.php';
-                         ?>
+                include 'templates/pagination.php';
+                include 'templates/view.table.php';
+                include 'templates/pagination.php';
+?>
                         </div>
                       </div>
                   </div>
                 </div>
             <?php
-              }
-              elseif ($view == 'words') {
+            }
+            elseif ($view == 'words')
+            {
 
-               ?>
+?>
                 <div class="container-fluid">
                   <!-- Content Row -->
                   <div class="row">
@@ -452,21 +497,17 @@ session_start();
                         </div>
                         <div class="card-body" style="min-height:750px">
                         <?php
-                            include 'templates/view.words.php';
-                         ?>
+                include 'templates/view.words.php';
+?>
                         </div>
                       </div>
                   </div>
                 </div>
             <?php
-
-
-
-              }
-              elseif ($view == 'graph') {
-
-
-               ?>
+            }
+            elseif ($view == 'graph')
+            {
+?>
                 <div class="container-fluid">
                   <!-- Content Row -->
                   <div class="row">
@@ -477,22 +518,17 @@ session_start();
                         </div>
                         <div class="card-body" style="min-height:750px">
                         <?php
-                            include 'templates/view.graph.php';
-                         ?>
+                include 'templates/view.graph.php';
+?>
                         </div>
                       </div>
                   </div>
                 </div>
             <?php
-
-
-
-
-              }
-              elseif ($view == 'entities') {
-
-
-               ?>
+            }
+            elseif ($view == 'entities')
+            {
+?>
                 <div class="container-fluid">
                   <!-- Content Row -->
                   <div class="row">
@@ -503,20 +539,18 @@ session_start();
                         </div>
                         <div class="card-body" style="min-height:750px">
                         <?php
-                            include 'templates/view.entities.php';
-                         ?>
+                include 'templates/view.entities.php';
+?>
                         </div>
                       </div>
                   </div>
                 </div>
             <?php
+            }
+            elseif ($view == 'trend')
+            {
 
-
-
-              }
-              elseif ($view == 'trend') {
-
-                             ?>
+?>
                 <div class="container-fluid">
                   <!-- Content Row -->
                   <div class="row">
@@ -527,19 +561,17 @@ session_start();
                         </div>
                         <div class="card-body" style="min-height:750px">
                         <?php
-                             include 'templates/view.trend.php';
-                         ?>
+                include 'templates/view.trend.php';
+?>
                         </div>
                       </div>
                   </div>
                 </div>
             <?php
-
-              }
-              elseif ($view == 'map') {
-
-
-                             ?>
+            }
+            elseif ($view == 'map')
+            {
+?>
                 <div class="container-fluid">
                   <!-- Content Row -->
                   <div class="row">
@@ -550,65 +582,38 @@ session_start();
                         </div>
                         <div class="card-body" style="min-height:740px">
                         <?php
-                             include 'templates/view.map.php';
-                         ?>
+                include 'templates/view.map.php';
+?>
                         </div>
                       </div>
                   </div>
                 </div>
             <?php
-              }
-              elseif ($view == 'OSSTeam') {
-                    include 'templates/OSSTeam.php';
-              }
-              elseif ($view == 'SendFeedback') {
-                    include 'templates/SendFeedback.php';
-              }
-              else {
-
-
- //               if ($view == 'Websites'){
-  //                  $_SESSION['SolrCurrentCore']="opensemanticsearch";
-
- //               }
-                   if ($view == 'ResearchInfrastructures'){
-                       $solrquery='ICOS';
-                  }
-      //          else if ($view == 'Services'){
-       //             $_SESSION['SolrCurrentCore']="Services";
-      //          }
-        //        else if ($view == 'Datasets'){
-         //           $_SESSION['SolrCurrentCore']="Datasets";
-          //      }
-          //      else if ($view == 'APIs'){
-            //        $_SESSION['SolrCurrentCore']="APIs";
-          //      }
-
+            }
+            elseif ($view == 'OSSTeam')
+            {
+                include 'templates/OSSTeam.php';
+            }
+            elseif ($view == 'SendFeedback')
+            {
+                include 'templates/SendFeedback.php';
+            }
+            else
+            {
                 include 'templates/pagination.php';
                 include 'templates/view.list.php';
                 include 'templates/pagination.php';
-
-               }
-              } // if total <> 0: there were documents
             }
-            ?>
-          </div><?php ?>
-        </div>
+        } // if total <> 0: there were documents
 
-        <?php
-        // Wait indicator - will be activated on click = next search (which can take a while and additional clicks would make it worse)
-        ?>
+    }
+?>
+          </div>
+        </div>
         <div id="wait">
           <img src="images/ajax-loader.gif">
-          <p><?= t('wait'); ?></p>
+          <p><?=t('wait'); ?></p>
         </div>
-
-
-
-
-
-        <!-- /.container-fluid -->
-
       </div>
       <!-- End of Main Content -->
 
@@ -687,7 +692,8 @@ function AdvancedSearch() {
 </script>
 
 
-<?php  // New Search
+<?php // New Search
+
 }
 ?>
 
