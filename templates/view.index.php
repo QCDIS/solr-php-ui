@@ -25,6 +25,7 @@ session_start();
 <body id="page-top" class="sidebar-toggled">
 
 <?php // New Search
+//----------------------------------------------------------------------------------------------------------------------
 if (empty($_GET))
 {
     include 'templates/FirstPage.php';
@@ -35,7 +36,17 @@ else
     {
         header('location: /RegistrationSystem/login.php');
     }
-
+    elseif ($view == 'ImportTuples')
+    {
+        include 'templates/ImportTuples.php';
+        exit();
+    }
+    elseif ($view == 'SearchLog')
+    {
+        include 'templates/SearchLog.php';
+        exit();
+    }
+//----------------------------------------------------------------------------------------------------------------------
     $_SESSION['CurrentCategory'] = "Webpages";
     if ($view == 'Webpages')
     {
@@ -53,11 +64,15 @@ else
     {
         $_SESSION['CurrentCategory'] = "Datasets";
     }
-    else if ($view == 'APIs')
+    elseif ($view == 'APIs')
     {
         $_SESSION['CurrentCategory'] = "APIs";
     }
-
+    elseif($view == 'ShowImageResults')
+    {
+        $_SESSION['CurrentCategory'] = "ShowImageResults";
+    }
+//----------------------------------------------------------------------------------------------------------------------
 ?>
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -99,6 +114,13 @@ else
              href="/search-apps/search-list/"> <i class="fas fa-clipboard-list"></i> &nbsp; <?php echo t("search_by_list"); ?></a>
           </div>
         </div>
+
+        <a class="nav-link"
+          style="<?php echo ($_SESSION['CurrentCategory'] == 'ShowImageResults' ? 'color:yellow;font-weight: bold;' : ''); ?>"
+          href="<?php echo buildurl($params, 'view', 'ShowImageResults', 'q', $query); ?>">
+          <i class="fas fa-images"  style="<?php echo ($_SESSION['CurrentCategory'] == 'ShowImageResults' ? 'color:yellow;font-weight: bold;' : ''); ?>"></i>
+          <span>Images</span>
+        </a>
 
         <a class="nav-link"
           style="<?php echo ($_SESSION['CurrentCategory'] == 'Webpages' ? 'color:yellow;font-weight: bold;' : ''); ?>"
@@ -294,7 +316,7 @@ else
              <a class="dropdown-item" title="Import structured data"
                 href="<?php echo buildurl(null, 'view', 'ImportTuples', null, null); ?>">
                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                Import tuples
+                Knowledge base operations
              </a>
 
             <?php
@@ -302,7 +324,7 @@ else
              <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="<?php echo buildurl(null, 'view', 'SearchLog', null, null); ?>">
               <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-              Search Log
+              Search log
             </a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="<?php echo buildurl(null, 'view', 'LoginPage', null, null); ?>" data-toggle="modal" data-target="#logoutModal">
@@ -341,31 +363,8 @@ else
           <div class="row">
 
             <?php
-    if ($view == 'ImportTuples')
-    {
-
-?>
-                <div class="container-fluid">
-                  <!-- Content Row -->
-                  <div class="row">
-                    <div class="col-lg-12 mb-4">
-                      <div class="card shadow mb-12">
-                        <div class="card-header py-12">
-                          <h6 class="m-0 font-weight-bold text-primary">Import Tuples</h6>
-                        </div>
-                        <div class="card-body" style="min-height:740px">
-                        <?php include 'templates/ImportTuples.php'; ?>
-                        </div>
-                      </div>
-                  </div>
-                </div>
-            <?php
-    }
-    else
-    {
         if ($total == 0)
-        {
-?>
+        { ?>
               <div id="noresults" class="panel"><?php
             if ($error)
             {
@@ -437,27 +436,6 @@ else
                 include 'templates/view.audios.php';
                 include 'templates/pagination.php';
 
-            }
-            elseif ($view == 'SearchLog')
-            {
-?>
-                    <div class="container-fluid">
-                      <!-- Content Row -->
-                      <div class="row">
-                        <div class="col-lg-12 mb-4">
-                          <div class="card shadow mb-12">
-                            <div class="card-header py-12">
-                              <h6 class="m-0 font-weight-bold text-primary">Search Log</h6>
-                            </div>
-                            <div class="card-body" style="min-height:750px">
-                            <?php
-                include 'templates/SearchLog.php';
-?>
-                            </div>
-                          </div>
-                      </div>
-                    </div>
-                <?php
             }
             elseif ($view == 'table')
             {
@@ -590,6 +568,10 @@ else
                 </div>
             <?php
             }
+            elseif($view == 'ShowImageResults')
+            {
+                include 'templates/ShowImageResults.php';
+            }
             elseif ($view == 'OSSTeam')
             {
                 include 'templates/OSSTeam.php';
@@ -605,8 +587,6 @@ else
                 include 'templates/pagination.php';
             }
         } // if total <> 0: there were documents
-
-    }
 ?>
           </div>
         </div>
