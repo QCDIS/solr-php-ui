@@ -116,7 +116,7 @@ function getBaseURL($doc){
 }
 //----------------------------------------------------------------------------------------
 function getTitle($doc){
-    return format_title($doc->title_txt, $url_display_basename);;
+    return format_title($doc->title_txt, $url_display_basename);
 }
 //----------------------------------------------------------------------------------------
 function getDateTime($doc){

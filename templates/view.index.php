@@ -1,4 +1,12 @@
-<?php
+<?
+https://www.sios-svalbard.org/
+￼
+https://www.sios-svalbard.org/
+￼
+https://www.sios-svalbard.org/
+￼
+https://www.sios-svalbard.org/
+￼php
 session_start();
 ?>
 
@@ -90,12 +98,6 @@ else
       </a>
 
       <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Search
-      </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
@@ -114,13 +116,11 @@ else
              href="/search-apps/search-list/"> <i class="fas fa-clipboard-list"></i> &nbsp; <?php echo t("search_by_list"); ?></a>
           </div>
         </div>
-
-        <a class="nav-link"
-          style="<?php echo ($_SESSION['CurrentCategory'] == 'ShowImageResults' ? 'color:yellow;font-weight: bold;' : ''); ?>"
-          href="<?php echo buildurl($params, 'view', 'ShowImageResults', 'q', $query); ?>">
-          <i class="fas fa-images"  style="<?php echo ($_SESSION['CurrentCategory'] == 'ShowImageResults' ? 'color:yellow;font-weight: bold;' : ''); ?>"></i>
-          <span>Images</span>
-        </a>
+<hr class="sidebar-divider">
+      <!-- Heading -->
+      <div class="sidebar-heading" style="font-size:xx-small; color:#99e6ff;">
+        Unstructured Sources
+      </div>
 
         <a class="nav-link"
           style="<?php echo ($_SESSION['CurrentCategory'] == 'Webpages' ? 'color:yellow;font-weight: bold;' : ''); ?>"
@@ -128,6 +128,19 @@ else
           <i class="fas fa-globe"  style="<?php echo ($_SESSION['CurrentCategory'] == 'Webpages' ? 'color:yellow;font-weight: bold;' : ''); ?>"></i>
           <span>Webpages</span>
         </a>
+
+        <a class="nav-link"
+          style="<?php echo ($_SESSION['CurrentCategory'] == 'ShowImageResults' ? 'color:yellow;font-weight: bold;' : ''); ?>"
+          href="<?php echo buildurl($params, 'view', 'ShowImageResults', 'q', $query); ?>">
+          <i class="fas fa-images"  style="<?php echo ($_SESSION['CurrentCategory'] == 'ShowImageResults' ? 'color:yellow;font-weight: bold;' : ''); ?>"></i>
+          <span>Images</span>
+        </a>
+      <hr class="sidebar-divider">
+
+      <div class="sidebar-heading"  style="font-size:xx-small; color:#99e6ff;">
+        Structured Sources
+      </div>
+
 
         <a class="nav-link"
           style="<?php echo ($_SESSION['CurrentCategory'] == 'Services' ? 'color:yellow;font-weight: bold;' : ''); ?>"
@@ -178,7 +191,7 @@ else
         </li>
        <hr class="sidebar-divider">
           <!-- Heading -->
-          <div class="sidebar-heading">
+          <div class="sidebar-heading"  style="font-size:xx-small; color:#99e6ff;">
             Visualization
           </div>
 
@@ -570,7 +583,10 @@ else
             }
             elseif($view == 'ShowImageResults')
             {
+                include 'templates/pagination.php';
                 include 'templates/ShowImageResults.php';
+                include 'templates/pagination.php';
+
             }
             elseif ($view == 'OSSTeam')
             {

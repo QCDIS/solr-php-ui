@@ -93,52 +93,37 @@ foreach ($results
     }
 
 ?>
-<div class="col-lg-12 mb-12" id="<?=$result_nr
-?>">
+<div class="col-lg-12 mb-12" id="<?=$result_nr?>">
   <!-- Illustrations -->
   <div class="card shadow mb-4 border-left-primary ">
     <div class="card-header py-3">
       <h6 class="m-0 font-weight-bold text-primary">
-          <a class="title" href="<?=$url_openfile
-?>" target="_blank">
+          <a class="title" href="<?=$url_openfile?>" target="_blank">
             <img src='<?=get_icon($doc->content_type_ss) ?>' style="margin-right:5px;margin-top:-4px;" width='20' height='20'><?=$title ?>
           </a>
       </h6>
     </div>
     <div class="card-body">
-     <div class="date"><?=$datetime
-?> </div>
+     <div class="date"><?=$datetime?> </div>
         <div>
-          <?php
-    //include 'templates/view.url.php';
-
-?>
-
           <?php if ($file_size_formated): ?>
-            <span class="size">(<?=$file_size_formated
-?>)</span>
-          <?php
-    endif; ?>
+            <span class="size">(<?=$file_size_formated?>)</span>
+          <?php endif; ?>
         </div>
         <div class="snippets">
           <?php if ($authors): ?>
             <div class="author"><?=htmlspecialchars(implode(", ", $authors)) ?></div>
-          <?php
-    endif; ?>
-          <?php
-    include 'templates/view.snippets.text.php';
-?>
+          <?php endif; ?>
+          <?php include 'templates/view.snippets.text.php';?>
         </div>
         <span class="facets">
         <?php
-    $facets = get_facets($result_nr, $doc, $cfg['facets']);
-    include 'templates/view.snippets.entities.php';
-?>
+            $facets = get_facets($result_nr, $doc, $cfg['facets']);
+            include 'templates/view.snippets.entities.php';
+       ?>
         </span>
 
-        <?php
-    include 'templates/view.commands.php';
-?>
+        <?php  include 'templates/view.commands.php'; ?>
    </div>
   </div>
 </div>
