@@ -123,7 +123,7 @@ function extractShowImages($url){
     $images = array();
     foreach($html->find('img') as $element) {
         $cntimgs=substr_count($element->src,"//");
-            if($cntimgs>0){
+            if($cntimgs>1){
                 $mainSRC=$element->src;
                 for ($x = 0; $x < $cntimgs; $x++) {
 
@@ -146,7 +146,7 @@ function extractShowImages($url){
                         $img= substr($mainSRC,($startPos*-1),($startPos-$endPos));
                         $mainSRC=substr($mainSRC,$endPos);
 
-                        if( $img!="" &&  (strpos($img, ".png") > 0 || strpos($img, ".jpg") > 0 || strpos($img, ".bmp")>0 || strpos($img, ".gif") ) && validImage($img) && !in_array($img, $images)){
+                        if(validImageURL($img) && !in_array($img, $images) && validImageURL($img)){
                             $images[] = $img;
                         }
 
@@ -155,7 +155,7 @@ function extractShowImages($url){
             }
             else {
                 $img = $element->src;
-                if($img!="" && (strpos($img, ".png") > 0 || strpos($img, ".jpg") > 0 || strpos($img, ".bmp")>0 || strpos($img, ".gif")) ){
+                if(validImageElement($element) && validImageURL($img) ){
                     $images[] = $img;
                 }
             }
@@ -203,7 +203,28 @@ function is_valid_result($doc) {
         $result=false;
     return $result;
 }
+//----------------------------------------------------------------------------------------
+function validImageURL($url)
+{
+    if($url!="" && (strpos($url, ".png") > 0 || strpos($url, ".jpg") > 0 || strpos($url, ".bmp")>0 || strpos($url, ".gif")) ){
+         return true;
+    }
+    return false;
+}
 
+//----------------------------------------------------------------------------------------
+function validImageElement($element)
+{
+   $width = $element->width;
+   $height = $element->height;
+   $src= $element->src;
+   if( $width<100 || $height<100){
+       return false;
+   }
+   return true;
+}
+
+//----------------------------------------------------------------------------------------
 function validImage($file) {
    $size = getimagesize($file);
    if($size[0]=="" || $size[1]=="") return false;
@@ -211,7 +232,7 @@ function validImage($file) {
 
    return (strtolower(substr($size['mime'], 0, 5)) == 'image' ?  true : false);
 }
-
+//----------------------------------------------------------------------------------------
 
 function remote_file_exists($url)
 {
@@ -222,7 +243,7 @@ function remote_file_exists($url)
     curl_close($ch);
     if( $httpCode == 200 ){return true;}
 }
-
+//----------------------------------------------------------------------------------------
 ?>
 
 
