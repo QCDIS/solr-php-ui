@@ -34,53 +34,35 @@ session_start();
 
 <?php // New Search
 //----------------------------------------------------------------------------------------------------------------------
-if (empty($_GET))
-{
+if (empty($_GET)) {
     include 'templates/FirstPage.php';
-}
-else
-{
-    if ($view == 'LoginPage')
-    {
+} else {
+    if ($view == 'LoginPage') {
         header('location: /RegistrationSystem/login.php');
-    }
-    elseif ($view == 'ImportTuples')
-    {
+    } elseif ($view == 'ImportTuples') {
         include 'templates/ImportTuples.php';
         exit();
-    }
-    elseif ($view == 'SearchLog')
-    {
+    } elseif ($view == 'SearchLog') {
         include 'templates/SearchLog.php';
         exit();
     }
-//----------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------
     $_SESSION['CurrentCategory'] = "Webpages";
-    if ($view == 'Webpages')
-    {
+    if ($view == 'Webpages') {
         $_SESSION['CurrentCategory'] = "Webpages";
-    }
-    elseif ($view == 'ResearchInfrastructures')
-    {
+    } elseif ($view == 'ResearchInfrastructures') {
         $_SESSION['CurrentCategory'] = "ResearchInfrastructures";
-    }
-    elseif ($view == 'Services')
-    {
+    } elseif ($view == 'Services') {
         $_SESSION['CurrentCategory'] = "Services";
-    }
-    elseif ($view == 'Datasets')
-    {
+    } elseif ($view == 'Datasets') {
         $_SESSION['CurrentCategory'] = "Datasets";
-    }
-    elseif ($view == 'APIs')
-    {
+    } elseif ($view == 'APIs') {
         $_SESSION['CurrentCategory'] = "APIs";
-    }
-    elseif($view == 'ShowImageResults')
-    {
+    } elseif ($view == 'ShowImageResults') {
         $_SESSION['CurrentCategory'] = "ShowImageResults";
     }
-//----------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------
+
 ?>
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -140,20 +122,17 @@ else
       <div class="sidebar-heading"  style="font-size:xx-small; color:#99e6ff;">
         Structured Sources
       </div>
-
-
-        <a class="nav-link"
-          style="<?php echo ($_SESSION['CurrentCategory'] == 'Services' ? 'color:yellow;font-weight: bold;' : ''); ?>"
-          href="<?php echo buildurl($params, 'view', 'Services', null, null); ?>">
-          <i class="fab fa-uikit" style="<?php echo ($_SESSION['CurrentCategory'] == 'Services' ? 'color:yellow;font-weight: bold;' : ''); ?>" ></i>
-          <span>Service Catalogs</span>
-        </a>
-
         <a class="nav-link"
             style="<?php echo ($_SESSION['CurrentCategory'] == 'ResearchInfrastructures' ? 'color:yellow;font-weight: bold;' : ''); ?>"
             href="<?php echo buildurl($params, 'view', 'ResearchInfrastructures', q, $query); ?>">
              <i class="fas fa-cubes" style="<?php echo ($_SESSION['CurrentCategory'] == 'ResearchInfrastructures' ? 'color:yellow;font-weight: bold;' : ''); ?>" ></i>
               <span>Research Infrastructures</span>
+        </a>
+        <a class="nav-link"
+          style="<?php echo ($_SESSION['CurrentCategory'] == 'Services' ? 'color:yellow;font-weight: bold;' : ''); ?>"
+          href="<?php echo buildurl($params, 'view', 'Services', null, null); ?>">
+          <i class="fab fa-uikit" style="<?php echo ($_SESSION['CurrentCategory'] == 'Services' ? 'color:yellow;font-weight: bold;' : ''); ?>" ></i>
+          <span>Service Catalogs</span>
         </a>
 
         <a class="nav-link"
@@ -173,18 +152,15 @@ else
         <?php
     // Setup parameters for graph visualization by Open Semantic Visual Linked Data Graph Explorer
     $link_graph = '/search-apps/graph/?q=' . $query;
-    $link_graph .= '&fl=' . implode(',', $graph_fields);
-    foreach ($cfg['facets'] as $facet => $facet_config)
-    {
-        if (in_array($facet, $graph_fields))
-        {
+    $link_graph.= '&fl=' . implode(',', $graph_fields);
+    foreach ($cfg['facets'] as $facet => $facet_config) {
+        if (in_array($facet, $graph_fields)) {
             // todo: read from coming facet config graph_limit
             $facetlimit = 50;
-            if (isset($facets_limit[$facet]))
-            {
+            if (isset($facets_limit[$facet])) {
                 $facetlimit = $facets_limit[$facet];
             }
-            $link_graph .= "&f." . $facet . ".facet.limit=" . $facetlimit;
+            $link_graph.= "&f." . $facet . ".facet.limit=" . $facetlimit;
         }
     }
 ?>
@@ -333,7 +309,8 @@ else
              </a>
 
             <?php
-        endif ?>
+        endif
+?>
              <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="<?php echo buildurl(null, 'view', 'SearchLog', null, null); ?>">
               <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -364,7 +341,8 @@ else
               </div>
             </li>
     <?php
-    endif ?>
+    endif
+?>
 
      </ul>
         </nav>
@@ -376,83 +354,49 @@ else
           <div class="row">
 
             <?php
-        if ($total == 0)
-        { ?>
+    if ($total == 0) { ?>
               <div id="noresults" class="panel"><?php
-            if ($error)
-            {
-                print '<p>' . t('Error:') . '</p><p>' . $error . '</p>';
-            }
-            else
-            {
-                // Todo: Use t() elsewhere as well.
-                print t('No results');
-            } ?>
+        if ($error) {
+            print '<p>' . t('Error:') . '</p><p>' . $error . '</p>';
+        } else {
+            // Todo: Use t() elsewhere as well.
+            print t('No results');
+        } ?>
               </div>
               <?php
-        } // total == 0
-        else
-        { // there are results documents
-            if ($error)
-            {
-                print '<p>' . t('Error:') . '</p><p>' . $error . '</p>';
-            }
-
-            // print the results with selected view template
-            if ($view == 'list')
-            {
-
-                include 'templates/pagination.php';
-                include 'templates/view.list.php';
-                include 'templates/pagination.php';
-
-            }
-            elseif ($view == 'VisualizeWebsites')
-            {
-                include 'templates/pagination.php';
-                include 'templates/SearchResultVisualizationGraph.php';
-            }
-            elseif ($view == 'VisualizeWebpages')
-            {
-
-                include 'templates/pagination.php';
-                include 'templates/SearchResultVisualizationGraph.php';
-            }
-            elseif ($view == 'preview')
-            {
-
-                include 'templates/pagination.php';
-                include 'templates/view.preview.php';
-                include 'templates/pagination.php';
-
-            }
-            elseif ($view == 'images')
-            {
-
-                include 'templates/pagination.php';
-                include 'templates/view.images.php';
-                include 'templates/pagination.php';
-
-            }
-            elseif ($view == 'videos')
-            {
-
-                include 'templates/pagination.php';
-                include 'templates/view.videos.php';
-                include 'templates/pagination.php';
-
-            }
-            elseif ($view == 'audios')
-            {
-
-                include 'templates/pagination.php';
-                include 'templates/view.audios.php';
-                include 'templates/pagination.php';
-
-            }
-            elseif ($view == 'table')
-            {
-
+    } // total == 0
+    else { // there are results documents
+        if ($error) {
+            print '<p>' . t('Error:') . '</p><p>' . $error . '</p>';
+        }
+        // print the results with selected view template
+        if ($view == 'list') {
+            include 'templates/pagination.php';
+            include 'templates/view.list.php';
+            include 'templates/pagination.php';
+        } elseif ($view == 'VisualizeWebsites') {
+            include 'templates/pagination.php';
+            include 'templates/SearchResultVisualizationGraph.php';
+        } elseif ($view == 'VisualizeWebpages') {
+            include 'templates/pagination.php';
+            include 'templates/SearchResultVisualizationGraph.php';
+        } elseif ($view == 'preview') {
+            include 'templates/pagination.php';
+            include 'templates/view.preview.php';
+            include 'templates/pagination.php';
+        } elseif ($view == 'images') {
+            include 'templates/pagination.php';
+            include 'templates/view.images.php';
+            include 'templates/pagination.php';
+        } elseif ($view == 'videos') {
+            include 'templates/pagination.php';
+            include 'templates/view.videos.php';
+            include 'templates/pagination.php';
+        } elseif ($view == 'audios') {
+            include 'templates/pagination.php';
+            include 'templates/view.audios.php';
+            include 'templates/pagination.php';
+        } elseif ($view == 'table') {
 ?>
                 <div class="container-fluid">
                   <!-- Content Row -->
@@ -464,19 +408,16 @@ else
                         </div>
                         <div class="card-body" style="min-height:750px">
                         <?php
-                include 'templates/pagination.php';
-                include 'templates/view.table.php';
-                include 'templates/pagination.php';
+            include 'templates/pagination.php';
+            include 'templates/view.table.php';
+            include 'templates/pagination.php';
 ?>
                         </div>
                       </div>
                   </div>
                 </div>
             <?php
-            }
-            elseif ($view == 'words')
-            {
-
+        } elseif ($view == 'words') {
 ?>
                 <div class="container-fluid">
                   <!-- Content Row -->
@@ -488,16 +429,14 @@ else
                         </div>
                         <div class="card-body" style="min-height:750px">
                         <?php
-                include 'templates/view.words.php';
+            include 'templates/view.words.php';
 ?>
                         </div>
                       </div>
                   </div>
                 </div>
             <?php
-            }
-            elseif ($view == 'graph')
-            {
+        } elseif ($view == 'graph') {
 ?>
                 <div class="container-fluid">
                   <!-- Content Row -->
@@ -509,16 +448,14 @@ else
                         </div>
                         <div class="card-body" style="min-height:750px">
                         <?php
-                include 'templates/view.graph.php';
+            include 'templates/view.graph.php';
 ?>
                         </div>
                       </div>
                   </div>
                 </div>
             <?php
-            }
-            elseif ($view == 'entities')
-            {
+        } elseif ($view == 'entities') {
 ?>
                 <div class="container-fluid">
                   <!-- Content Row -->
@@ -530,17 +467,14 @@ else
                         </div>
                         <div class="card-body" style="min-height:750px">
                         <?php
-                include 'templates/view.entities.php';
+            include 'templates/view.entities.php';
 ?>
                         </div>
                       </div>
                   </div>
                 </div>
             <?php
-            }
-            elseif ($view == 'trend')
-            {
-
+        } elseif ($view == 'trend') {
 ?>
                 <div class="container-fluid">
                   <!-- Content Row -->
@@ -552,16 +486,14 @@ else
                         </div>
                         <div class="card-body" style="min-height:750px">
                         <?php
-                include 'templates/view.trend.php';
+            include 'templates/view.trend.php';
 ?>
                         </div>
                       </div>
                   </div>
                 </div>
             <?php
-            }
-            elseif ($view == 'map')
-            {
+        } elseif ($view == 'map') {
 ?>
                 <div class="container-fluid">
                   <!-- Content Row -->
@@ -573,36 +505,26 @@ else
                         </div>
                         <div class="card-body" style="min-height:740px">
                         <?php
-                include 'templates/view.map.php';
+            include 'templates/view.map.php';
 ?>
                         </div>
                       </div>
                   </div>
                 </div>
             <?php
-            }
-            elseif($view == 'ShowImageResults')
-            {
-                include 'templates/pagination.php';
-                include 'templates/ShowImageResults.php';
-                include 'templates/pagination.php';
+        } elseif ($view == 'ShowImageResults') {
+            include 'templates/ShowImageResults.php';
+        } elseif ($view == 'OSSTeam') {
+            include 'templates/OSSTeam.php';
+        } elseif ($view == 'SendFeedback') {
+            include 'templates/SendFeedback.php';
+        } else {
+            include 'templates/pagination.php';
+            include 'templates/view.list.php';
+            include 'templates/pagination.php';
+        }
+    } // if total <> 0: there were documents
 
-            }
-            elseif ($view == 'OSSTeam')
-            {
-                include 'templates/OSSTeam.php';
-            }
-            elseif ($view == 'SendFeedback')
-            {
-                include 'templates/SendFeedback.php';
-            }
-            else
-            {
-                include 'templates/pagination.php';
-                include 'templates/view.list.php';
-                include 'templates/pagination.php';
-            }
-        } // if total <> 0: there were documents
 ?>
           </div>
         </div>
